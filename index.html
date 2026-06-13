@@ -43,9 +43,19 @@ input{font-family:inherit}
 .logoTitulo{font-family:'Anton',sans-serif;font-size:clamp(52px,14vw,84px);line-height:.95;letter-spacing:.01em;margin:10px 0 4px}
 .logoTitulo span{color:var(--gold)}
 .logoSub{color:var(--mut);font-size:14px;max-width:300px;margin:8px auto 36px;line-height:1.5}
-.btnGoogle{display:flex;align-items:center;gap:12px;background:var(--txt);color:#16201a;font-weight:700;font-size:15px;padding:15px 26px;border-radius:14px;box-shadow:0 8px 28px #00000066}
+.btnGoogle{display:flex;align-items:center;justify-content:center;gap:12px;background:var(--txt);color:#16201a;font-weight:700;font-size:15px;padding:14px 26px;border-radius:14px;box-shadow:0 8px 28px #00000066;width:100%}
 .btnGoogle:active{transform:scale(.97)}
 .btnGoogle img{width:20px;height:20px}
+.authCard{width:100%;max-width:340px;display:flex;flex-direction:column}
+.authCard .btn{margin-top:2px}
+.authIn{width:100%;background:var(--card);border:1px solid var(--line2);border-radius:13px;color:var(--txt);padding:14px 15px;font-size:15px;margin-bottom:10px;outline:none}
+.authIn:focus{border-color:var(--gold);box-shadow:0 0 0 3px var(--gold-soft)}
+.authIn::placeholder{color:var(--mut)}
+.authLink{background:none;color:var(--mut);font-size:13px;padding:13px 4px 2px}
+.authLink b{color:var(--gold)}
+.authLink.dest{padding-top:16px}
+.authDiv{display:flex;align-items:center;gap:12px;color:var(--mut);font-size:12px;margin:14px 0}
+.authDiv:before,.authDiv:after{content:'';flex:1;height:1px;background:var(--line2)}
 #loginAviso{margin-top:22px;font-size:12px;color:var(--mut);max-width:320px;line-height:1.5}
 .setupBox{margin-top:26px;background:var(--card);border:1px solid var(--line2);border-radius:14px;padding:16px;text-align:left;font-size:13px;color:var(--mut);max-width:340px;line-height:1.6}
 .setupBox b{color:var(--gold)}
@@ -156,6 +166,18 @@ nav.abas button.ativa{color:var(--gold);background:var(--gold-soft)}
 .secTit{font-family:'Anton',sans-serif;font-size:24px;margin:4px 2px 14px;letter-spacing:.02em}
 .secTit small{display:block;font-family:'Archivo';font-size:12.5px;color:var(--mut);font-weight:400;letter-spacing:0;margin-top:4px}
 @media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+/* ── classificação por grupos ── */
+.grupoCard{background:var(--card);border:1px solid var(--line2);border-radius:16px;padding:12px 14px;margin-bottom:12px}
+.grupoTitulo{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:800;margin-bottom:10px}
+.grupoTbl{width:100%;border-collapse:collapse;font-size:12.5px}
+.grupoTbl th{color:var(--mut);font-weight:700;text-align:center;padding:3px 4px;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase}
+.grupoTbl th.tn{text-align:left;min-width:100px}
+.grupoTbl td{padding:8px 4px;text-align:center;border-top:1px solid #26342820}
+.grupoTbl td.tn{text-align:left;font-weight:600;font-size:12px}
+.grupoTbl tr.av1 td,.grupoTbl tr.av2 td{background:#5BBF7F0a}
+.grupoTbl tr.av1 td.tn,.grupoTbl tr.av2 td.tn{color:var(--green)}
+.grupoTbl .pts{font-family:'Anton',sans-serif;font-size:15px;color:var(--gold)}
+.grupoTbl .sg{font-size:11px;color:var(--mut)}
 </style>
 </head>
 <body>
@@ -165,10 +187,31 @@ nav.abas button.ativa{color:var(--gold);background:var(--gold-soft)}
   <div class="logoEyebrow">Copa do Mundo 2026</div>
   <div class="logoTitulo">BOLÃO<br><span>RESENHA RN</span></div>
   <div class="logoSub">Palpite no placar de todos os 104 jogos e dispute o ranking com a galera.</div>
-  <button class="btnGoogle" id="btnLogin">
-    <img alt="" src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg">
-    Entrar com Google
-  </button>
+
+  <div class="authCard">
+    <!-- modo: entrar -->
+    <div id="modoEntrar">
+      <input class="authIn" type="email" id="loginEmail" placeholder="Seu e-mail" autocomplete="email">
+      <input class="authIn" type="password" id="loginSenha" placeholder="Sua senha" autocomplete="current-password">
+      <button class="btn" id="btnEntrarEmail">Entrar</button>
+      <button class="authLink" id="btnEsqueci">Esqueci a senha</button>
+      <div class="authDiv"><span>ou</span></div>
+      <button class="btnGoogle" id="btnLogin">
+        <img alt="" src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg">
+        Entrar com Google
+      </button>
+      <button class="authLink dest" id="irCriar">Primeira vez aqui? <b>Criar conta</b></button>
+    </div>
+    <!-- modo: criar conta -->
+    <div id="modoCriar" class="hide">
+      <input class="authIn" type="text" id="criarNome" placeholder="Seu nome (aparece no ranking)" autocomplete="name">
+      <input class="authIn" type="email" id="criarEmail" placeholder="Seu e-mail" autocomplete="email">
+      <input class="authIn" type="password" id="criarSenha" placeholder="Crie uma senha (mín. 6 caracteres)" autocomplete="new-password">
+      <button class="btn" id="btnCriarConta">Criar conta e entrar</button>
+      <button class="authLink dest" id="irEntrar">Já tenho conta — <b>entrar</b></button>
+    </div>
+  </div>
+
   <div id="loginAviso">Login só na primeira vez — depois o app lembra de você neste aparelho.</div>
   <div class="setupBox hide" id="setupBox">
     <b>Configuração pendente:</b> cole as credenciais do seu projeto Firebase na constante <b>firebaseConfig</b> no topo do arquivo index.html e publique novamente.
@@ -201,6 +244,12 @@ nav.abas button.ativa{color:var(--gold);background:var(--gold-soft)}
 
     <!-- RANKING -->
     <section id="view-ranking" class="hide">
+
+    <!-- CLASSIFICAÇÃO -->
+    <section id="view-classificacao" class="hide">
+      <div class="secTit">Grupos<small>Pts · V · E · D · GP · GC · SG — top 2 avançam (verde)</small></div>
+      <div id="listaClassificacao"></div>
+    </section>
       <div class="secTit">Ranking<small>10 pts placar exato · 5 pts resultado certo</small></div>
       <div class="rankCab"><span>#</span><span>Nome</span><span style="text-align:right">Pts</span><span style="text-align:center">🎯</span><span style="text-align:center">✔</span></div>
       <div id="listaRanking"></div>
@@ -216,6 +265,12 @@ nav.abas button.ativa{color:var(--gold);background:var(--gold-soft)}
     <!-- ADMIN -->
     <section id="view-admin" class="hide">
       <div class="secTit">Admin<small id="admStatus"></small></div>
+
+      <div class="admSec">
+        <h3>🏅 Classificados para o mata-mata</h3>
+        <p>Top 2 por grupo avançam direto. Os melhores 3ºs colocados também avançam (Copa 2026 tem 32 na 2ª fase). Use como referência para preencher os confrontos abaixo.</p>
+        <div id="admClassificados"><p style="font-size:13px;color:var(--mut)">Lance os primeiros resultados para ver a classificação aqui.</p></div>
+      </div>
 
       <div class="admSec">
         <h3>Tabela de jogos</h3>
@@ -254,6 +309,7 @@ nav.abas button.ativa{color:var(--gold);background:var(--gold-soft)}
   <nav class="abas">
     <button data-v="jogos" class="ativa"><span class="ic">⚽</span>Jogos</button>
     <button data-v="ranking"><span class="ic">🏆</span>Ranking</button>
+    <button data-v="classificacao"><span class="ic">📊</span>Grupos</button>
     <button data-v="resenha"><span class="ic">💬</span>Resenha</button>
     <button data-v="admin" id="abaAdmin" class="hide"><span class="ic">🛠️</span>Admin</button>
   </nav>
@@ -406,6 +462,8 @@ var ehAdmin = false;
 var jogos = [];                // estado vivo (Firestore > base)
 var meusPalpites = {};         // jogoId -> {golsA, golsB, pontos}
 var pendentes = {};            // jogoId -> {golsA, golsB} ainda não salvos
+var nomeCadastro = '';
+var meuNome = '';
 var filtroAtual = 'abertos';
 var viewAtual = 'jogos';
 
@@ -466,8 +524,9 @@ montarBase();
 var configurado = firebaseConfig.apiKey.indexOf('COLE') === -1;
 if (!configurado){
   $('setupBox').classList.remove('hide');
-  $('btnLogin').disabled = true;
-  $('btnLogin').style.opacity = .4;
+  ['btnLogin','btnEntrarEmail','btnCriarConta'].forEach(function(id){
+    $(id).disabled = true; $(id).style.opacity = .4;
+  });
 } else {
   firebase.initializeApp(firebaseConfig);
   auth = firebase.auth();
@@ -475,14 +534,58 @@ if (!configurado){
 
   $('btnLogin').addEventListener('click', function(){
     var prov = new firebase.auth.GoogleAuthProvider();
-    auth.signInWithPopup(prov).catch(function(e){
-      if (e && (e.code === 'auth/popup-blocked' || e.code === 'auth/popup-closed-by-user' ||
-                e.code === 'auth/cancelled-popup-request' || e.code === 'auth/operation-not-supported-in-this-environment')){
-        auth.signInWithRedirect(prov);
-      } else {
-        toast('Erro no login: ' + (e && e.message ? e.message : e));
-      }
-    });
+    var mob = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    if (mob) {
+      auth.signInWithRedirect(prov);
+    } else {
+      auth.signInWithPopup(prov).catch(function(){ auth.signInWithRedirect(prov); });
+    }
+  });
+
+  function erroAuthPt(e){
+    var c = (e && e.code) || '';
+    if (c === 'auth/email-already-in-use') return 'Este e-mail já tem conta — toque em "Já tenho conta".';
+    if (c === 'auth/invalid-email') return 'E-mail inválido.';
+    if (c === 'auth/weak-password') return 'Senha muito curta — use pelo menos 6 caracteres.';
+    if (c === 'auth/wrong-password' || c === 'auth/invalid-credential' || c === 'auth/invalid-login-credentials') return 'E-mail ou senha incorretos.';
+    if (c === 'auth/user-not-found') return 'Não achei conta com este e-mail. Toque em "Criar conta".';
+    if (c === 'auth/too-many-requests') return 'Muitas tentativas — aguarde um pouco e tente de novo.';
+    if (c === 'auth/operation-not-allowed') return 'Ative "E-mail/senha" em Authentication > Métodos de login no Firebase.';
+    return 'Erro: ' + (e && e.message ? e.message : e);
+  }
+
+  /* handlers de e-mail só existem na versão com login por e-mail */
+  if ($('irCriar')) $('irCriar').addEventListener('click', function(){ $('modoEntrar').classList.add('hide'); $('modoCriar').classList.remove('hide'); });
+  if ($('irEntrar')) $('irEntrar').addEventListener('click', function(){ $('modoCriar').classList.add('hide'); $('modoEntrar').classList.remove('hide'); });
+
+  if ($('btnEntrarEmail')) $('btnEntrarEmail').addEventListener('click', function(){
+    var em = $('loginEmail').value.trim(), sn = $('loginSenha').value;
+    if (!em || !sn){ toast('Preencha e-mail e senha.'); return; }
+    var btn = this; btn.disabled = true;
+    auth.signInWithEmailAndPassword(em, sn)
+      .catch(function(e){ toast(erroAuthPt(e)); })
+      .then(function(){ btn.disabled = false; });
+  });
+
+  if ($('btnCriarConta')) $('btnCriarConta').addEventListener('click', function(){
+    var nm = $('criarNome').value.trim(), em = $('criarEmail').value.trim(), sn = $('criarSenha').value;
+    if (!nm){ toast('Diz teu nome aí 🙂'); return; }
+    if (!em){ toast('Preencha o e-mail.'); return; }
+    if (sn.length < 6){ toast('A senha precisa de pelo menos 6 caracteres.'); return; }
+    var btn = this; btn.disabled = true;
+    nomeCadastro = nm;
+    auth.createUserWithEmailAndPassword(em, sn)
+      .then(function(cred){ return cred.user.updateProfile({ displayName: nm }); })
+      .catch(function(e){ toast(erroAuthPt(e)); })
+      .then(function(){ btn.disabled = false; });
+  });
+
+  if ($('btnEsqueci')) $('btnEsqueci').addEventListener('click', function(){
+    var em = $('loginEmail').value.trim();
+    if (!em){ toast('Digite seu e-mail no campo acima e toque de novo em "Esqueci a senha".'); return; }
+    auth.sendPasswordResetEmail(em)
+      .then(function(){ toast('✓ Link de redefinição enviado para ' + em); })
+      .catch(function(e){ toast(erroAuthPt(e)); });
   });
 
   auth.onAuthStateChanged(function(u){
@@ -494,15 +597,18 @@ if (!configurado){
     }
     $('telaLogin').style.display = 'none';
     $('telaApp').classList.remove('hide');
-    $('userFoto').src = u.photoURL || '';
+    if (u.photoURL){ $('userFoto').src = u.photoURL; $('userFoto').style.display = ''; }
+    else { $('userFoto').style.display = 'none'; }
+    var nomeUso = u.displayName || nomeCadastro || u.email;
     var refU = db.collection('usuarios').doc(u.uid);
     refU.set({
-      nome: u.displayName || u.email, foto: u.photoURL || '', email: u.email || '',
+      nome: nomeUso, foto: u.photoURL || '', email: u.email || '',
       ultimoAcesso: firebase.firestore.FieldValue.serverTimestamp()
     }, {merge:true}).then(function(){
       return refU.get();
     }).then(function(doc){
       var d = doc.exists ? doc.data() : {};
+      meuNome = d.nome || nomeUso;
       ehAdmin = ((u.email||'').toLowerCase() === MASTER) || d.admin === true;
       $('abaAdmin').classList.toggle('hide', !ehAdmin);
       carregarTudo();
@@ -568,10 +674,11 @@ for (var bi = 0; bi < botoesAba.length; bi++){
     viewAtual = v;
     for (var k = 0; k < botoesAba.length; k++) botoesAba[k].classList.remove('ativa');
     this.classList.add('ativa');
-    ['jogos','ranking','resenha','admin'].forEach(function(nome){
+    ['jogos','ranking','classificacao','resenha','admin'].forEach(function(nome){
       $('view-'+nome).classList.toggle('hide', nome !== v);
     });
     if (v === 'ranking') renderRanking();
+    if (v === 'classificacao') renderClassificacao();
     if (v === 'resenha') renderResenhaSel();
     if (v === 'admin') renderAdmin();
     atualizarBarra();
@@ -730,7 +837,7 @@ $('barraSalvar').addEventListener('click', function(){
     var p = pendentes[id];
     return db.collection('palpites').doc(id + '_' + usuario.uid).set({
       jogoId: id, uid: usuario.uid,
-      nome: usuario.displayName || usuario.email, foto: usuario.photoURL || '',
+      nome: meuNome || usuario.displayName || usuario.email, foto: usuario.photoURL || '',
       golsA: p.golsA, golsB: p.golsB,
       ts: firebase.firestore.FieldValue.serverTimestamp()
     });
@@ -838,6 +945,7 @@ function renderAdmin(){
   renderAdmResultados();
   renderAdmMata();
   renderAdmUsuarios();
+  renderAdmClassificados();
 }
 
 function renderAdmUsuarios(){
@@ -1035,6 +1143,104 @@ $('btnRecalcular').addEventListener('click', function(){
     btn.disabled = false;
   }).catch(function(e){ toast('Erro: '+(e&&e.message?e.message:e)); btn.disabled = false; });
 });
+
+
+/* ---------------- classificação por grupos ---------------- */
+function calcularClassificacao(){
+  var grupos = {};
+  JOGOS_BASE.forEach(function(b){
+    if (b.fs !== 'Grupos' || !b.g) return;
+    if (!grupos[b.g]) grupos[b.g] = {};
+    if (b.a && !grupos[b.g][b.a]) grupos[b.g][b.a] = {nome:b.a,flag:b.fa||'⚽',j:0,v:0,e:0,d:0,gp:0,gc:0,pts:0};
+    if (b.b && !grupos[b.g][b.b]) grupos[b.g][b.b] = {nome:b.b,flag:b.fb||'⚽',j:0,v:0,e:0,d:0,gp:0,gc:0,pts:0};
+  });
+  jogos.forEach(function(j){
+    if (j.fase !== 'Grupos' || !j.encerrado || j.golsA === null || j.golsB === null || !j.grupo) return;
+    var g = grupos[j.grupo];
+    if (!g) return;
+    var tA = g[j.timeA], tB = g[j.timeB];
+    if (!tA || !tB) return;
+    tA.j++; tB.j++;
+    tA.gp += j.golsA; tA.gc += j.golsB;
+    tB.gp += j.golsB; tB.gc += j.golsA;
+    if (j.golsA > j.golsB){ tA.v++; tA.pts += 3; tB.d++; }
+    else if (j.golsA < j.golsB){ tB.v++; tB.pts += 3; tA.d++; }
+    else { tA.e++; tA.pts++; tB.e++; tB.pts++; }
+  });
+  return grupos;
+}
+
+function objVals(obj){ return Object.keys(obj).map(function(k){ return obj[k]; }); }
+
+function sortGrupo(times){
+  return times.slice().sort(function(a,b){
+    return (b.pts-a.pts)||(b.v-a.v)||((b.gp-b.gc)-(a.gp-a.gc))||(b.gp-a.gp)||a.nome.localeCompare(b.nome);
+  });
+}
+
+function renderClassificacao(){
+  var grupos = calcularClassificacao();
+  var letras = ['A','B','C','D','E','F','G','H','I','J','K','L'];
+  var html = '';
+  letras.forEach(function(g){
+    var times = sortGrupo(objVals(grupos[g] || {}));
+    html += '<div class="grupoCard"><div class="grupoTitulo">Grupo ' + g + '</div>';
+    html += '<table class="grupoTbl"><thead><tr>';
+    html += '<th class="tn">Sele\u00e7\u00e3o</th><th>Pts</th><th>J</th><th>V</th><th>E</th><th>D</th><th>GP</th><th>GC</th><th>SG</th>';
+    html += '</tr></thead><tbody>';
+    times.forEach(function(t, idx){
+      var sg = t.gp - t.gc;
+      var cls = idx === 0 ? 'av1' : idx === 1 ? 'av2' : '';
+      html += '<tr class="' + cls + '">';
+      html += '<td class="tn">' + esc(t.flag) + ' ' + esc(t.nome) + (idx < 2 && t.j > 0 ? ' <span style="color:var(--green);font-size:10px">\u2713</span>' : '') + '</td>';
+      html += '<td class="pts">' + t.pts + '</td>';
+      html += '<td>' + t.j + '</td><td>' + t.v + '</td><td>' + t.e + '</td><td>' + t.d + '</td>';
+      html += '<td>' + t.gp + '</td><td>' + t.gc + '</td>';
+      html += '<td class="sg">' + (sg > 0 ? '+' : '') + sg + '</td>';
+      html += '</tr>';
+    });
+    html += '</tbody></table></div>';
+  });
+  $('listaClassificacao').innerHTML = html || '<div class="vazio">Nenhum resultado lan\u00e7ado ainda.</div>';
+}
+
+function renderAdmClassificados(){
+  var grupos = calcularClassificacao();
+  var letras = ['A','B','C','D','E','F','G','H','I','J','K','L'];
+  var terceiros = [];
+  var temResultado = false;
+  var html = '<div style="margin-bottom:8px">';
+  letras.forEach(function(g){
+    var times = sortGrupo(objVals(grupos[g] || {}));
+    var t1 = times[0], t2 = times[1], t3 = times[2];
+    if (t1 && t1.j > 0) temResultado = true;
+    if (t3 && t3.j > 0) terceiros.push(Object.assign({grupo:g}, t3));
+    html += '<div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--line2);font-size:12.5px">';
+    html += '<span style="color:var(--gold);font-weight:800;width:18px">' + g + '</span>';
+    html += '<span style="flex:1;color:var(--green);min-width:0">' + (t1 ? t1.flag + ' <b>' + t1.nome + '</b> <span style="font-size:11px;color:var(--mut)">(' + t1.pts + 'pts)</span>' : '?') + '</span>';
+    html += '<span style="flex:1;min-width:0">' + (t2 ? t2.flag + ' ' + t2.nome + ' <span style="font-size:11px;color:var(--mut)">(' + t2.pts + 'pts)</span>' : '?') + '</span>';
+    html += '</div>';
+  });
+  html += '</div>';
+  if (!temResultado){
+    $('admClassificados').innerHTML = '<p style="font-size:13px;color:var(--mut)">Lance os primeiros resultados para ver a classifica\u00e7\u00e3o aqui.</p>';
+    return;
+  }
+  terceiros.sort(function(a,b){ return (b.pts-a.pts)||(b.v-a.v)||((b.gp-b.gc)-(a.gp-a.gc))||(b.gp-a.gp)||a.nome.localeCompare(b.nome); });
+  if (terceiros.length > 0){
+    html += '<div style="font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:800;margin:10px 0 6px">Melhores 3\u00bas (top 8 avan\u00e7am)</div>';
+    terceiros.forEach(function(t, i){
+      var sg = t.gp - t.gc;
+      var ok = i < 8;
+      html += '<div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--line2);font-size:12.5px">';
+      html += '<span style="color:'+(ok?'var(--green)':'var(--mut)')+';font-weight:800;width:20px">'+(i+1)+'\u00ba</span>';
+      html += '<span>' + t.flag + ' <b>' + t.nome + '</b> <span style="font-size:11px;color:var(--mut)">Gr.' + t.grupo + ' · ' + t.pts + 'pts · SG ' + (sg>0?'+':'') + sg + '</span></span>';
+      if (ok) html += '<span style="color:var(--green);margin-left:auto;font-size:11px;font-weight:700">AVAN\u00c7A</span>';
+      html += '</div>';
+    });
+  }
+  $('admClassificados').innerHTML = html;
+}
 
 /* relógio: re-renderiza a cada minuto para travar jogos na hora certa */
 setInterval(function(){
