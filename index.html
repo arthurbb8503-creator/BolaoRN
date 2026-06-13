@@ -48,14 +48,6 @@ input{font-family:inherit}
 .btnGoogle img{width:20px;height:20px}
 .authCard{width:100%;max-width:340px;display:flex;flex-direction:column}
 .authCard .btn{margin-top:2px}
-.authIn{width:100%;background:var(--card);border:1px solid var(--line2);border-radius:13px;color:var(--txt);padding:14px 15px;font-size:15px;margin-bottom:10px;outline:none}
-.authIn:focus{border-color:var(--gold);box-shadow:0 0 0 3px var(--gold-soft)}
-.authIn::placeholder{color:var(--mut)}
-.authLink{background:none;color:var(--mut);font-size:13px;padding:13px 4px 2px}
-.authLink b{color:var(--gold)}
-.authLink.dest{padding-top:16px}
-.authDiv{display:flex;align-items:center;gap:12px;color:var(--mut);font-size:12px;margin:14px 0}
-.authDiv:before,.authDiv:after{content:'';flex:1;height:1px;background:var(--line2)}
 #loginAviso{margin-top:22px;font-size:12px;color:var(--mut);max-width:320px;line-height:1.5}
 .setupBox{margin-top:26px;background:var(--card);border:1px solid var(--line2);border-radius:14px;padding:16px;text-align:left;font-size:13px;color:var(--mut);max-width:340px;line-height:1.6}
 .setupBox b{color:var(--gold)}
@@ -189,27 +181,10 @@ nav.abas button.ativa{color:var(--gold);background:var(--gold-soft)}
   <div class="logoSub">Palpite no placar de todos os 104 jogos e dispute o ranking com a galera.</div>
 
   <div class="authCard">
-    <!-- modo: entrar -->
-    <div id="modoEntrar">
-      <input class="authIn" type="email" id="loginEmail" placeholder="Seu e-mail" autocomplete="email">
-      <input class="authIn" type="password" id="loginSenha" placeholder="Sua senha" autocomplete="current-password">
-      <button class="btn" id="btnEntrarEmail">Entrar</button>
-      <button class="authLink" id="btnEsqueci">Esqueci a senha</button>
-      <div class="authDiv"><span>ou</span></div>
-      <button class="btnGoogle" id="btnLogin">
-        <img alt="" src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg">
-        Entrar com Google
-      </button>
-      <button class="authLink dest" id="irCriar">Primeira vez aqui? <b>Criar conta</b></button>
-    </div>
-    <!-- modo: criar conta -->
-    <div id="modoCriar" class="hide">
-      <input class="authIn" type="text" id="criarNome" placeholder="Seu nome (aparece no ranking)" autocomplete="name">
-      <input class="authIn" type="email" id="criarEmail" placeholder="Seu e-mail" autocomplete="email">
-      <input class="authIn" type="password" id="criarSenha" placeholder="Crie uma senha (mín. 6 caracteres)" autocomplete="new-password">
-      <button class="btn" id="btnCriarConta">Criar conta e entrar</button>
-      <button class="authLink dest" id="irEntrar">Já tenho conta — <b>entrar</b></button>
-    </div>
+    <button class="btnGoogle" id="btnLogin">
+      <img alt="" src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg">
+      Entrar com Google
+    </button>
   </div>
 
   <div id="loginAviso">Login só na primeira vez — depois o app lembra de você neste aparelho.</div>
@@ -244,22 +219,22 @@ nav.abas button.ativa{color:var(--gold);background:var(--gold-soft)}
 
     <!-- RANKING -->
     <section id="view-ranking" class="hide">
+      <div class="secTit">Ranking<small>10 pts placar exato · 5 pts resultado certo</small></div>
+      <div class="rankCab"><span>#</span><span>Nome</span><span style="text-align:right">Pts</span><span style="text-align:center">🎯</span><span style="text-align:center">✔</span></div>
+      <div id="listaRanking"></div>
+    </section>
 
     <!-- CLASSIFICAÇÃO -->
     <section id="view-classificacao" class="hide">
       <div class="secTit">Grupos<small>Pts · V · E · D · GP · GC · SG — top 2 avançam (verde)</small></div>
       <div id="listaClassificacao"></div>
     </section>
-      <div class="secTit">Ranking<small>10 pts placar exato · 5 pts resultado certo</small></div>
-      <div class="rankCab"><span>#</span><span>Nome</span><span style="text-align:right">Pts</span><span style="text-align:center">🎯</span><span style="text-align:center">✔</span></div>
-      <div id="listaRanking"></div>
-    </section>
 
     <!-- RESENHA -->
     <section id="view-resenha" class="hide">
-      <div class="secTit">Resenha<small>Palpites de todo mundo — liberados depois que o jogo fecha</small></div>
-      <select class="resJogoSel" id="resSel"></select>
+      <div class="secTit">Resenha<small>O histórico de palpites de todo mundo, jogo a jogo</small></div>
       <div id="listaResenha"></div>
+      <button class="btn sec btnFull hide" id="btnVerMais" style="margin-top:4px">Ver mais 25</button>
     </section>
 
     <!-- ADMIN -->
@@ -270,12 +245,6 @@ nav.abas button.ativa{color:var(--gold);background:var(--gold-soft)}
         <h3>🏅 Classificados para o mata-mata</h3>
         <p>Top 2 por grupo avançam direto. Os melhores 3ºs colocados também avançam (Copa 2026 tem 32 na 2ª fase). Use como referência para preencher os confrontos abaixo.</p>
         <div id="admClassificados"><p style="font-size:13px;color:var(--mut)">Lance os primeiros resultados para ver a classificação aqui.</p></div>
-      </div>
-
-      <div class="admSec">
-        <h3>Tabela de jogos</h3>
-        <p id="admTabelaInfo">—</p>
-        <button class="btn" id="btnPublicarTabela">Publicar / atualizar tabela (104 jogos)</button>
       </div>
 
       <div class="admSec">
@@ -353,7 +322,7 @@ var JOGOS_BASE = [
  {i:4,fs:'Grupos',g:'D',a:'Estados Unidos',fa:'🇺🇸',b:'Paraguai',fb:'🇵🇾',d:'2026-06-12T22:00',c:'Los Angeles'},
  {i:5,fs:'Grupos',g:'B',a:'Catar',fa:'🇶🇦',b:'Suíça',fb:'🇨🇭',d:'2026-06-13T16:00',c:'San Francisco'},
  {i:6,fs:'Grupos',g:'C',a:'Brasil',fa:'🇧🇷',b:'Marrocos',fb:'🇲🇦',d:'2026-06-13T19:00',c:'Nova York/NJ'},
- {i:7,fs:'Grupos',g:'C',a:'Haiti',fa:'🇭🇹',b:'Escócia',fb:'🏴󠁧󠁢󠁳󠁣󠁴󠁿',d:'2026-06-13T22:00',c:'Boston'},
+ {i:7,fs:'Grupos',g:'C',a:'Haiti',fa:'🇭🇹',b:'Escócia',fb:'🏴',d:'2026-06-13T22:00',c:'Boston'},
  {i:8,fs:'Grupos',g:'D',a:'Austrália',fa:'🇦🇺',b:'Turquia',fb:'🇹🇷',d:'2026-06-14T01:00',c:'Vancouver'},
  {i:9,fs:'Grupos',g:'E',a:'Alemanha',fa:'🇩🇪',b:'Curaçao',fb:'🇨🇼',d:'2026-06-14T14:00',c:'Houston'},
  {i:10,fs:'Grupos',g:'F',a:'Holanda',fa:'🇳🇱',b:'Japão',fb:'🇯🇵',d:'2026-06-14T17:00',c:'Dallas'},
@@ -368,7 +337,7 @@ var JOGOS_BASE = [
  {i:19,fs:'Grupos',g:'J',a:'Argentina',fa:'🇦🇷',b:'Argélia',fb:'🇩🇿',d:'2026-06-16T22:00',c:'Kansas City'},
  {i:20,fs:'Grupos',g:'J',a:'Áustria',fa:'🇦🇹',b:'Jordânia',fb:'🇯🇴',d:'2026-06-17T01:00',c:'San Francisco'},
  {i:21,fs:'Grupos',g:'K',a:'Portugal',fa:'🇵🇹',b:'RD Congo',fb:'🇨🇩',d:'2026-06-17T14:00',c:'Houston'},
- {i:22,fs:'Grupos',g:'L',a:'Inglaterra',fa:'🏴󠁧󠁢󠁥󠁮󠁧󠁿',b:'Croácia',fb:'🇭🇷',d:'2026-06-17T17:00',c:'Dallas'},
+ {i:22,fs:'Grupos',g:'L',a:'Inglaterra',fa:'🏴',b:'Croácia',fb:'🇭🇷',d:'2026-06-17T17:00',c:'Dallas'},
  {i:23,fs:'Grupos',g:'L',a:'Gana',fa:'🇬🇭',b:'Panamá',fb:'🇵🇦',d:'2026-06-17T20:00',c:'Toronto'},
  {i:24,fs:'Grupos',g:'K',a:'Uzbequistão',fa:'🇺🇿',b:'Colômbia',fb:'🇨🇴',d:'2026-06-17T23:00',c:'Cidade do México'},
  {i:25,fs:'Grupos',g:'A',a:'Tchéquia',fa:'🇨🇿',b:'África do Sul',fb:'🇿🇦',d:'2026-06-18T13:00',c:'Atlanta'},
@@ -376,7 +345,7 @@ var JOGOS_BASE = [
  {i:27,fs:'Grupos',g:'B',a:'Canadá',fa:'🇨🇦',b:'Catar',fb:'🇶🇦',d:'2026-06-18T19:00',c:'Vancouver'},
  {i:28,fs:'Grupos',g:'A',a:'México',fa:'🇲🇽',b:'Coreia do Sul',fb:'🇰🇷',d:'2026-06-18T22:00',c:'Guadalajara'},
  {i:29,fs:'Grupos',g:'D',a:'Estados Unidos',fa:'🇺🇸',b:'Austrália',fb:'🇦🇺',d:'2026-06-19T16:00',c:'Seattle'},
- {i:30,fs:'Grupos',g:'C',a:'Escócia',fa:'🏴󠁧󠁢󠁳󠁣󠁴󠁿',b:'Marrocos',fb:'🇲🇦',d:'2026-06-19T19:00',c:'Boston'},
+ {i:30,fs:'Grupos',g:'C',a:'Escócia',fa:'🏴',b:'Marrocos',fb:'🇲🇦',d:'2026-06-19T19:00',c:'Boston'},
  {i:31,fs:'Grupos',g:'C',a:'Brasil',fa:'🇧🇷',b:'Haiti',fb:'🇭🇹',d:'2026-06-19T21:30',c:'Filadélfia'},
  {i:32,fs:'Grupos',g:'D',a:'Turquia',fa:'🇹🇷',b:'Paraguai',fb:'🇵🇾',d:'2026-06-20T00:00',c:'San Francisco'},
  {i:33,fs:'Grupos',g:'F',a:'Holanda',fa:'🇳🇱',b:'Suécia',fb:'🇸🇪',d:'2026-06-20T14:00',c:'Houston'},
@@ -392,12 +361,12 @@ var JOGOS_BASE = [
  {i:43,fs:'Grupos',g:'I',a:'Noruega',fa:'🇳🇴',b:'Senegal',fb:'🇸🇳',d:'2026-06-22T21:00',c:'Nova York/NJ'},
  {i:44,fs:'Grupos',g:'J',a:'Jordânia',fa:'🇯🇴',b:'Argélia',fb:'🇩🇿',d:'2026-06-23T00:00',c:'San Francisco'},
  {i:45,fs:'Grupos',g:'K',a:'Portugal',fa:'🇵🇹',b:'Uzbequistão',fb:'🇺🇿',d:'2026-06-23T14:00',c:'Houston'},
- {i:46,fs:'Grupos',g:'L',a:'Inglaterra',fa:'🏴󠁧󠁢󠁥󠁮󠁧󠁿',b:'Gana',fb:'🇬🇭',d:'2026-06-23T17:00',c:'Boston'},
+ {i:46,fs:'Grupos',g:'L',a:'Inglaterra',fa:'🏴',b:'Gana',fb:'🇬🇭',d:'2026-06-23T17:00',c:'Boston'},
  {i:47,fs:'Grupos',g:'L',a:'Panamá',fa:'🇵🇦',b:'Croácia',fb:'🇭🇷',d:'2026-06-23T20:00',c:'Toronto'},
  {i:48,fs:'Grupos',g:'K',a:'Colômbia',fa:'🇨🇴',b:'RD Congo',fb:'🇨🇩',d:'2026-06-23T23:00',c:'Guadalajara'},
  {i:49,fs:'Grupos',g:'B',a:'Suíça',fa:'🇨🇭',b:'Canadá',fb:'🇨🇦',d:'2026-06-24T16:00',c:'Vancouver'},
  {i:50,fs:'Grupos',g:'B',a:'Bósnia',fa:'🇧🇦',b:'Catar',fb:'🇶🇦',d:'2026-06-24T16:00',c:'Seattle'},
- {i:51,fs:'Grupos',g:'C',a:'Escócia',fa:'🏴󠁧󠁢󠁳󠁣󠁴󠁿',b:'Brasil',fb:'🇧🇷',d:'2026-06-24T19:00',c:'Miami'},
+ {i:51,fs:'Grupos',g:'C',a:'Escócia',fa:'🏴',b:'Brasil',fb:'🇧🇷',d:'2026-06-24T19:00',c:'Miami'},
  {i:52,fs:'Grupos',g:'C',a:'Marrocos',fa:'🇲🇦',b:'Haiti',fb:'🇭🇹',d:'2026-06-24T19:00',c:'Atlanta'},
  {i:53,fs:'Grupos',g:'A',a:'Tchéquia',fa:'🇨🇿',b:'México',fb:'🇲🇽',d:'2026-06-24T22:00',c:'Cidade do México'},
  {i:54,fs:'Grupos',g:'A',a:'África do Sul',fa:'🇿🇦',b:'Coreia do Sul',fb:'🇰🇷',d:'2026-06-24T22:00',c:'Monterrey'},
@@ -413,7 +382,7 @@ var JOGOS_BASE = [
  {i:64,fs:'Grupos',g:'H',a:'Uruguai',fa:'🇺🇾',b:'Espanha',fb:'🇪🇸',d:'2026-06-26T21:00',c:'Guadalajara'},
  {i:65,fs:'Grupos',g:'G',a:'Egito',fa:'🇪🇬',b:'Irã',fb:'🇮🇷',d:'2026-06-27T00:00',c:'Seattle'},
  {i:66,fs:'Grupos',g:'G',a:'Nova Zelândia',fa:'🇳🇿',b:'Bélgica',fb:'🇧🇪',d:'2026-06-27T00:00',c:'Vancouver'},
- {i:67,fs:'Grupos',g:'L',a:'Panamá',fa:'🇵🇦',b:'Inglaterra',fb:'🏴󠁧󠁢󠁥󠁮󠁧󠁿',d:'2026-06-27T18:00',c:'Nova York/NJ'},
+ {i:67,fs:'Grupos',g:'L',a:'Panamá',fa:'🇵🇦',b:'Inglaterra',fb:'🏴',d:'2026-06-27T18:00',c:'Nova York/NJ'},
  {i:68,fs:'Grupos',g:'L',a:'Croácia',fa:'🇭🇷',b:'Gana',fb:'🇬🇭',d:'2026-06-27T18:00',c:'Filadélfia'},
  {i:69,fs:'Grupos',g:'K',a:'Colômbia',fa:'🇨🇴',b:'Portugal',fb:'🇵🇹',d:'2026-06-27T20:30',c:'Miami'},
  {i:70,fs:'Grupos',g:'K',a:'RD Congo',fa:'🇨🇩',b:'Uzbequistão',fb:'🇺🇿',d:'2026-06-27T20:30',c:'Atlanta'},
@@ -462,8 +431,9 @@ var ehAdmin = false;
 var jogos = [];                // estado vivo (Firestore > base)
 var meusPalpites = {};         // jogoId -> {golsA, golsB, pontos}
 var pendentes = {};            // jogoId -> {golsA, golsB} ainda não salvos
-var nomeCadastro = '';
+
 var meuNome = '';
+var tabelaPublicada = false;
 var filtroAtual = 'abertos';
 var viewAtual = 'jogos';
 
@@ -524,9 +494,7 @@ montarBase();
 var configurado = firebaseConfig.apiKey.indexOf('COLE') === -1;
 if (!configurado){
   $('setupBox').classList.remove('hide');
-  ['btnLogin','btnEntrarEmail','btnCriarConta'].forEach(function(id){
-    $(id).disabled = true; $(id).style.opacity = .4;
-  });
+  $('btnLogin').disabled = true; $('btnLogin').style.opacity = .4;
 } else {
   firebase.initializeApp(firebaseConfig);
   auth = firebase.auth();
@@ -542,52 +510,6 @@ if (!configurado){
     }
   });
 
-  function erroAuthPt(e){
-    var c = (e && e.code) || '';
-    if (c === 'auth/email-already-in-use') return 'Este e-mail já tem conta — toque em "Já tenho conta".';
-    if (c === 'auth/invalid-email') return 'E-mail inválido.';
-    if (c === 'auth/weak-password') return 'Senha muito curta — use pelo menos 6 caracteres.';
-    if (c === 'auth/wrong-password' || c === 'auth/invalid-credential' || c === 'auth/invalid-login-credentials') return 'E-mail ou senha incorretos.';
-    if (c === 'auth/user-not-found') return 'Não achei conta com este e-mail. Toque em "Criar conta".';
-    if (c === 'auth/too-many-requests') return 'Muitas tentativas — aguarde um pouco e tente de novo.';
-    if (c === 'auth/operation-not-allowed') return 'Ative "E-mail/senha" em Authentication > Métodos de login no Firebase.';
-    return 'Erro: ' + (e && e.message ? e.message : e);
-  }
-
-  /* handlers de e-mail só existem na versão com login por e-mail */
-  if ($('irCriar')) $('irCriar').addEventListener('click', function(){ $('modoEntrar').classList.add('hide'); $('modoCriar').classList.remove('hide'); });
-  if ($('irEntrar')) $('irEntrar').addEventListener('click', function(){ $('modoCriar').classList.add('hide'); $('modoEntrar').classList.remove('hide'); });
-
-  if ($('btnEntrarEmail')) $('btnEntrarEmail').addEventListener('click', function(){
-    var em = $('loginEmail').value.trim(), sn = $('loginSenha').value;
-    if (!em || !sn){ toast('Preencha e-mail e senha.'); return; }
-    var btn = this; btn.disabled = true;
-    auth.signInWithEmailAndPassword(em, sn)
-      .catch(function(e){ toast(erroAuthPt(e)); })
-      .then(function(){ btn.disabled = false; });
-  });
-
-  if ($('btnCriarConta')) $('btnCriarConta').addEventListener('click', function(){
-    var nm = $('criarNome').value.trim(), em = $('criarEmail').value.trim(), sn = $('criarSenha').value;
-    if (!nm){ toast('Diz teu nome aí 🙂'); return; }
-    if (!em){ toast('Preencha o e-mail.'); return; }
-    if (sn.length < 6){ toast('A senha precisa de pelo menos 6 caracteres.'); return; }
-    var btn = this; btn.disabled = true;
-    nomeCadastro = nm;
-    auth.createUserWithEmailAndPassword(em, sn)
-      .then(function(cred){ return cred.user.updateProfile({ displayName: nm }); })
-      .catch(function(e){ toast(erroAuthPt(e)); })
-      .then(function(){ btn.disabled = false; });
-  });
-
-  if ($('btnEsqueci')) $('btnEsqueci').addEventListener('click', function(){
-    var em = $('loginEmail').value.trim();
-    if (!em){ toast('Digite seu e-mail no campo acima e toque de novo em "Esqueci a senha".'); return; }
-    auth.sendPasswordResetEmail(em)
-      .then(function(){ toast('✓ Link de redefinição enviado para ' + em); })
-      .catch(function(e){ toast(erroAuthPt(e)); });
-  });
-
   auth.onAuthStateChanged(function(u){
     usuario = u;
     if (!u){
@@ -599,7 +521,7 @@ if (!configurado){
     $('telaApp').classList.remove('hide');
     if (u.photoURL){ $('userFoto').src = u.photoURL; $('userFoto').style.display = ''; }
     else { $('userFoto').style.display = 'none'; }
-    var nomeUso = u.displayName || nomeCadastro || u.email;
+    var nomeUso = u.displayName || u.email;
     var refU = db.collection('usuarios').doc(u.uid);
     refU.set({
       nome: nomeUso, foto: u.photoURL || '', email: u.email || '',
@@ -621,12 +543,22 @@ if (!configurado){
 }
 
 $('chipUser').addEventListener('click', function(){
-  if (confirm('Sair da conta?')) auth.signOut();
+  if (confirm('Sair da conta?')) auth.signOut();});
+
+$('btnVerMais').addEventListener('click', function(){
+  resenhaMostradas += RESENHA_PASSO;
+  renderResenhaLista();
 });
 
 /* ---------------- carregamento ---------------- */
 function carregarTudo(){
-  carregarJogos().then(carregarMeusPalpites).then(function(){
+  carregarJogos().then(function(){
+    // publica a tabela automaticamente na 1ª vez (só admin)
+    if (ehAdmin && !tabelaPublicada){
+      return publicarTabela(true).then(carregarJogos);
+    }
+  }).then(carregarMeusPalpites).then(function(){
+    gerarMataMataSeFechou();
     renderJogos();
     if (ehAdmin) renderAdmin();
   }).catch(function(e){
@@ -636,7 +568,8 @@ function carregarTudo(){
 
 function carregarJogos(){
   return db.collection('jogos').get().then(function(snap){
-    if (snap.empty) return; // usa a tabela-base até o admin publicar
+    tabelaPublicada = !snap.empty;
+    if (snap.empty) return; // usa a tabela-base até publicar
     var porId = {};
     snap.forEach(function(doc){ porId[doc.id] = doc.data(); });
     jogos.forEach(function(j){
@@ -885,50 +818,72 @@ function renderRanking(){
 }
 
 /* ---------------- resenha ---------------- */
+var RESENHA_PASSO = 25;
+var resenhaMostradas = RESENHA_PASSO;
+var resenhaCacheJogos = [];
+
+/* monta o histórico: jogos já fechados (lock passou), mais recentes primeiro.
+   Para cada jogo, busca todos os palpites e mostra agrupado. */
 function renderResenhaSel(){
+  resenhaMostradas = RESENHA_PASSO;
   var fechados = jogos.filter(function(j){ return Date.now() >= j.lock.getTime() && j.definido; })
                       .sort(function(a,b){ return b.inicio - a.inicio; });
-  var sel = $('resSel');
+  resenhaCacheJogos = fechados;
   if (!fechados.length){
-    sel.innerHTML = '<option>Nenhum jogo fechado ainda</option>';
-    $('listaResenha').innerHTML = '<div class="vazio">Os palpites de todo mundo aparecem aqui assim que cada jogo fecha (5 min antes da bola rolar). Até lá, cada um só vê o próprio.</div>';
+    $('listaResenha').innerHTML = '<div class="vazio">A resenha aparece aqui assim que o primeiro jogo fechar (5 min antes da bola rolar).<br>Os palpites de todos ficam visíveis então — até lá, cada um só vê o próprio. 🤫</div>';
+    $('btnVerMais').classList.add('hide');
     return;
   }
-  var html = '';
-  fechados.forEach(function(j){
-    var placar = j.encerrado ? (' — ' + j.golsA + '×' + j.golsB) : '';
-    html += '<option value="'+j.id+'">'+esc(j.timeA)+' × '+esc(j.timeB)+placar+' · '+fmtDia(j.inicio)+'</option>';
-  });
-  sel.innerHTML = html;
-  sel.onchange = function(){ renderResenha(this.value); };
-  renderResenha(fechados[0].id);
+  renderResenhaLista();
 }
 
-function renderResenha(jogoId){
+function renderResenhaLista(){
+  var fechados = resenhaCacheJogos.slice(0, resenhaMostradas);
   $('listaResenha').innerHTML = '<div class="vazio">Carregando…</div>';
-  var j = null;
-  for (var k = 0; k < jogos.length; k++) if (jogos[k].id===jogoId){ j = jogos[k]; break; }
-  db.collection('palpites').where('jogoId','==',jogoId).get().then(function(snap){
-    var rows = [];
-    snap.forEach(function(doc){ rows.push(doc.data()); });
-    if (!rows.length){ $('listaResenha').innerHTML = '<div class="vazio">Ninguém palpitou neste jogo. 🦗</div>'; return; }
-    rows.sort(function(a,b){
-      var pa = typeof a.pontos==='number'?a.pontos:-1, pb = typeof b.pontos==='number'?b.pontos:-1;
-      return (pb-pa) || String(a.nome||'').localeCompare(String(b.nome||''));
+  // busca palpites de todos os jogos exibidos em paralelo
+  var buscas = fechados.map(function(j){
+    return db.collection('palpites').where('jogoId','==',j.id).get().then(function(snap){
+      var rows = []; snap.forEach(function(d){ rows.push(d.data()); });
+      return { jogo:j, palpites:rows };
     });
+  });
+  Promise.all(buscas).then(function(blocos){
     var html = '';
-    rows.forEach(function(r){
-      var tag = '';
-      if (j && j.encerrado){
-        var pts = typeof r.pontos==='number' ? r.pontos : calcPontos(r.golsA,r.golsB,j.golsA,j.golsB);
-        var cls = pts>=PONTO_EXATO?'pts10':(pts>0?'pts5':'pts0');
-        tag = '<span class="ptsTag '+cls+'">+'+pts+'</span>';
+    blocos.forEach(function(b){
+      var j = b.jogo, rows = b.palpites;
+      var placarTxt = j.encerrado ? (j.golsA + ' × ' + j.golsB) : 'aguardando placar';
+      var placarCor = j.encerrado ? 'var(--gold)' : 'var(--mut)';
+      html += '<div style="margin:18px 2px 8px;display:flex;align-items:center;gap:8px">' +
+        '<span style="font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--mut);font-weight:700">'+fmtDia(j.inicio)+'</span>' +
+        '<span style="flex:1;height:1px;background:var(--line2)"></span></div>';
+      html += '<div class="card" style="margin-bottom:8px;padding:12px 14px">' +
+        '<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:'+(rows.length?'10px':'0')+'">' +
+          '<span style="font-weight:700;font-size:13.5px">'+esc(j.flagA)+' '+esc(j.timeA)+' × '+esc(j.timeB)+' '+esc(j.flagB)+'</span>' +
+          '<span style="font-family:\'Anton\',sans-serif;font-size:17px;color:'+placarCor+';white-space:nowrap">'+placarTxt+'</span>' +
+        '</div>';
+      if (!rows.length){
+        html += '<div style="font-size:12.5px;color:var(--mut)">Ninguém palpitou. 🦗</div>';
+      } else {
+        rows.sort(function(a,b){
+          var pa = typeof a.pontos==='number'?a.pontos:-1, pb = typeof b.pontos==='number'?b.pontos:-1;
+          return (pb-pa) || String(a.nome||'').localeCompare(String(b.nome||''));
+        });
+        rows.forEach(function(r){
+          var tag = '';
+          if (j.encerrado){
+            var pts = typeof r.pontos==='number' ? r.pontos : calcPontos(r.golsA,r.golsB,j.golsA,j.golsB);
+            var cls = pts>=PONTO_EXATO?'pts10':(pts>0?'pts5':'pts0');
+            tag = '<span class="ptsTag '+cls+'">+'+pts+'</span>';
+          }
+          html += '<div class="resLinha" style="margin-bottom:6px"><span class="resQuem">'+(r.foto?'<img src="'+esc(r.foto)+'" alt="">':'')+'<span class="nn" style="font-size:13px;font-weight:600">'+esc(r.nome||'?')+'</span></span>' +
+                  '<span class="resDireita"><span class="resPalp">'+r.golsA+'×'+r.golsB+'</span>'+tag+'</span></div>';
+        });
       }
-      html += '<div class="resLinha"><span class="quem">'+(r.foto?'<img src="'+esc(r.foto)+'" alt="">':'')+'<span class="n">'+esc(r.nome||'?')+'</span></span>' +
-              '<span style="display:flex;align-items:center;gap:10px"><span class="palp">'+r.golsA+'×'+r.golsB+'</span>'+tag+'</span></div>';
+      html += '</div>';
     });
     $('listaResenha').innerHTML = html;
-  }).catch(function(){ $('listaResenha').innerHTML = '<div class="vazio">Erro ao carregar.</div>'; });
+    $('btnVerMais').classList.toggle('hide', resenhaMostradas >= resenhaCacheJogos.length);
+  }).catch(function(){ $('listaResenha').innerHTML = '<div class="vazio">Erro ao carregar a resenha.</div>'; });
 }
 
 /* ================================================================
@@ -937,11 +892,6 @@ function renderResenha(jogoId){
 function renderAdmin(){
   if (!ehAdmin) return;
   $('admStatus').textContent = 'Logado como ' + (usuario.email||'');
-  db.collection('jogos').get().then(function(snap){
-    $('admTabelaInfo').textContent = snap.size
-      ? snap.size + ' de 104 jogos publicados no Firestore. Republicar atualiza nomes/horários sem apagar resultados nem jogos editados manualmente.'
-      : 'A tabela ainda NÃO foi publicada — os palpites só funcionam depois disso. Toque no botão abaixo (uma vez só).';
-  });
   renderAdmResultados();
   renderAdmMata();
   renderAdmUsuarios();
@@ -979,9 +929,8 @@ window.mudarAdmin = function(uid, promover){
   }).catch(function(e){ toast('Erro: '+(e&&e.message?e.message:e)); });
 };
 
-$('btnPublicarTabela').addEventListener('click', function(){
-  var btn = this; btn.disabled = true;
-  db.collection('jogos').get().then(function(snap){
+function publicarTabela(silencioso){
+  return db.collection('jogos').get().then(function(snap){
     var existentes = {};
     snap.forEach(function(doc){ existentes[doc.id] = doc.data(); });
     var batch = db.batch();
@@ -999,11 +948,10 @@ $('btnPublicarTabela').addEventListener('click', function(){
     });
     return batch.commit();
   }).then(function(){
-    toast('✓ Tabela publicada!');
-    btn.disabled = false;
-    carregarTudo();
-  }).catch(function(e){ toast('Erro: '+(e&&e.message?e.message:e)); btn.disabled = false; });
-});
+    tabelaPublicada = true;
+    if (!silencioso) toast('✓ Tabela atualizada!');
+  });
+}
 
 function renderAdmResultados(){
   var pendL = jogos.filter(function(j){ return j.definido && !j.encerrado && Date.now() >= j.inicio.getTime(); })
@@ -1240,6 +1188,82 @@ function renderAdmClassificados(){
     });
   }
   $('admClassificados').innerHTML = html;
+}
+
+
+/* ---------------- geração automática do mata-mata ---------------- */
+/* Chaveamento oficial da Copa 2026 (32-avos / Round of 32).
+   Cada confronto: vencedores/2ºs de grupos + melhores 3ºs.
+   jogo (ordem) -> {a:'1A'|'2B'|'3X', b:...}  onde 3X = um dos melhores 3ºs */
+var CHAVE_32 = {
+  73:{a:'1A',b:'3CEFHI'}, 74:{a:'1C',b:'3DEFGH'}, 75:{a:'1E',b:'3ABDFG'},
+  76:{a:'1F',b:'2B'},     77:{a:'1I',b:'3CDEHL'}, 78:{a:'1B',b:'3EFGIJ'},
+  79:{a:'1G',b:'2A'},     80:{a:'1H',b:'3BEFIK'}, 81:{a:'1D',b:'3BEHIK'},
+  82:{a:'1L',b:'2J'},     83:{a:'1J',b:'2H'},     84:{a:'1K',b:'3DEIJL'},
+  85:{a:'2C',b:'2F'},     86:{a:'2D',b:'2G'},     87:{a:'2I',b:'2L'}, 88:{a:'2E',b:'2K'}
+};
+
+function gruposCompletos(){
+  var grp = jogos.filter(function(j){ return j.fase === 'Grupos'; });
+  if (!grp.length) return false;
+  for (var k=0;k<grp.length;k++){ if (!grp[k].encerrado) return false; }
+  return true;
+}
+
+function gerarMataMataSeFechou(){
+  // só admin grava; e só se todos os 72 jogos de grupo terminaram
+  if (!ehAdmin || !tabelaPublicada) return;
+  if (!gruposCompletos()) return;
+
+  var grupos = calcularClassificacao();
+  var letras = ['A','B','C','D','E','F','G','H','I','J','K','L'];
+  var pos = {}; // '1A' -> {nome,flag}
+  var terceiros = [];
+  letras.forEach(function(g){
+    var t = sortGrupo(objVals(grupos[g]||{}));
+    if (t[0]) pos['1'+g] = t[0];
+    if (t[1]) pos['2'+g] = t[1];
+    if (t[2]) terceiros.push(Object.assign({grupo:g}, t[2]));
+  });
+  terceiros.sort(function(a,b){ return (b.pts-a.pts)||(b.v-a.v)||((b.gp-b.gc)-(a.gp-a.gc))||(b.gp-a.gp); });
+  var melhores3 = terceiros.slice(0,8); // 8 melhores avançam
+
+  // resolve um slot '3CEFHI' pegando o melhor 3º cujo grupo esteja na string
+  function pega3(slot){
+    var letrasSlot = slot.slice(1);
+    for (var k=0;k<melhores3.length;k++){
+      if (melhores3[k] && letrasSlot.indexOf(melhores3[k].grupo) !== -1){
+        return melhores3.splice(k,1)[0];
+      }
+    }
+    return melhores3.shift() || null; // fallback: qualquer um restante
+  }
+
+  var batch = db.batch();
+  var n = 0;
+  for (var ordem in CHAVE_32){
+    var def = CHAVE_32[ordem];
+    var id = 'j'+ordem;
+    // já editado manualmente pelo admin? respeita
+    var jx = null;
+    for (var k=0;k<jogos.length;k++){ if (jogos[k].ordem == ordem){ jx = jogos[k]; break; } }
+    if (jx && jx.definido) continue;
+
+    var tA = def.a.charAt(0)==='3' ? pega3(def.a) : pos[def.a];
+    var tB = def.b.charAt(0)==='3' ? pega3(def.b) : pos[def.b];
+    if (!tA || !tB) continue;
+
+    batch.set(db.collection('jogos').doc(id), {
+      timeA: tA.nome, flagA: tA.flag, timeB: tB.nome, flagB: tB.flag, autoGerado: true
+    }, {merge:true});
+    n++;
+  }
+  if (n > 0){
+    batch.commit().then(function(){
+      toast('✓ 16-avos gerados automaticamente!');
+      carregarJogos().then(renderJogos);
+    }).catch(function(){});
+  }
 }
 
 /* relógio: re-renderiza a cada minuto para travar jogos na hora certa */
