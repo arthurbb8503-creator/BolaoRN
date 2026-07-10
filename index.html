@@ -2,298 +2,240 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="theme-color" content="#0C120D">
-<title>Bolão ReseNha RN</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Missões da Casa ✨</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
+/* ============================================================
+   MISSÕES DA CASA — Fase 1
+   Tokens de design
+   ============================================================ */
 :root{
-  --bg:#0C120D;          /* verde-noite */
-  --card:#141C15;
-  --card2:#1A241B;
-  --line:#26342830;
-  --line2:#2C3B2E;
-  --txt:#F2EFE4;         /* creme */
-  --mut:#9AA89B;
-  --gold:#E8B84B;        /* troféu */
-  --gold-soft:#E8B84B22;
-  --green:#5BBF7F;       /* campo */
-  --green-soft:#5BBF7F1f;
-  --red:#D9776A;
-  --red-soft:#D9776A1f;
+  --fundo:#FFF7EC;          /* papel de brincar */
+  --tinta:#3B2E4A;          /* roxo-escuro amigável (texto) */
+  --tinta-suave:#8B7FA0;
+  --sol:#FFC531;            /* estrela / moeda */
+  --sol-escuro:#E0A400;
+  --verde:#34C77B;
+  --verde-escuro:#22A863;
+  --vermelho:#F76D6D;
+  --branco:#FFFFFF;
+  --cartao:#FFFFFF;
+  --sombra:0 6px 0 rgba(59,46,74,.10);
+  --raio:22px;
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{background:var(--bg);color:var(--txt);font-family:'Archivo',system-ui,sans-serif;min-height:100%}
-body{padding-bottom:env(safe-area-inset-bottom)}
-button{font-family:inherit;cursor:pointer;border:none}
-input{font-family:inherit}
-.hide{display:none!important}
+html,body{height:100%}
+body{
+  background:var(--fundo);
+  color:var(--tinta);
+  font-family:'Nunito',sans-serif;
+  font-size:17px;
+  overscroll-behavior:none;
+}
+h1,h2,h3,.f{font-family:'Fredoka',sans-serif}
+button{font-family:'Fredoka',sans-serif;border:none;cursor:pointer;color:inherit;background:none;font-size:inherit}
+input,select,textarea{
+  font-family:'Nunito',sans-serif;font-size:17px;color:var(--tinta);
+  border:3px solid #EADDC8;border-radius:14px;padding:12px 14px;background:#fff;width:100%;
+}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--sol)}
+label{font-weight:800;font-size:14px;color:var(--tinta-suave);display:block;margin:14px 0 6px}
 
-/* ---------- login ---------- */
-#telaLogin{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center;
-  background:
-   radial-gradient(ellipse 90% 50% at 50% -10%, #1d2c1f 0%, transparent 60%),
-   repeating-linear-gradient(90deg, transparent 0 64px, #ffffff05 64px 128px),
-   var(--bg);}
-.logoEyebrow{font-size:11px;letter-spacing:.35em;color:var(--gold);text-transform:uppercase;font-weight:700}
-.logoTitulo{font-family:'Anton',sans-serif;font-size:clamp(52px,14vw,84px);line-height:.95;letter-spacing:.01em;margin:10px 0 4px}
-.logoTitulo span{color:var(--gold)}
-.logoSub{color:var(--mut);font-size:14px;max-width:300px;margin:8px auto 36px;line-height:1.5}
-.btnGoogle{display:flex;align-items:center;justify-content:center;gap:12px;background:var(--txt);color:#16201a;font-weight:700;font-size:15px;padding:14px 26px;border-radius:14px;box-shadow:0 8px 28px #00000066;width:100%}
-.btnGoogle:active{transform:scale(.97)}
-.btnGoogle img{width:20px;height:20px}
-.authCard{width:100%;max-width:340px;display:flex;flex-direction:column}
-.authCard .btn{margin-top:2px}
-#loginAviso{margin-top:22px;font-size:12px;color:var(--mut);max-width:320px;line-height:1.5}
-.setupBox{margin-top:26px;background:var(--card);border:1px solid var(--line2);border-radius:14px;padding:16px;text-align:left;font-size:13px;color:var(--mut);max-width:340px;line-height:1.6}
-.setupBox b{color:var(--gold)}
+.tela{max-width:540px;margin:0 auto;padding:18px 16px 110px;min-height:100vh}
 
-/* ---------- shell ---------- */
-header.topo{position:sticky;top:0;z-index:30;background:#0c120dF2;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
-  border-bottom:1px solid var(--line2);padding:14px 16px 12px;display:flex;align-items:center;justify-content:space-between}
-.topoTit{font-family:'Anton',sans-serif;font-size:18px;letter-spacing:.02em}
-.topoTit span{color:var(--gold)}
-.chipUser{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line2);border-radius:99px;padding:5px 12px 5px 5px;font-size:12px;color:var(--mut)}
-.chipUser img{width:26px;height:26px;border-radius:50%;border:1px solid var(--line2)}
-main{max-width:560px;margin:0 auto;padding:16px 14px 130px}
+/* ---------- Botão de brinquedo (assinatura visual) ---------- */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  font-weight:600;border-radius:18px;padding:14px 22px;
+  background:#fff;box-shadow:0 5px 0 rgba(59,46,74,.14);
+  transition:transform .08s, box-shadow .08s;user-select:none;
+}
+.btn:active{transform:translateY(4px);box-shadow:0 1px 0 rgba(59,46,74,.14)}
+.btn-grande{min-height:64px;font-size:21px;width:100%;border-radius:22px}
+.btn-verde{background:var(--verde);color:#fff;box-shadow:0 5px 0 var(--verde-escuro)}
+.btn-verde:active{box-shadow:0 1px 0 var(--verde-escuro)}
+.btn-sol{background:var(--sol);color:#5C4300;box-shadow:0 5px 0 var(--sol-escuro)}
+.btn-sol:active{box-shadow:0 1px 0 var(--sol-escuro)}
+.btn-fantasma{background:transparent;box-shadow:none;color:var(--tinta-suave);font-weight:500}
+.btn-fantasma:active{transform:none}
+.btn-vermelho{background:#FFE7E7;color:#C23B3B;box-shadow:0 5px 0 #F3C4C4}
+.btn:disabled{opacity:.55;pointer-events:none}
 
-/* ---------- nav ---------- */
-nav.abas{position:fixed;left:0;right:0;bottom:0;z-index:40;background:#0e150fF5;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
-  border-top:1px solid var(--line2);display:flex;justify-content:space-around;padding:8px 6px calc(8px + env(safe-area-inset-bottom))}
-nav.abas button{background:none;color:var(--mut);font-size:11px;font-weight:600;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 14px;border-radius:12px}
-nav.abas button .ic{font-size:19px;line-height:1}
-nav.abas button.ativa{color:var(--gold);background:var(--gold-soft)}
+/* ---------- Home ---------- */
+.home-titulo{text-align:center;font-size:34px;font-weight:700;margin:34px 0 6px}
+.home-sub{text-align:center;color:var(--tinta-suave);font-weight:700;margin-bottom:30px}
+.perfil-card{
+  width:100%;display:flex;align-items:center;gap:18px;background:var(--cartao);
+  border-radius:28px;padding:20px 22px;margin-bottom:18px;text-align:left;
+  box-shadow:0 7px 0 var(--pc-sombra,rgba(59,46,74,.12));
+  border:4px solid var(--pc-borda,#fff);
+  transition:transform .08s, box-shadow .08s;
+}
+.perfil-card:active{transform:translateY(5px);box-shadow:0 2px 0 var(--pc-sombra,rgba(59,46,74,.12))}
+.perfil-avatar{
+  width:84px;height:84px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:46px;flex-shrink:0;background:var(--pa-fundo,#eee);
+}
+.perfil-nome{font-family:'Fredoka';font-size:27px;font-weight:600}
+.perfil-info{color:var(--tinta-suave);font-weight:700;font-size:15px}
+.rodape-pais{position:fixed;bottom:0;left:0;right:0;display:flex;justify-content:center;padding:14px;background:linear-gradient(transparent,var(--fundo) 40%)}
 
-/* ---------- filtros ---------- */
-.chips{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 14px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
-.chips::-webkit-scrollbar{display:none}
-.chips button{flex:0 0 auto;background:var(--card);color:var(--mut);border:1px solid var(--line2);border-radius:99px;padding:8px 15px;font-size:13px;font-weight:600}
-.chips button.on{background:var(--gold);border-color:var(--gold);color:#16140a}
+/* ---------- Cabeçalho da criança ---------- */
+.cab{
+  border-radius:26px;padding:18px;color:#fff;display:flex;align-items:center;gap:14px;
+  box-shadow:var(--sombra);margin-bottom:16px;
+}
+.cab-avatar{width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,.28);display:flex;align-items:center;justify-content:center;font-size:36px;flex-shrink:0}
+.cab-nome{font-family:'Fredoka';font-size:23px;font-weight:600;line-height:1.1}
+.cab-nivel{font-size:13px;font-weight:800;opacity:.92;margin-top:3px}
+.moedona{
+  margin-left:auto;background:var(--sol);color:#5C4300;border-radius:20px;padding:10px 16px;
+  font-family:'Fredoka';font-weight:700;font-size:24px;display:flex;align-items:center;gap:6px;
+  box-shadow:0 4px 0 var(--sol-escuro);white-space:nowrap;
+}
+.barra-topo{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
 
-/* ---------- jogos ---------- */
-.diaHead{position:sticky;top:57px;z-index:20;background:#0c120dF0;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
-  padding:10px 4px 8px;font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);font-weight:700;border-bottom:1px solid var(--line2);margin-bottom:10px}
-.jogo{background:var(--card);border:1px solid var(--line2);border-radius:18px;padding:14px 14px 12px;margin-bottom:12px}
-.jogo.fechado{opacity:.92}
-.jogoMeta{display:flex;justify-content:space-between;align-items:center;font-size:11px;color:var(--mut);margin-bottom:10px;letter-spacing:.04em}
-.jogoMeta .grupo{font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:.14em}
-.estado{font-weight:700;border-radius:99px;padding:3px 10px;font-size:10.5px;letter-spacing:.06em}
-.estado.aberto{color:var(--green);background:var(--green-soft)}
-.estado.breve{color:var(--gold);background:var(--gold-soft)}
-.estado.travado{color:var(--red);background:var(--red-soft)}
-.estado.fim{color:var(--mut);background:#ffffff0d}
-.placarLinha{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:6px}
-.timeBox{display:flex;flex-direction:column;align-items:center;gap:5px;min-width:0}
-.timeBox .bandeira{font-size:30px;line-height:1}
-.timeBox .nome{font-size:12.5px;font-weight:700;text-align:center;line-height:1.2;max-width:100%}
-.centro{display:flex;align-items:center;gap:7px}
-.golIn{width:52px;height:58px;background:#0b100c;border:1.5px solid var(--line2);border-radius:13px;color:var(--txt);
-  font-family:'Anton',sans-serif;font-size:30px;text-align:center;outline:none;-moz-appearance:textfield}
-.golIn::-webkit-outer-spin-button,.golIn::-webkit-inner-spin-button{-webkit-appearance:none}
-.golIn:focus{border-color:var(--gold);box-shadow:0 0 0 3px var(--gold-soft)}
-.golIn:disabled{color:var(--mut);background:#10160f}
-.golIn.alterado{border-color:var(--gold)}
-.vs{font-family:'Anton',sans-serif;color:var(--mut);font-size:16px}
-.placarFinal{font-family:'Anton',sans-serif;font-size:32px;letter-spacing:.04em}
-.jogoRodape{display:flex;justify-content:space-between;align-items:center;margin-top:10px;font-size:12px;color:var(--mut);min-height:20px}
-.ptsTag{font-weight:800;border-radius:8px;padding:2px 9px;font-size:12px}
-.pts10{color:#16140a;background:var(--gold)}
-.pts5{color:var(--green);background:var(--green-soft)}
-.pts0{color:var(--red);background:var(--red-soft)}
-.meuPalpiteTxt b{color:var(--txt)}
-.aDefinir{font-size:12px;color:var(--mut);text-align:center;padding:6px 0 2px}
+/* ---------- Abas ---------- */
+.abas{display:flex;gap:10px;margin-bottom:16px}
+.aba{
+  flex:1;padding:13px 8px;border-radius:18px;font-weight:600;font-size:17px;background:#fff;
+  box-shadow:0 4px 0 rgba(59,46,74,.10);color:var(--tinta-suave);position:relative;
+}
+.aba.ativa{background:var(--tinta);color:#fff;box-shadow:0 4px 0 rgba(59,46,74,.35)}
+.badge{
+  position:absolute;top:-7px;right:-4px;background:var(--vermelho);color:#fff;border-radius:99px;
+  min-width:24px;height:24px;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;padding:0 6px;
+}
 
-/* barra salvar */
-#barraSalvar{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(74px + env(safe-area-inset-bottom));z-index:50;
-  background:var(--gold);color:#16140a;font-weight:800;font-size:14px;border-radius:99px;padding:14px 26px;box-shadow:0 10px 30px #000000aa;display:flex;gap:10px;align-items:center}
-#barraSalvar:active{transform:translateX(-50%) scale(.97)}
+/* ---------- Cartão de missão ---------- */
+.missao{
+  width:100%;display:flex;align-items:center;gap:14px;background:#fff;border-radius:var(--raio);
+  padding:14px 16px;margin-bottom:12px;text-align:left;min-height:88px;
+  box-shadow:0 5px 0 rgba(59,46,74,.10);transition:transform .08s;
+}
+.missao:active{transform:scale(.985)}
+.missao-selo{
+  width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:33px;flex-shrink:0;
+}
+.missao-titulo{font-family:'Fredoka';font-size:19px;font-weight:600;line-height:1.15}
+.missao-chip{font-size:13px;font-weight:800;color:var(--tinta-suave);margin-top:3px}
+.missao-valor{
+  margin-left:auto;font-family:'Fredoka';font-weight:700;font-size:20px;color:#B78600;
+  display:flex;align-items:center;gap:3px;white-space:nowrap;
+}
+.missao.pendente{opacity:.68;background:#FFFBF2}
+.missao.aprovada{background:#EBFAF2}
+.missao.aprovada .missao-valor{color:var(--verde-escuro)}
 
-/* ---------- ranking ---------- */
-.rankCab{display:grid;grid-template-columns:34px 1fr 56px 40px 40px;gap:6px;padding:4px 12px 10px;font-size:10.5px;color:var(--mut);letter-spacing:.1em;text-transform:uppercase;font-weight:700}
-.rankRow{display:grid;grid-template-columns:34px 1fr 56px 40px 40px;gap:6px;align-items:center;background:var(--card);border:1px solid var(--line2);
-  border-radius:14px;padding:10px 12px;margin-bottom:8px;font-size:13.5px}
-.rankRow.eu{border-color:var(--gold)}
-.rankPos{font-family:'Anton',sans-serif;font-size:17px;color:var(--mut)}
-.rankRow.p1 .rankPos{color:var(--gold)}
-.rankRow.p2 .rankPos{color:#cfd6cf}
-.rankRow.p3 .rankPos{color:#cf9a6b}
-.rankNome{display:flex;align-items:center;gap:9px;min-width:0}
-.rankNome img{width:30px;height:30px;border-radius:50%;border:1px solid var(--line2);flex:0 0 auto}
-.rankNome .n{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:600}
-.rankPts{font-family:'Anton',sans-serif;font-size:20px;color:var(--gold);text-align:right}
-.rankMini{text-align:center;color:var(--mut);font-size:12.5px}
+/* ---------- Lojinha ---------- */
+.loja-grade{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.premio{
+  background:#fff;border-radius:var(--raio);padding:16px 12px;text-align:center;
+  box-shadow:0 5px 0 rgba(59,46,74,.10);display:flex;flex-direction:column;gap:8px;align-items:center;
+}
+.premio-emoji{font-size:48px;line-height:1}
+.premio-nome{font-family:'Fredoka';font-weight:600;font-size:17px}
+.premio .btn{width:100%;padding:11px 8px;font-size:16px;border-radius:15px}
+.btn-falta{background:#F2ECE0;color:var(--tinta-suave);box-shadow:0 4px 0 #E2D8C4;font-size:14px!important}
 
-/* ---------- resenha ---------- */
-.resJogoSel{width:100%;background:var(--card);border:1px solid var(--line2);color:var(--txt);border-radius:14px;padding:13px;font-size:14px;margin-bottom:14px;-webkit-appearance:none;appearance:none}
-.resLinha{display:flex;justify-content:space-between;align-items:center;background:var(--card);border:1px solid var(--line2);border-radius:13px;padding:10px 13px;margin-bottom:8px;font-size:13.5px}
-.resLinha .quem{display:flex;align-items:center;gap:9px;min-width:0}
-.resLinha img{width:28px;height:28px;border-radius:50%}
-.resLinha .palp{font-family:'Anton',sans-serif;font-size:17px;letter-spacing:.05em}
+/* ---------- Sheet (gaveta) ---------- */
+.sheet-fundo{
+  position:fixed;inset:0;background:rgba(59,46,74,.45);z-index:50;display:flex;align-items:flex-end;justify-content:center;
+  animation:aparecer .18s ease;
+}
+.sheet{
+  background:var(--fundo);width:100%;max-width:540px;border-radius:30px 30px 0 0;padding:24px 20px 34px;
+  max-height:88vh;overflow-y:auto;animation:subir .22s ease;
+}
+.sheet-alca{width:48px;height:6px;border-radius:99px;background:#DFD3BE;margin:0 auto 16px}
+@keyframes subir{from{transform:translateY(60px);opacity:.4}to{transform:translateY(0);opacity:1}}
+@keyframes aparecer{from{opacity:0}to{opacity:1}}
+.sheet-emoji{font-size:76px;text-align:center;animation:pop .35s ease}
+.sheet-titulo{font-family:'Fredoka';font-size:26px;font-weight:600;text-align:center;margin:8px 0 4px}
+.sheet-sub{text-align:center;color:var(--tinta-suave);font-weight:700;margin-bottom:18px}
+@keyframes pop{0%{transform:scale(.4)}70%{transform:scale(1.15)}100%{transform:scale(1)}}
 
-/* ---------- admin ---------- */
-.admSec{background:var(--card);border:1px solid var(--line2);border-radius:16px;padding:16px;margin-bottom:14px}
-.admSec h3{font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;font-weight:800}
-.admSec p{font-size:13px;color:var(--mut);line-height:1.55;margin-bottom:10px}
-.btn{background:var(--gold);color:#16140a;font-weight:800;border-radius:12px;padding:12px 18px;font-size:14px;width:100%}
-.btn.sec{background:var(--card2);color:var(--txt);border:1px solid var(--line2)}
-.btn.mini{width:auto;padding:9px 14px;font-size:13px}
-.btn:disabled{opacity:.5}
-.admJogo{border-top:1px solid var(--line2);padding:12px 0}
-.admJogo .t{font-size:13.5px;font-weight:700;margin-bottom:8px}
-.admJogo .sub{font-size:11.5px;color:var(--mut);margin-bottom:8px}
-.admLinha{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-.admIn{background:#0b100c;border:1px solid var(--line2);border-radius:10px;color:var(--txt);padding:9px 10px;font-size:14px}
-.admIn.gol{width:56px;text-align:center;font-family:'Anton',sans-serif;font-size:19px}
-.admIn.txt{flex:1;min-width:110px}
-.admIn.data{flex:1;min-width:170px;color-scheme:dark}
+/* ---------- PIN ---------- */
+.pin-pontos{display:flex;gap:16px;justify-content:center;margin:26px 0 30px}
+.pin-ponto{width:20px;height:20px;border-radius:50%;background:#E8DCC6;transition:background .1s}
+.pin-ponto.cheio{background:var(--tinta)}
+.teclado{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;max-width:320px;margin:0 auto}
+.tecla{
+  height:72px;border-radius:20px;background:#fff;font-family:'Fredoka';font-size:28px;font-weight:600;
+  box-shadow:0 5px 0 rgba(59,46,74,.12);transition:transform .06s, box-shadow .06s;
+}
+.tecla:active{transform:translateY(4px);box-shadow:0 1px 0 rgba(59,46,74,.12)}
+.pin-erro{animation:tremer .35s}
+@keyframes tremer{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-10px)}40%,80%{transform:translateX(10px)}}
 
-#toast{position:fixed;left:50%;transform:translateX(-50%) translateY(20px);bottom:calc(84px + env(safe-area-inset-bottom));z-index:99;background:#1c281e;border:1px solid var(--line2);
-  color:var(--txt);font-size:13.5px;font-weight:600;padding:12px 20px;border-radius:99px;opacity:0;pointer-events:none;transition:all .25s;box-shadow:0 10px 30px #000a;max-width:88vw;text-align:center}
-#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-.vazio{text-align:center;color:var(--mut);font-size:13.5px;padding:38px 20px;line-height:1.6}
-.secTit{font-family:'Anton',sans-serif;font-size:24px;margin:4px 2px 14px;letter-spacing:.02em}
-.secTit small{display:block;font-family:'Archivo';font-size:12.5px;color:var(--mut);font-weight:400;letter-spacing:0;margin-top:4px}
-@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
-/* ── classificação por grupos ── */
-.grupoCard{background:var(--card);border:1px solid var(--line2);border-radius:16px;padding:12px 14px;margin-bottom:12px}
-.grupoTitulo{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:800;margin-bottom:10px}
-.grupoTbl{width:100%;border-collapse:collapse;font-size:12.5px}
-.grupoTbl th{color:var(--mut);font-weight:700;text-align:center;padding:3px 4px;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase}
-.grupoTbl th.tn{text-align:left;min-width:100px}
-.grupoTbl td{padding:8px 4px;text-align:center;border-top:1px solid #26342820}
-.grupoTbl td.tn{text-align:left;font-weight:600;font-size:12px}
-.grupoTbl tr.av1 td,.grupoTbl tr.av2 td{background:#5BBF7F0a}
-.grupoTbl tr.av1 td.tn,.grupoTbl tr.av2 td.tn{color:var(--green)}
-.grupoTbl .pts{font-family:'Anton',sans-serif;font-size:15px;color:var(--gold)}
-.grupoTbl .sg{font-size:11px;color:var(--mut)}
+/* ---------- Painel dos pais ---------- */
+.pais-item{
+  background:#fff;border-radius:18px;padding:14px;margin-bottom:10px;display:flex;align-items:center;gap:12px;
+  box-shadow:0 4px 0 rgba(59,46,74,.08);
+}
+.pais-item .info{flex:1;min-width:0}
+.pais-item .titulo{font-weight:800;font-size:16px}
+.pais-item .sub{font-size:13px;color:var(--tinta-suave);font-weight:700}
+.mini-btn{
+  width:48px;height:48px;border-radius:14px;font-size:20px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 0 rgba(59,46,74,.12);background:#fff;transition:transform .06s;
+}
+.mini-btn:active{transform:translateY(3px)}
+.mini-btn.ok{background:var(--verde);box-shadow:0 4px 0 var(--verde-escuro)}
+.mini-btn.nao{background:#FFE7E7;box-shadow:0 4px 0 #F3C4C4}
+.selo-crianca{
+  width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;
+}
+.secao-titulo{font-family:'Fredoka';font-weight:600;font-size:20px;margin:22px 0 12px;display:flex;align-items:center;justify-content:space-between}
+.vazio{
+  text-align:center;color:var(--tinta-suave);font-weight:700;padding:36px 20px;background:#FFFDF7;
+  border:3px dashed #EADDC8;border-radius:var(--raio);
+}
+.chips-dias{display:flex;gap:6px;flex-wrap:wrap}
+.chip-dia{padding:9px 0;width:42px;text-align:center;border-radius:12px;background:#fff;border:3px solid #EADDC8;font-weight:800;font-size:14px}
+.chip-dia.on{background:var(--tinta);color:#fff;border-color:var(--tinta)}
+.linha-2{display:flex;gap:10px}.linha-2>*{flex:1}
+.check-linha{display:flex;align-items:center;gap:10px;background:#fff;border:3px solid #EADDC8;border-radius:14px;padding:12px 14px;margin-bottom:8px;font-weight:800}
+.check-linha input{width:22px;height:22px;flex:none;accent-color:var(--verde)}
+.pill-demo{font-size:12px;font-weight:800;background:#EFE7D6;color:#8A7A55;border-radius:99px;padding:5px 10px}
+
+/* ---------- Estrela voando / confete ---------- */
+#confeteCanvas{position:fixed;inset:0;pointer-events:none;z-index:200}
+.ampulheta-gira{display:inline-block;animation:girar 2.4s ease-in-out infinite}
+@keyframes girar{0%,70%{transform:rotate(0)}85%,100%{transform:rotate(180deg)}}
+
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+}
 </style>
 </head>
 <body>
-
-<!-- ============ LOGIN ============ -->
-<div id="telaLogin">
-  <div class="logoEyebrow">Copa do Mundo 2026</div>
-  <div class="logoTitulo">BOLÃO<br><span>RESENHA RN</span></div>
-  <div class="logoSub">Palpite no placar de todos os 104 jogos e dispute o ranking com a galera.</div>
-
-  <div class="authCard">
-    <button class="btnGoogle" id="btnLogin">
-      <img alt="" src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg">
-      Entrar com Google
-    </button>
-  </div>
-
-  <div id="loginAviso">Login só na primeira vez — depois o app lembra de você neste aparelho.</div>
-  <div class="setupBox hide" id="setupBox">
-    <b>Configuração pendente:</b> cole as credenciais do seu projeto Firebase na constante <b>firebaseConfig</b> no topo do arquivo index.html e publique novamente.
-  </div>
-</div>
-
-<!-- ============ APP ============ -->
-<div id="telaApp" class="hide">
-  <header class="topo">
-    <div class="topoTit">BOLÃO <span>RESENHA RN</span></div>
-    <button class="chipUser" id="chipUser" title="Sair">
-      <img id="userFoto" alt="" src="">
-      <span>sair</span>
-    </button>
-  </header>
-
-  <main>
-    <!-- JOGOS -->
-    <section id="view-jogos">
-      <div class="secTit">Jogos<small id="resumoPalpites"></small></div>
-      <div class="chips" id="chipsJogos">
-        <button data-f="abertos" class="on">Para palpitar</button>
-        <button data-f="hoje">Hoje</button>
-        <button data-f="rolando">Aguardando placar</button>
-        <button data-f="encerrados">Encerrados</button>
-        <button data-f="todos">Todos</button>
-      </div>
-      <div id="listaJogos"></div>
-    </section>
-
-    <!-- RANKING -->
-    <section id="view-ranking" class="hide">
-      <div class="secTit">Ranking<small>10 pts placar exato · 5 pts resultado certo</small></div>
-      <div class="rankCab"><span>#</span><span>Nome</span><span style="text-align:right">Pts</span><span style="text-align:center">🎯</span><span style="text-align:center">✔</span></div>
-      <div id="listaRanking"></div>
-    </section>
-
-    <!-- CLASSIFICAÇÃO -->
-    <section id="view-classificacao" class="hide">
-      <div class="secTit">Grupos<small>Pts · V · E · D · GP · GC · SG — top 2 avançam (verde)</small></div>
-      <div id="listaClassificacao"></div>
-    </section>
-
-    <!-- RESENHA -->
-    <section id="view-resenha" class="hide">
-      <div class="secTit">Resenha<small>O histórico de palpites de todo mundo, jogo a jogo</small></div>
-      <div id="listaResenha"></div>
-      <button class="btn sec btnFull hide" id="btnVerMais" style="margin-top:4px">Ver mais 25</button>
-    </section>
-
-    <!-- ADMIN -->
-    <section id="view-admin" class="hide">
-      <div class="secTit">Admin<small id="admStatus"></small></div>
-
-      <div class="admSec">
-        <h3>🏅 Classificados para o mata-mata</h3>
-        <p>Top 2 por grupo avançam direto. Os melhores 3ºs colocados também avançam (Copa 2026 tem 32 na 2ª fase). Use como referência para preencher os confrontos abaixo.</p>
-        <div id="admClassificados"><p style="font-size:13px;color:var(--mut)">Lance os primeiros resultados para ver a classificação aqui.</p></div>
-      </div>
-
-      <div class="admSec">
-        <h3>Lançar resultados</h3>
-        <p>Jogos já iniciados e sem placar aparecem primeiro. Corrigir um placar reapura os pontos automaticamente.</p>
-        <div id="admListaResultados"></div>
-      </div>
-
-      <div class="admSec">
-        <h3>Mata-mata · definir confrontos</h3>
-        <p>Quando os classificados saírem, preencha os times (e ajuste data/horário se a FIFA mudar). Só então o jogo abre para palpites.</p>
-        <div id="admListaMata"></div>
-      </div>
-
-      <div class="admSec">
-        <h3>Participantes</h3>
-        <p>Todo mundo que já entrou no bolão. Quem é admin (★) pode lançar resultados e definir o mata-mata. A pessoa promovida precisa fechar e abrir o app para a aba Admin aparecer.</p>
-        <div id="admListaUsuarios"></div>
-      </div>
-
-      <div class="admSec">
-        <h3>Manutenção</h3>
-        <p>Recalcula todos os pontos do zero a partir dos palpites e resultados. Use se algo parecer errado no ranking.</p>
-        <button class="btn sec" id="btnRecalcular">Recalcular ranking completo</button>
-      </div>
-    </section>
-  </main>
-
-  <button id="barraSalvar" class="hide">Salvar <span id="qtdSalvar">0</span> palpite(s)</button>
-
-  <nav class="abas">
-    <button data-v="jogos" class="ativa"><span class="ic">⚽</span>Jogos</button>
-    <button data-v="ranking"><span class="ic">🏆</span>Ranking</button>
-    <button data-v="classificacao"><span class="ic">📊</span>Grupos</button>
-    <button data-v="resenha"><span class="ic">💬</span>Resenha</button>
-    <button data-v="admin" id="abaAdmin" class="hide"><span class="ic">🛠️</span>Admin</button>
-  </nav>
-</div>
-
-<div id="toast"></div>
-
+<div id="app"></div>
+<div id="sheetContainer"></div>
+<canvas id="confeteCanvas"></canvas>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script>
-/* ================================================================
-   CONFIGURAÇÃO — edite apenas este bloco
-================================================================ */
-var firebaseConfig = {
+/* ============================================================
+   CONFIGURAÇÃO — edite aqui
+   ============================================================ */
+const CONFIG = {
+  PIN: '0611',
+  CRIANCAS: [
+    { id:'arthur',   nome:'Arthur',   avatar:'🦖', idade:5, cor:'#2F7DF6', corClara:'#E1EDFF', corSombra:'#1F5FC4', leitor:false },
+    { id:'carolina', nome:'Carolina', avatar:'🦄', idade:7, cor:'#B44BE0', corClara:'#F6E9FF', corSombra:'#8E33B5', leitor:true  },
+  ],
+};
+
+/* Firebase — mesmo projeto do Bolão ReseNha RN.
+   Para voltar ao modo demo (localStorage), troque por: const firebaseConfig = null; */
+const firebaseConfig = {
   apiKey: "AIzaSyC2IWlQBEt7ScYlZpEnfWrJRVSQx2aSALY",
   authDomain: "bolao-c5b50.firebaseapp.com",
   projectId: "bolao-c5b50",
@@ -302,974 +244,891 @@ var firebaseConfig = {
   appId: "1:817557444967:web:4741c1a0a4b9d2ecb1b7c2"
 };
 
-/* Dono do bolão (admin permanente). Os demais admins você promove
-   direto pelo painel Admin > Participantes, sem mexer em código. */
-var MASTER = "arthur.solano@gmail.com";
+const FORMAS = {
+  sozinha:  { rotulo:'Leu sozinha 💪',            trabalha:'autonomia'    },
+  vozAlta:  { rotulo:'Leu em voz alta 🗣️',        trabalha:'fluência'     },
+  comAjuda: { rotulo:'Leu com ajuda 🤝',           trabalha:'sem frustração'},
+  contou:   { rotulo:'Contou o que entendeu 💭',   trabalha:'compreensão'  },
+};
+const TIPOS = { diaria:'Todo dia', semanal:'X vezes na semana', dias:'Dias específicos', avulsa:'Avulsa' };
+const DIAS = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+const CATEGORIAS = { rotina:'Rotina', leitura:'Leitura', educativa:'Educativa', avulsa:'Avulsa' };
+const TETO_LEITURA = 4;
 
-var PONTO_EXATO = 10;     // acertou o placar
-var PONTO_RESULTADO = 5;  // acertou vencedor/empate
-var MIN_ANTES_FECHAR = 5; // bloqueio de palpites (minutos antes do jogo)
+/* ============================================================
+   BANCO (localStorage espelhando a estrutura Firestore)
+   ============================================================ */
+const LS_KEY = 'missoesCasa_v1';
+let db = null;
 
-/* ================================================================
-   TABELA-BASE — Copa 2026, horários de Brasília (UTC-3)
-   Fonte: FIFA via Trivela (12/06/2026). Mata-mata: times "A definir"
-   até o admin preencher no painel.
-================================================================ */
-var JOGOS_BASE = [
- {i:1,fs:'Grupos',g:'A',a:'México',fa:'🇲🇽',b:'África do Sul',fb:'🇿🇦',d:'2026-06-11T16:00',c:'Cidade do México'},
- {i:2,fs:'Grupos',g:'A',a:'Coreia do Sul',fa:'🇰🇷',b:'Tchéquia',fb:'🇨🇿',d:'2026-06-11T23:00',c:'Guadalajara'},
- {i:3,fs:'Grupos',g:'B',a:'Canadá',fa:'🇨🇦',b:'Bósnia',fb:'🇧🇦',d:'2026-06-12T16:00',c:'Toronto'},
- {i:4,fs:'Grupos',g:'D',a:'Estados Unidos',fa:'🇺🇸',b:'Paraguai',fb:'🇵🇾',d:'2026-06-12T22:00',c:'Los Angeles'},
- {i:5,fs:'Grupos',g:'B',a:'Catar',fa:'🇶🇦',b:'Suíça',fb:'🇨🇭',d:'2026-06-13T16:00',c:'San Francisco'},
- {i:6,fs:'Grupos',g:'C',a:'Brasil',fa:'🇧🇷',b:'Marrocos',fb:'🇲🇦',d:'2026-06-13T19:00',c:'Nova York/NJ'},
- {i:7,fs:'Grupos',g:'C',a:'Haiti',fa:'🇭🇹',b:'Escócia',fb:'🏴',d:'2026-06-13T22:00',c:'Boston'},
- {i:8,fs:'Grupos',g:'D',a:'Austrália',fa:'🇦🇺',b:'Turquia',fb:'🇹🇷',d:'2026-06-14T01:00',c:'Vancouver'},
- {i:9,fs:'Grupos',g:'E',a:'Alemanha',fa:'🇩🇪',b:'Curaçao',fb:'🇨🇼',d:'2026-06-14T14:00',c:'Houston'},
- {i:10,fs:'Grupos',g:'F',a:'Holanda',fa:'🇳🇱',b:'Japão',fb:'🇯🇵',d:'2026-06-14T17:00',c:'Dallas'},
- {i:11,fs:'Grupos',g:'E',a:'Costa do Marfim',fa:'🇨🇮',b:'Equador',fb:'🇪🇨',d:'2026-06-14T20:00',c:'Filadélfia'},
- {i:12,fs:'Grupos',g:'F',a:'Suécia',fa:'🇸🇪',b:'Tunísia',fb:'🇹🇳',d:'2026-06-14T23:00',c:'Monterrey'},
- {i:13,fs:'Grupos',g:'H',a:'Espanha',fa:'🇪🇸',b:'Cabo Verde',fb:'🇨🇻',d:'2026-06-15T13:00',c:'Atlanta'},
- {i:14,fs:'Grupos',g:'G',a:'Bélgica',fa:'🇧🇪',b:'Egito',fb:'🇪🇬',d:'2026-06-15T16:00',c:'Seattle'},
- {i:15,fs:'Grupos',g:'H',a:'Arábia Saudita',fa:'🇸🇦',b:'Uruguai',fb:'🇺🇾',d:'2026-06-15T19:00',c:'Miami'},
- {i:16,fs:'Grupos',g:'G',a:'Irã',fa:'🇮🇷',b:'Nova Zelândia',fb:'🇳🇿',d:'2026-06-15T22:00',c:'Los Angeles'},
- {i:17,fs:'Grupos',g:'I',a:'França',fa:'🇫🇷',b:'Senegal',fb:'🇸🇳',d:'2026-06-16T16:00',c:'Nova York/NJ'},
- {i:18,fs:'Grupos',g:'I',a:'Iraque',fa:'🇮🇶',b:'Noruega',fb:'🇳🇴',d:'2026-06-16T19:00',c:'Boston'},
- {i:19,fs:'Grupos',g:'J',a:'Argentina',fa:'🇦🇷',b:'Argélia',fb:'🇩🇿',d:'2026-06-16T22:00',c:'Kansas City'},
- {i:20,fs:'Grupos',g:'J',a:'Áustria',fa:'🇦🇹',b:'Jordânia',fb:'🇯🇴',d:'2026-06-17T01:00',c:'San Francisco'},
- {i:21,fs:'Grupos',g:'K',a:'Portugal',fa:'🇵🇹',b:'RD Congo',fb:'🇨🇩',d:'2026-06-17T14:00',c:'Houston'},
- {i:22,fs:'Grupos',g:'L',a:'Inglaterra',fa:'🏴',b:'Croácia',fb:'🇭🇷',d:'2026-06-17T17:00',c:'Dallas'},
- {i:23,fs:'Grupos',g:'L',a:'Gana',fa:'🇬🇭',b:'Panamá',fb:'🇵🇦',d:'2026-06-17T20:00',c:'Toronto'},
- {i:24,fs:'Grupos',g:'K',a:'Uzbequistão',fa:'🇺🇿',b:'Colômbia',fb:'🇨🇴',d:'2026-06-17T23:00',c:'Cidade do México'},
- {i:25,fs:'Grupos',g:'A',a:'Tchéquia',fa:'🇨🇿',b:'África do Sul',fb:'🇿🇦',d:'2026-06-18T13:00',c:'Atlanta'},
- {i:26,fs:'Grupos',g:'B',a:'Suíça',fa:'🇨🇭',b:'Bósnia',fb:'🇧🇦',d:'2026-06-18T16:00',c:'Los Angeles'},
- {i:27,fs:'Grupos',g:'B',a:'Canadá',fa:'🇨🇦',b:'Catar',fb:'🇶🇦',d:'2026-06-18T19:00',c:'Vancouver'},
- {i:28,fs:'Grupos',g:'A',a:'México',fa:'🇲🇽',b:'Coreia do Sul',fb:'🇰🇷',d:'2026-06-18T22:00',c:'Guadalajara'},
- {i:29,fs:'Grupos',g:'D',a:'Estados Unidos',fa:'🇺🇸',b:'Austrália',fb:'🇦🇺',d:'2026-06-19T16:00',c:'Seattle'},
- {i:30,fs:'Grupos',g:'C',a:'Escócia',fa:'🏴',b:'Marrocos',fb:'🇲🇦',d:'2026-06-19T19:00',c:'Boston'},
- {i:31,fs:'Grupos',g:'C',a:'Brasil',fa:'🇧🇷',b:'Haiti',fb:'🇭🇹',d:'2026-06-19T21:30',c:'Filadélfia'},
- {i:32,fs:'Grupos',g:'D',a:'Turquia',fa:'🇹🇷',b:'Paraguai',fb:'🇵🇾',d:'2026-06-20T00:00',c:'San Francisco'},
- {i:33,fs:'Grupos',g:'F',a:'Holanda',fa:'🇳🇱',b:'Suécia',fb:'🇸🇪',d:'2026-06-20T14:00',c:'Houston'},
- {i:34,fs:'Grupos',g:'E',a:'Alemanha',fa:'🇩🇪',b:'Costa do Marfim',fb:'🇨🇮',d:'2026-06-20T17:00',c:'Toronto'},
- {i:35,fs:'Grupos',g:'E',a:'Equador',fa:'🇪🇨',b:'Curaçao',fb:'🇨🇼',d:'2026-06-20T21:00',c:'Kansas City'},
- {i:36,fs:'Grupos',g:'F',a:'Tunísia',fa:'🇹🇳',b:'Japão',fb:'🇯🇵',d:'2026-06-21T01:00',c:'Monterrey'},
- {i:37,fs:'Grupos',g:'H',a:'Espanha',fa:'🇪🇸',b:'Arábia Saudita',fb:'🇸🇦',d:'2026-06-21T13:00',c:'Atlanta'},
- {i:38,fs:'Grupos',g:'G',a:'Bélgica',fa:'🇧🇪',b:'Irã',fb:'🇮🇷',d:'2026-06-21T16:00',c:'Los Angeles'},
- {i:39,fs:'Grupos',g:'H',a:'Uruguai',fa:'🇺🇾',b:'Cabo Verde',fb:'🇨🇻',d:'2026-06-21T19:00',c:'Miami'},
- {i:40,fs:'Grupos',g:'G',a:'Nova Zelândia',fa:'🇳🇿',b:'Egito',fb:'🇪🇬',d:'2026-06-21T22:00',c:'Vancouver'},
- {i:41,fs:'Grupos',g:'J',a:'Argentina',fa:'🇦🇷',b:'Áustria',fb:'🇦🇹',d:'2026-06-22T14:00',c:'Dallas'},
- {i:42,fs:'Grupos',g:'I',a:'França',fa:'🇫🇷',b:'Iraque',fb:'🇮🇶',d:'2026-06-22T18:00',c:'Filadélfia'},
- {i:43,fs:'Grupos',g:'I',a:'Noruega',fa:'🇳🇴',b:'Senegal',fb:'🇸🇳',d:'2026-06-22T21:00',c:'Nova York/NJ'},
- {i:44,fs:'Grupos',g:'J',a:'Jordânia',fa:'🇯🇴',b:'Argélia',fb:'🇩🇿',d:'2026-06-23T00:00',c:'San Francisco'},
- {i:45,fs:'Grupos',g:'K',a:'Portugal',fa:'🇵🇹',b:'Uzbequistão',fb:'🇺🇿',d:'2026-06-23T14:00',c:'Houston'},
- {i:46,fs:'Grupos',g:'L',a:'Inglaterra',fa:'🏴',b:'Gana',fb:'🇬🇭',d:'2026-06-23T17:00',c:'Boston'},
- {i:47,fs:'Grupos',g:'L',a:'Panamá',fa:'🇵🇦',b:'Croácia',fb:'🇭🇷',d:'2026-06-23T20:00',c:'Toronto'},
- {i:48,fs:'Grupos',g:'K',a:'Colômbia',fa:'🇨🇴',b:'RD Congo',fb:'🇨🇩',d:'2026-06-23T23:00',c:'Guadalajara'},
- {i:49,fs:'Grupos',g:'B',a:'Suíça',fa:'🇨🇭',b:'Canadá',fb:'🇨🇦',d:'2026-06-24T16:00',c:'Vancouver'},
- {i:50,fs:'Grupos',g:'B',a:'Bósnia',fa:'🇧🇦',b:'Catar',fb:'🇶🇦',d:'2026-06-24T16:00',c:'Seattle'},
- {i:51,fs:'Grupos',g:'C',a:'Escócia',fa:'🏴',b:'Brasil',fb:'🇧🇷',d:'2026-06-24T19:00',c:'Miami'},
- {i:52,fs:'Grupos',g:'C',a:'Marrocos',fa:'🇲🇦',b:'Haiti',fb:'🇭🇹',d:'2026-06-24T19:00',c:'Atlanta'},
- {i:53,fs:'Grupos',g:'A',a:'Tchéquia',fa:'🇨🇿',b:'México',fb:'🇲🇽',d:'2026-06-24T22:00',c:'Cidade do México'},
- {i:54,fs:'Grupos',g:'A',a:'África do Sul',fa:'🇿🇦',b:'Coreia do Sul',fb:'🇰🇷',d:'2026-06-24T22:00',c:'Monterrey'},
- {i:55,fs:'Grupos',g:'E',a:'Curaçao',fa:'🇨🇼',b:'Costa do Marfim',fb:'🇨🇮',d:'2026-06-25T17:00',c:'Filadélfia'},
- {i:56,fs:'Grupos',g:'E',a:'Equador',fa:'🇪🇨',b:'Alemanha',fb:'🇩🇪',d:'2026-06-25T17:00',c:'Nova York/NJ'},
- {i:57,fs:'Grupos',g:'F',a:'Japão',fa:'🇯🇵',b:'Suécia',fb:'🇸🇪',d:'2026-06-25T20:00',c:'Dallas'},
- {i:58,fs:'Grupos',g:'F',a:'Tunísia',fa:'🇹🇳',b:'Holanda',fb:'🇳🇱',d:'2026-06-25T20:00',c:'Kansas City'},
- {i:59,fs:'Grupos',g:'D',a:'Turquia',fa:'🇹🇷',b:'Estados Unidos',fb:'🇺🇸',d:'2026-06-25T23:00',c:'Los Angeles'},
- {i:60,fs:'Grupos',g:'D',a:'Paraguai',fa:'🇵🇾',b:'Austrália',fb:'🇦🇺',d:'2026-06-25T23:00',c:'San Francisco'},
- {i:61,fs:'Grupos',g:'I',a:'Noruega',fa:'🇳🇴',b:'França',fb:'🇫🇷',d:'2026-06-26T16:00',c:'Boston'},
- {i:62,fs:'Grupos',g:'I',a:'Senegal',fa:'🇸🇳',b:'Iraque',fb:'🇮🇶',d:'2026-06-26T16:00',c:'Toronto'},
- {i:63,fs:'Grupos',g:'H',a:'Cabo Verde',fa:'🇨🇻',b:'Arábia Saudita',fb:'🇸🇦',d:'2026-06-26T21:00',c:'Houston'},
- {i:64,fs:'Grupos',g:'H',a:'Uruguai',fa:'🇺🇾',b:'Espanha',fb:'🇪🇸',d:'2026-06-26T21:00',c:'Guadalajara'},
- {i:65,fs:'Grupos',g:'G',a:'Egito',fa:'🇪🇬',b:'Irã',fb:'🇮🇷',d:'2026-06-27T00:00',c:'Seattle'},
- {i:66,fs:'Grupos',g:'G',a:'Nova Zelândia',fa:'🇳🇿',b:'Bélgica',fb:'🇧🇪',d:'2026-06-27T00:00',c:'Vancouver'},
- {i:67,fs:'Grupos',g:'L',a:'Panamá',fa:'🇵🇦',b:'Inglaterra',fb:'🏴',d:'2026-06-27T18:00',c:'Nova York/NJ'},
- {i:68,fs:'Grupos',g:'L',a:'Croácia',fa:'🇭🇷',b:'Gana',fb:'🇬🇭',d:'2026-06-27T18:00',c:'Filadélfia'},
- {i:69,fs:'Grupos',g:'K',a:'Colômbia',fa:'🇨🇴',b:'Portugal',fb:'🇵🇹',d:'2026-06-27T20:30',c:'Miami'},
- {i:70,fs:'Grupos',g:'K',a:'RD Congo',fa:'🇨🇩',b:'Uzbequistão',fb:'🇺🇿',d:'2026-06-27T20:30',c:'Atlanta'},
- {i:71,fs:'Grupos',g:'J',a:'Argélia',fa:'🇩🇿',b:'Áustria',fb:'🇦🇹',d:'2026-06-27T23:00',c:'Kansas City'},
- {i:72,fs:'Grupos',g:'J',a:'Jordânia',fa:'🇯🇴',b:'Argentina',fb:'🇦🇷',d:'2026-06-27T23:00',c:'Dallas'},
- {i:73,fs:'32-avos',d:'2026-06-28T16:00',c:'Los Angeles'},
- {i:74,fs:'32-avos',d:'2026-06-29T14:00',c:'Houston'},
- {i:75,fs:'32-avos',d:'2026-06-29T17:30',c:'Boston'},
- {i:76,fs:'32-avos',d:'2026-06-29T22:00',c:'Monterrey'},
- {i:77,fs:'32-avos',d:'2026-06-30T14:00',c:'Dallas'},
- {i:78,fs:'32-avos',d:'2026-06-30T18:00',c:'Nova York/NJ'},
- {i:79,fs:'32-avos',d:'2026-06-30T22:00',c:'Cidade do México'},
- {i:80,fs:'32-avos',d:'2026-07-01T13:00',c:'Atlanta'},
- {i:81,fs:'32-avos',d:'2026-07-01T17:00',c:'Seattle'},
- {i:82,fs:'32-avos',d:'2026-07-01T21:00',c:'San Francisco'},
- {i:83,fs:'32-avos',d:'2026-07-02T16:00',c:'Los Angeles'},
- {i:84,fs:'32-avos',d:'2026-07-02T20:00',c:'Toronto'},
- {i:85,fs:'32-avos',d:'2026-07-03T00:00',c:'Vancouver'},
- {i:86,fs:'32-avos',d:'2026-07-03T15:00',c:'Dallas'},
- {i:87,fs:'32-avos',d:'2026-07-03T17:00',c:'Atlanta'},
- {i:88,fs:'32-avos',d:'2026-07-03T22:30',c:'Kansas City'},
- {i:89,fs:'Oitavas',d:'2026-07-04T14:00',c:'Houston'},
- {i:90,fs:'Oitavas',d:'2026-07-04T18:00',c:'Filadélfia'},
- {i:91,fs:'Oitavas',d:'2026-07-05T17:00',c:'Nova York/NJ'},
- {i:92,fs:'Oitavas',d:'2026-07-05T21:00',c:'Cidade do México'},
- {i:93,fs:'Oitavas',d:'2026-07-06T15:00',c:'Dallas'},
- {i:94,fs:'Oitavas',d:'2026-07-06T20:00',c:'Seattle'},
- {i:95,fs:'Oitavas',d:'2026-07-07T13:00',c:'Atlanta'},
- {i:96,fs:'Oitavas',d:'2026-07-07T17:00',c:'Vancouver'},
- {i:97,fs:'Quartas',d:'2026-07-09T17:00',c:'Boston'},
- {i:98,fs:'Quartas',d:'2026-07-10T16:00',c:'Los Angeles'},
- {i:99,fs:'Quartas',d:'2026-07-11T18:00',c:'Miami'},
- {i:100,fs:'Quartas',d:'2026-07-11T21:00',c:'Kansas City'},
- {i:101,fs:'Semifinal',d:'2026-07-14T16:00',c:'Dallas'},
- {i:102,fs:'Semifinal',d:'2026-07-15T16:00',c:'Dallas'},
- {i:103,fs:'3º Lugar',d:'2026-07-18T18:00',c:'Miami'},
- {i:104,fs:'Final',d:'2026-07-19T16:00',c:'Nova York/NJ'}
-];
+function seedDB(){
+  const M = {};
+  const add = (id,titulo,emoji,valor,criancaIds,tipo,categoria,extra)=>{
+    M[id] = Object.assign({titulo,emoji,valor,criancaIds,tipo,categoria,
+      frequenciaSemanal:null,diasSemana:[],pedeForma:false,ativa:true},extra||{});
+  };
+  // Rotina compartilhada
+  add('m01','Escovar dentes','🪥',1,['arthur','carolina'],'diaria','rotina');
+  add('m02','Guardar brinquedos','🧸',2,['arthur','carolina'],'diaria','rotina');
+  add('m03','Roupa no cesto','🧺',1,['arthur','carolina'],'diaria','rotina');
+  add('m04','Escolher livro','📚',1,['arthur','carolina'],'diaria','leitura');
+  // Carolina — leitura
+  add('m05','Ler livrinho','📖',4,['carolina'],'semanal','leitura',{frequenciaSemanal:4,pedeForma:true});
+  add('m06','Contar a história','🗣️',2,['carolina'],'avulsa','leitura');
+  add('m07','Palavra nova','🔎',2,['carolina'],'avulsa','leitura');
+  add('m08','Ler para Arthur','👧👦',3,['carolina'],'avulsa','leitura');
+  // Arthur — mundo dos livros + educativas
+  add('m09','Ouvir história','🎧',2,['arthur'],'diaria','leitura');
+  add('m10','Contar cena','🖼️',2,['arthur'],'avulsa','leitura');
+  add('m11','Contar objetos','🔢',2,['arthur'],'avulsa','educativa');
+  add('m12','Achar cor','🎨',2,['arthur'],'avulsa','educativa');
 
-/* ================================================================
-   NÚCLEO
-================================================================ */
-var db = null, auth = null;
-var usuario = null;            // firebase user
-var ehAdmin = false;
-var jogos = [];                // estado vivo (Firestore > base)
-var meusPalpites = {};         // jogoId -> {golsA, golsB, pontos}
-var pendentes = {};            // jogoId -> {golsA, golsB} ainda não salvos
-
-var meuNome = '';
-var tabelaPublicada = false;
-var filtroAtual = 'abertos';
-var viewAtual = 'jogos';
-
-function $(id){ return document.getElementById(id); }
-function toast(msg){
-  var t = $('toast'); t.textContent = msg; t.classList.add('show');
-  clearTimeout(toast._x); toast._x = setTimeout(function(){ t.classList.remove('show'); }, 2600);
-}
-function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
-
-/* datas: tabela-base em horário de Brasília (UTC-3) */
-function inicioBase(j){ return new Date(j.d + ':00-03:00'); }
-function lockDe(inicio){ return new Date(inicio.getTime() - MIN_ANTES_FECHAR*60000); }
-var DIAS = ['domingo','segunda','terça','quarta','quinta','sexta','sábado'];
-var MESES = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
-function fmtDia(dt){ return DIAS[dt.getDay()] + ', ' + dt.getDate() + ' ' + MESES[dt.getMonth()]; }
-function fmtHora(dt){ return ('0'+dt.getHours()).slice(-2) + 'h' + ('0'+dt.getMinutes()).slice(-2); }
-function fmtFaltam(ms){
-  var m = Math.floor(ms/60000);
-  if (m < 60) return m + ' min';
-  var h = Math.floor(m/60);
-  if (h < 48) return h + 'h' + (m%60 ? ('0'+(m%60)).slice(-2) : '');
-  return Math.floor(h/24) + ' dias';
+  const P = {
+    p01:{ nome:'Escolher o filme da noite', emoji:'🎬', preco:8,  ativo:true },
+    p02:{ nome:'Escolher o jantar',         emoji:'🍕', preco:10, ativo:true },
+    p03:{ nome:'Sorvete',                   emoji:'🍦', preco:12, ativo:true },
+    p04:{ nome:'Passeio especial',          emoji:'🎡', preco:35, ativo:true },
+    p05:{ nome:'Brinquedo novo',            emoji:'🎁', preco:70, ativo:true },
+  };
+  const C = {};
+  CONFIG.CRIANCAS.forEach(c=>{ C[c.id] = { saldo:0, totais:0, streak:0, ultimoDiaAtivo:null }; });
+  return { criancas:C, missoes:M, premios:P, conclusoes:{}, resgates:{}, movimentos:{}, cartinhas:{} };
 }
 
-/* monta estado a partir da base (antes do Firestore responder) */
-function montarBase(){
-  jogos = JOGOS_BASE.map(function(j){
-    var ini = inicioBase(j);
-    return {
-      id:'j'+j.i, ordem:j.i, fase:j.fs, grupo:j.g||'', cidade:j.c,
-      timeA:j.a||'A definir', flagA:j.fa||'⚪', timeB:j.b||'A definir', flagB:j.fb||'⚪',
-      inicio:ini, lock:lockDe(ini),
-      golsA:null, golsB:null, encerrado:false,
-      definido: !!j.a
-    };
-  });
+function load(){
+  try{
+    const raw = localStorage.getItem(LS_KEY);
+    db = raw ? JSON.parse(raw) : seedDB();
+  }catch(e){ db = seedDB(); }
+  // garante que crianças novas do CONFIG existam no banco
+  if(!db.cartinhas) db.cartinhas = {};
+  CONFIG.CRIANCAS.forEach(c=>{ if(!db.criancas[c.id]) db.criancas[c.id]={saldo:0,totais:0,streak:0,ultimoDiaAtivo:null}; });
+  save();
+}
+function save(){ localStorage.setItem(LS_KEY, JSON.stringify(db)); }
+function uid(){ return Date.now().toString(36) + Math.random().toString(36).slice(2,7); }
+
+/* ---------- camada de escrita: localStorage (demo) OU Firestore ---------- */
+const MODO_FB = !!firebaseConfig;
+let fdb = null, auth = null, usuarioAtual = null;
+function gravar(col, id, dados){
+  db[col][id] = Object.assign({}, db[col][id]||{}, dados);
+  if(MODO_FB) fdb.collection(col).doc(id).set(dados, {merge:true});
+  else save();
+}
+function remover(col, id){
+  delete db[col][id];
+  if(MODO_FB) fdb.collection(col).doc(id).delete();
+  else save();
 }
 
-/* status do jogo no relógio atual */
-function statusDe(j){
-  var agora = Date.now();
-  if (j.encerrado) return 'fim';
-  if (agora >= j.lock.getTime()) return 'travado';
-  if (j.lock.getTime() - agora <= 3600000) return 'breve';
-  return 'aberto';
+/* ---------- datas ---------- */
+function chaveDia(d){
+  d = d || new Date();
+  const p = n => String(n).padStart(2,'0');
+  return d.getFullYear() + '-' + p(d.getMonth()+1) + '-' + p(d.getDate());
 }
-function calcPontos(pA, pB, rA, rB){
-  if (pA == null || pB == null || rA == null || rB == null) return 0;
-  pA = +pA; pB = +pB; rA = +rA; rB = +rB;
-  if (pA === rA && pB === rB) return PONTO_EXATO;
-  var sp = Math.sign(pA - pB), sr = Math.sign(rA - rB);
-  return sp === sr ? PONTO_RESULTADO : 0;
+function chaveInicioSemana(){ // segunda-feira
+  const d = new Date();
+  d.setDate(d.getDate() - ((d.getDay()+6)%7));
+  return chaveDia(d);
 }
 
-/* ---------------- boot ---------------- */
-montarBase();
-var configurado = firebaseConfig.apiKey.indexOf('COLE') === -1;
-if (!configurado){
-  $('setupBox').classList.remove('hide');
-  $('btnLogin').disabled = true; $('btnLogin').style.opacity = .4;
-} else {
-  firebase.initializeApp(firebaseConfig);
-  auth = firebase.auth();
-  db = firebase.firestore();
+/* ---------- economia (ledger sempre) ---------- */
+function crianca(id){ return db.criancas[id]; }
+function cfgCrianca(id){ return CONFIG.CRIANCAS.find(c=>c.id===id); }
+function nivel(id){ return Math.floor(crianca(id).totais/50)+1; }
+function proximoDia(key){
+  const p = key.split('-');
+  const d = new Date(+p[0], +p[1]-1, +p[2]);
+  d.setDate(d.getDate()+1);
+  return chaveDia(d);
+}
+function streakDe(id){
+  const c = crianca(id);
+  if(!c || !c.ultimoDiaAtivo) return 0;
+  if(c.ultimoDiaAtivo===chaveDia() || proximoDia(c.ultimoDiaAtivo)===chaveDia()) return c.streak||0;
+  return 0; // quebrou: mostra zero, sem alarde
+}
+function registrarStreak(criancaId, dataKey){
+  const c = crianca(criancaId);
+  const ultimo = c.ultimoDiaAtivo || null;
+  if(ultimo === dataKey) return;
+  if(ultimo && ultimo > dataKey) return; // aprovação retroativa não regride a sequência
+  const novo = (ultimo && proximoDia(ultimo)===dataKey) ? (c.streak||0)+1 : 1;
+  gravar('criancas', criancaId, { streak:novo, ultimoDiaAtivo:dataKey });
+  if(novo>0 && novo % 7 === 0) mover(criancaId, 2, 'Bônus de sequência: '+novo+' dias seguidos! 🔥', null);
+}
+function mover(criancaId, valor, motivo, ref){
+  const mid = uid();
+  db.movimentos[mid] = { criancaId:criancaId, valor:valor, motivo:motivo, ref:ref||null, ts:Date.now() };
+  const c = crianca(criancaId);
+  c.saldo += valor;
+  if(valor>0) c.totais += valor;
+  if(c.saldo<0) c.saldo = 0;
+  if(MODO_FB){
+    fdb.collection('movimentos').doc(mid).set(db.movimentos[mid]);
+    const upd = { saldo: firebase.firestore.FieldValue.increment(valor) };
+    if(valor>0) upd.totais = firebase.firestore.FieldValue.increment(valor);
+    fdb.collection('criancas').doc(criancaId).set(upd, {merge:true});
+  } else save();
+}
 
-  $('btnLogin').addEventListener('click', function(){
-    var prov = new firebase.auth.GoogleAuthProvider();
-    var mob = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-    if (mob) {
-      auth.signInWithRedirect(prov);
-    } else {
-      auth.signInWithPopup(prov).catch(function(){ auth.signInWithRedirect(prov); });
+/* ---------- missões do dia ---------- */
+function listar(col){ return Object.entries(db[col]).map(([id,v])=>Object.assign({id},v)); }
+function conclusaoHoje(missaoId, criancaId){
+  return listar('conclusoes').find(c=>c.missaoId===missaoId && c.criancaId===criancaId
+    && c.dataKey===chaveDia() && c.status!=='recusada');
+}
+function contagemSemana(missaoId, criancaId){
+  const ini = chaveInicioSemana();
+  return listar('conclusoes').filter(c=>c.missaoId===missaoId && c.criancaId===criancaId
+    && c.dataKey>=ini && c.status!=='recusada').length;
+}
+function missoesDeHoje(criancaId){
+  const dow = new Date().getDay();
+  return listar('missoes').filter(m=>{
+    if(!m.ativa || !m.criancaIds.includes(criancaId)) return false;
+    if(m.tipo==='dias' && !(m.diasSemana||[]).includes(dow)) return false;
+    if(m.tipo==='semanal'){
+      const feitas = contagemSemana(m.id, criancaId);
+      if(feitas >= (m.frequenciaSemanal||1) && !conclusaoHoje(m.id, criancaId)) return false;
     }
-  });
-
-  auth.onAuthStateChanged(function(u){
-    usuario = u;
-    if (!u){
-      $('telaApp').classList.add('hide');
-      $('telaLogin').style.display = 'flex';
-      return;
-    }
-    $('telaLogin').style.display = 'none';
-    $('telaApp').classList.remove('hide');
-    if (u.photoURL){ $('userFoto').src = u.photoURL; $('userFoto').style.display = ''; }
-    else { $('userFoto').style.display = 'none'; }
-    var nomeUso = u.displayName || u.email;
-    var refU = db.collection('usuarios').doc(u.uid);
-    refU.set({
-      nome: nomeUso, foto: u.photoURL || '', email: u.email || '',
-      ultimoAcesso: firebase.firestore.FieldValue.serverTimestamp()
-    }, {merge:true}).then(function(){
-      return refU.get();
-    }).then(function(doc){
-      var d = doc.exists ? doc.data() : {};
-      meuNome = d.nome || nomeUso;
-      ehAdmin = ((u.email||'').toLowerCase() === MASTER) || d.admin === true;
-      $('abaAdmin').classList.toggle('hide', !ehAdmin);
-      carregarTudo();
-    }).catch(function(){
-      ehAdmin = (u.email||'').toLowerCase() === MASTER;
-      $('abaAdmin').classList.toggle('hide', !ehAdmin);
-      carregarTudo();
-    });
-  });
-}
-
-$('chipUser').addEventListener('click', function(){
-  if (confirm('Sair da conta?')) auth.signOut();});
-
-$('btnVerMais').addEventListener('click', function(){
-  resenhaMostradas += RESENHA_PASSO;
-  renderResenhaLista();
-});
-
-/* ---------------- carregamento ---------------- */
-function carregarTudo(){
-  carregarJogos().then(function(){
-    // publica a tabela automaticamente na 1ª vez (só admin)
-    if (ehAdmin && !tabelaPublicada){
-      return publicarTabela(true).then(carregarJogos);
-    }
-  }).then(carregarMeusPalpites).then(function(){
-    gerarMataMataSeFechou();
-    renderJogos();
-    if (ehAdmin) renderAdmin();
-  }).catch(function(e){
-    toast('Erro ao carregar: ' + (e && e.message ? e.message : e));
-  });
-}
-
-function carregarJogos(){
-  return db.collection('jogos').get().then(function(snap){
-    tabelaPublicada = !snap.empty;
-    if (snap.empty) return; // usa a tabela-base até publicar
-    var porId = {};
-    snap.forEach(function(doc){ porId[doc.id] = doc.data(); });
-    jogos.forEach(function(j){
-      var d = porId[j.id];
-      if (!d) return;
-      if (d.timeA) j.timeA = d.timeA;
-      if (d.timeB) j.timeB = d.timeB;
-      if (d.flagA) j.flagA = d.flagA;
-      if (d.flagB) j.flagB = d.flagB;
-      if (d.inicio && d.inicio.toDate) { j.inicio = d.inicio.toDate(); }
-      if (d.lock && d.lock.toDate) { j.lock = d.lock.toDate(); } else { j.lock = lockDe(j.inicio); }
-      j.golsA = (typeof d.golsA === 'number') ? d.golsA : null;
-      j.golsB = (typeof d.golsB === 'number') ? d.golsB : null;
-      j.encerrado = !!d.encerrado;
-      j.definido = j.timeA !== 'A definir' && j.timeB !== 'A definir';
-    });
-  });
-}
-
-function carregarMeusPalpites(){
-  meusPalpites = {};
-  return db.collection('palpites').where('uid','==',usuario.uid).get().then(function(snap){
-    snap.forEach(function(doc){
-      var d = doc.data();
-      meusPalpites[d.jogoId] = { golsA:d.golsA, golsB:d.golsB, pontos:(typeof d.pontos==='number'?d.pontos:null) };
-    });
-  });
-}
-
-/* ---------------- navegação ---------------- */
-var botoesAba = document.querySelectorAll('nav.abas button');
-for (var bi = 0; bi < botoesAba.length; bi++){
-  botoesAba[bi].addEventListener('click', function(){
-    var v = this.getAttribute('data-v');
-    viewAtual = v;
-    for (var k = 0; k < botoesAba.length; k++) botoesAba[k].classList.remove('ativa');
-    this.classList.add('ativa');
-    ['jogos','ranking','classificacao','resenha','admin'].forEach(function(nome){
-      $('view-'+nome).classList.toggle('hide', nome !== v);
-    });
-    if (v === 'ranking') renderRanking();
-    if (v === 'classificacao') renderClassificacao();
-    if (v === 'resenha') renderResenhaSel();
-    if (v === 'admin') renderAdmin();
-    atualizarBarra();
-    window.scrollTo(0,0);
-  });
-}
-
-var chips = document.querySelectorAll('#chipsJogos button');
-for (var ci = 0; ci < chips.length; ci++){
-  chips[ci].addEventListener('click', function(){
-    filtroAtual = this.getAttribute('data-f');
-    for (var k = 0; k < chips.length; k++) chips[k].classList.remove('on');
-    this.classList.add('on');
-    renderJogos();
-  });
-}
-
-/* ---------------- lista de jogos ---------------- */
-function filtrar(){
-  var hoje = new Date();
-  return jogos.filter(function(j){
-    var st = statusDe(j);
-    if (filtroAtual === 'abertos')    return (st==='aberto'||st==='breve');
-    if (filtroAtual === 'hoje')       return j.inicio.getDate()===hoje.getDate() && j.inicio.getMonth()===hoje.getMonth();
-    if (filtroAtual === 'rolando')    return st==='travado';
-    if (filtroAtual === 'encerrados') return st==='fim';
     return true;
   });
 }
-
-function renderJogos(){
-  var lista = filtrar().slice().sort(function(a,b){ return a.inicio - b.inicio; });
-  var html = '', diaAtual = '';
-  if (!lista.length){
-    var msgs = {abertos:'Nenhum jogo aberto para palpite agora.', hoje:'Sem jogos hoje.', rolando:'Nenhum jogo aguardando placar.', encerrados:'Nenhum jogo encerrado ainda.', todos:''};
-    html = '<div class="vazio">' + msgs[filtroAtual] + '</div>';
-  }
-  lista.forEach(function(j){
-    var dia = fmtDia(j.inicio);
-    if (dia !== diaAtual){ diaAtual = dia; html += '<div class="diaHead">' + dia + '</div>'; }
-    html += cardJogo(j);
-  });
-  $('listaJogos').innerHTML = html;
-
-  // total de palpites feitos em jogos ainda abertos
-  var abertos = 0, feitos = 0;
-  jogos.forEach(function(j){
-    var st = statusDe(j);
-    if ((st==='aberto'||st==='breve') && j.definido){ abertos++; if (meusPalpites[j.id]) feitos++; }
-  });
-  $('resumoPalpites').textContent = abertos ? ('Você palpitou em ' + feitos + ' de ' + abertos + ' jogos abertos') : 'Sem jogos abertos no momento';
-
-  ligarInputs();
-  atualizarBarra();
+function pendentesTotal(){
+  return listar('conclusoes').filter(c=>c.status==='pendente').length
+       + listar('resgates').filter(r=>r.status==='pendente').length;
 }
 
-function cardJogo(j){
-  var st = statusDe(j);
-  var p = pendentes[j.id] || meusPalpites[j.id] || null;
-  var podePalpitar = (st==='aberto'||st==='breve') && j.definido;
-  var rotulo = j.fase === 'Grupos' ? ('Grupo ' + j.grupo) : j.fase;
-  var estadoTxt = '', estadoCls = '';
-  if (st==='aberto'){ estadoTxt='Aberto'; estadoCls='aberto'; }
-  if (st==='breve'){ estadoTxt='Fecha em ' + fmtFaltam(j.lock - Date.now()); estadoCls='breve'; }
-  if (st==='travado'){ estadoTxt='Palpites fechados'; estadoCls='travado'; }
-  if (st==='fim'){ estadoTxt='Encerrado'; estadoCls='fim'; }
+/* ============================================================
+   ÁUDIO — fala (pt-BR) e efeitos curtos
+   ============================================================ */
+let vozPT = null;
+function carregarVozes(){
+  const v = speechSynthesis.getVoices();
+  vozPT = v.find(x=>x.lang==='pt-BR') || v.find(x=>x.lang && x.lang.indexOf('pt')===0) || null;
+}
+if('speechSynthesis' in window){
+  carregarVozes();
+  speechSynthesis.onvoiceschanged = carregarVozes;
+}
+function falar(txt){
+  if(!('speechSynthesis' in window)) return;
+  try{
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(txt);
+    u.lang = 'pt-BR'; if(vozPT) u.voice = vozPT;
+    u.rate = 0.95; u.pitch = 1.1;
+    speechSynthesis.speak(u);
+  }catch(e){}
+}
 
-  var centro;
-  if (st==='fim'){
-    centro = '<div class="centro"><span class="placarFinal">' + j.golsA + '</span><span class="vs">×</span><span class="placarFinal">' + j.golsB + '</span></div>';
-  } else if (podePalpitar){
-    centro = '<div class="centro">' +
-      '<input class="golIn" inputmode="numeric" pattern="[0-9]*" maxlength="2" data-j="'+j.id+'" data-l="A" value="'+(p&&p.golsA!=null?p.golsA:'')+'">' +
-      '<span class="vs">×</span>' +
-      '<input class="golIn" inputmode="numeric" pattern="[0-9]*" maxlength="2" data-j="'+j.id+'" data-l="B" value="'+(p&&p.golsB!=null?p.golsB:'')+'">' +
-      '</div>';
-  } else {
-    centro = '<div class="centro"><input class="golIn" disabled value="'+(p&&p.golsA!=null?p.golsA:'–')+'"><span class="vs">×</span><input class="golIn" disabled value="'+(p&&p.golsB!=null?p.golsB:'–')+'"></div>';
+let audioCtx = null;
+function ctxAudio(){
+  if(!audioCtx){
+    const AC = window.AudioContext || window.webkitAudioContext;
+    if(AC) audioCtx = new AC();
   }
+  if(audioCtx && audioCtx.state==='suspended') audioCtx.resume();
+  return audioCtx;
+}
+document.addEventListener('touchstart', ctxAudio, {once:true});
+document.addEventListener('click', ctxAudio, {once:true});
+function nota(freq, quando, dur, tipo, vol){
+  const ctx = ctxAudio(); if(!ctx) return;
+  const o = ctx.createOscillator(), g = ctx.createGain();
+  o.type = tipo||'sine'; o.frequency.value = freq;
+  const t = ctx.currentTime + (quando||0);
+  g.gain.setValueAtTime(vol||0.18, t);
+  g.gain.exponentialRampToValueAtTime(0.001, t+dur);
+  o.connect(g); g.connect(ctx.destination);
+  o.start(t); o.stop(t+dur+0.05);
+}
+function sfxFeito(){ nota(523,0,.14); nota(659,.11,.14); nota(784,.22,.28); }
+function sfxMoeda(){ nota(988,0,.09,'square',.10); nota(1319,.09,.18,'square',.10); }
+function sfxOps(){ nota(220,0,.16,'sine',.10); }
 
-  var rodape = '';
-  var mp = meusPalpites[j.id];
-  if (st==='fim'){
-    if (mp && mp.golsA!=null){
-      var pts = (mp.pontos!=null) ? mp.pontos : calcPontos(mp.golsA,mp.golsB,j.golsA,j.golsB);
-      var cls = pts>=PONTO_EXATO?'pts10':(pts>0?'pts5':'pts0');
-      rodape = '<span class="meuPalpiteTxt">Seu palpite: <b>'+mp.golsA+'×'+mp.golsB+'</b></span><span class="ptsTag '+cls+'">+'+pts+' pts</span>';
-    } else {
-      rodape = '<span>Você não palpitou neste jogo</span><span class="ptsTag pts0">0 pts</span>';
+/* ---------- confete ---------- */
+function confete(){
+  const cv = document.getElementById('confeteCanvas');
+  const ctx2 = cv.getContext('2d');
+  cv.width = innerWidth; cv.height = innerHeight;
+  const cores = ['#FFC531','#2F7DF6','#B44BE0','#34C77B','#F76D6D','#FF9F45'];
+  const pcs = [];
+  for(let i=0;i<70;i++){
+    pcs.push({
+      x: cv.width/2 + (Math.random()-.5)*120,
+      y: cv.height*0.35,
+      vx:(Math.random()-.5)*11, vy:-(Math.random()*10+5),
+      r: Math.random()*7+4, rot: Math.random()*Math.PI, vr:(Math.random()-.5)*.3,
+      cor: cores[i%cores.length], estrela: Math.random()<.25
+    });
+  }
+  let quadros = 0;
+  (function anim(){
+    ctx2.clearRect(0,0,cv.width,cv.height);
+    pcs.forEach(p=>{
+      p.x+=p.vx; p.y+=p.vy; p.vy+=0.35; p.rot+=p.vr;
+      ctx2.save(); ctx2.translate(p.x,p.y); ctx2.rotate(p.rot);
+      if(p.estrela){ ctx2.font=(p.r*2.4)+'px serif'; ctx2.fillText('⭐',-p.r,p.r); }
+      else{ ctx2.fillStyle=p.cor; ctx2.fillRect(-p.r/2,-p.r,p.r,p.r*2); }
+      ctx2.restore();
+    });
+    if(++quadros<90) requestAnimationFrame(anim);
+    else ctx2.clearRect(0,0,cv.width,cv.height);
+  })();
+}
+
+/* ============================================================
+   NAVEGAÇÃO / SHEET
+   ============================================================ */
+const app = document.getElementById('app');
+let criancaAtual = null, abaCrianca = 'missoes', abaPais = 'fila', pinDigitado = '', telaAtual = 'home';
+
+function abrirSheet(html){
+  document.getElementById('sheetContainer').innerHTML =
+    '<div class="sheet-fundo" onclick="if(event.target===this)fecharSheet()">' +
+      '<div class="sheet"><div class="sheet-alca"></div>' + html + '</div></div>';
+}
+function fecharSheet(){ document.getElementById('sheetContainer').innerHTML=''; }
+function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+/* ============================================================
+   TELA: HOME
+   ============================================================ */
+function renderHome(){
+  telaAtual = 'home';
+  fecharSheet(); criancaAtual = null;
+  let html = '<div class="tela">' +
+    '<h1 class="home-titulo">Missões da Casa ✨</h1>' +
+    '<p class="home-sub">Quem vai brincar agora?</p>';
+  CONFIG.CRIANCAS.forEach(c=>{
+    html += '<button class="perfil-card" style="--pc-borda:'+c.corClara+';--pc-sombra:'+c.corSombra+'33;--pa-fundo:'+c.corClara+'" onclick="entrarCrianca(\''+c.id+'\')">' +
+      '<div class="perfil-avatar">'+c.avatar+'</div>' +
+      '<div><div class="perfil-nome" style="color:'+c.cor+'">'+esc(c.nome)+'</div>' +
+      '<div class="perfil-info">Nível '+nivel(c.id)+' · '+crianca(c.id).saldo+' ⭐</div></div></button>';
+  });
+  html += '</div><div class="rodape-pais"><button class="btn btn-fantasma" onclick="renderPin()">🔒 Pais</button></div>';
+  app.innerHTML = html;
+}
+function entrarCrianca(id){
+  criancaAtual = id; abaCrianca = 'missoes';
+  const c = cfgCrianca(id);
+  if(!c.leitor) falar('Oi, '+c.nome+'! Essas são as suas missões de hoje.');
+  renderCrianca();
+}
+
+/* ============================================================
+   TELA: PIN
+   ============================================================ */
+function renderPin(){
+  telaAtual = 'pin';
+  pinDigitado = '';
+  app.innerHTML = '<div class="tela" style="max-width:400px">' +
+    '<div class="barra-topo"><button class="btn btn-fantasma" onclick="renderHome()">← Voltar</button></div>' +
+    '<h2 class="home-titulo" style="font-size:26px;margin-top:10px">Área dos pais</h2>' +
+    '<p class="home-sub">Digite o PIN</p>' +
+    '<div class="pin-pontos" id="pinPontos">'+pontosPin()+'</div>' +
+    '<div class="teclado">' +
+      [1,2,3,4,5,6,7,8,9].map(n=>'<button class="tecla" onclick="digitarPin(\''+n+'\')">'+n+'</button>').join('') +
+      '<button class="tecla" style="visibility:hidden"></button>' +
+      '<button class="tecla" onclick="digitarPin(\'0\')">0</button>' +
+      '<button class="tecla" onclick="apagarPin()">⌫</button>' +
+    '</div></div>';
+}
+function pontosPin(){
+  let h=''; for(let i=0;i<4;i++) h += '<div class="pin-ponto'+(i<pinDigitado.length?' cheio':'')+'"></div>';
+  return h;
+}
+function digitarPin(d){
+  if(pinDigitado.length>=4) return;
+  pinDigitado += d;
+  const el = document.getElementById('pinPontos');
+  el.innerHTML = pontosPin();
+  if(pinDigitado.length===4){
+    if(pinDigitado===CONFIG.PIN){ abaPais='fila'; renderPais(); }
+    else{
+      sfxOps(); el.classList.add('pin-erro');
+      setTimeout(()=>{ pinDigitado=''; el.classList.remove('pin-erro'); el.innerHTML=pontosPin(); }, 380);
     }
-  } else if (st==='travado'){
-    rodape = mp && mp.golsA!=null
-      ? '<span class="meuPalpiteTxt">Seu palpite: <b>'+mp.golsA+'×'+mp.golsB+'</b></span><span>aguardando placar</span>'
-      : '<span>Sem palpite — fechou 😬</span><span>aguardando placar</span>';
-  } else if (podePalpitar){
-    rodape = mp ? '<span style="color:var(--green)">✓ Palpite salvo — pode editar até fechar</span>' : '<span>Preencha e toque em salvar</span>';
-  }
-
-  var corpo = j.definido
-    ? '<div class="placarLinha">' +
-        '<div class="timeBox"><span class="bandeira">'+j.flagA+'</span><span class="nome">'+esc(j.timeA)+'</span></div>' +
-        centro +
-        '<div class="timeBox"><span class="bandeira">'+j.flagB+'</span><span class="nome">'+esc(j.timeB)+'</span></div>' +
-      '</div>'
-    : '<div class="aDefinir">Confrontos serão definidos ao fim da fase anterior ⏳</div>';
-
-  return '<div class="jogo'+(st==='travado'||st==='fim'?' fechado':'')+'">' +
-    '<div class="jogoMeta"><span class="grupo">'+esc(rotulo)+' · '+fmtHora(j.inicio)+' · '+esc(j.cidade)+'</span><span class="estado '+estadoCls+'">'+estadoTxt+'</span></div>' +
-    corpo + '<div class="jogoRodape">'+rodape+'</div></div>';
-}
-
-function ligarInputs(){
-  var ins = document.querySelectorAll('#listaJogos .golIn[data-j]');
-  for (var k = 0; k < ins.length; k++){
-    ins[k].addEventListener('input', function(){
-      this.value = this.value.replace(/[^0-9]/g,'').slice(0,2);
-      var id = this.getAttribute('data-j');
-      var lado = this.getAttribute('data-l');
-      if (!pendentes[id]){
-        var mp = meusPalpites[id];
-        pendentes[id] = { golsA: mp?mp.golsA:null, golsB: mp?mp.golsB:null };
-      }
-      pendentes[id]['gols'+lado] = this.value === '' ? null : +this.value;
-      this.classList.add('alterado');
-      atualizarBarra();
-    });
   }
 }
-
-function pendentesValidos(){
-  var ids = [];
-  for (var id in pendentes){
-    var p = pendentes[id];
-    if (p.golsA == null || p.golsB == null) continue;
-    var mp = meusPalpites[id];
-    if (mp && mp.golsA === p.golsA && mp.golsB === p.golsB) continue; // sem mudança
-    ids.push(id);
-  }
-  return ids;
+function apagarPin(){
+  pinDigitado = pinDigitado.slice(0,-1);
+  document.getElementById('pinPontos').innerHTML = pontosPin();
 }
 
-function atualizarBarra(){
-  var n = pendentesValidos().length;
-  $('qtdSalvar').textContent = n;
-  $('barraSalvar').classList.toggle('hide', n === 0 || viewAtual !== 'jogos');
+/* ============================================================
+   TELA: MUNDO DA CRIANÇA
+   ============================================================ */
+function renderCrianca(){
+  telaAtual = 'crianca';
+  const c = cfgCrianca(criancaAtual), d = crianca(criancaAtual);
+  const naoLidas = listar('cartinhas').filter(k=>k.criancaId===c.id && !k.lida).length;
+  let html = '<div class="tela">' +
+    '<div class="barra-topo"><button class="btn btn-fantasma" onclick="renderHome()">🏠 Início</button></div>' +
+    '<div class="cab" style="background:'+c.cor+';box-shadow:0 6px 0 '+c.corSombra+'">' +
+      '<div class="cab-avatar">'+c.avatar+'</div>' +
+      '<div><div class="cab-nome">'+esc(c.nome)+'</div><div class="cab-nivel">Nível '+nivel(c.id)+' · 🔥 '+streakDe(c.id)+'</div></div>' +
+      '<div class="moedona">⭐ '+d.saldo+'</div>' +
+    '</div>' +
+    '<div class="abas">' +
+      '<button class="aba'+(abaCrianca==='missoes'?' ativa':'')+'" onclick="abaCrianca=\'missoes\';renderCrianca()">Missões 🚀</button>' +
+      '<button class="aba'+(abaCrianca==='loja'?' ativa':'')+'" onclick="abaCrianca=\'loja\';renderCrianca()">Lojinha 🎁</button>' +
+      '<button class="aba'+(abaCrianca==='cartinhas'?' ativa':'')+'" onclick="abaCrianca=\'cartinhas\';renderCrianca()">💌'+(naoLidas?'<span class="badge">'+naoLidas+'</span>':'')+'</button>' +
+    '</div>';
+  html += abaCrianca==='missoes' ? htmlMissoes(c) : (abaCrianca==='loja' ? htmlLoja(c) : htmlCartinhas(c));
+  html += '</div>';
+  app.innerHTML = html;
 }
 
-$('barraSalvar').addEventListener('click', function(){
-  var ids = pendentesValidos();
-  if (!ids.length) return;
-  var btn = this; btn.disabled = true;
-  var promessas = ids.map(function(id){
-    var j = null;
-    for (var k = 0; k < jogos.length; k++) if (jogos[k].id === id){ j = jogos[k]; break; }
-    if (!j || Date.now() >= j.lock.getTime()) return Promise.reject(new Error('Um dos jogos já fechou.'));
-    var p = pendentes[id];
-    return db.collection('palpites').doc(id + '_' + usuario.uid).set({
-      jogoId: id, uid: usuario.uid,
-      nome: meuNome || usuario.displayName || usuario.email, foto: usuario.photoURL || '',
-      golsA: p.golsA, golsB: p.golsB,
-      ts: firebase.firestore.FieldValue.serverTimestamp()
-    });
-  });
-  Promise.all(promessas).then(function(){
-    ids.forEach(function(id){
-      meusPalpites[id] = { golsA: pendentes[id].golsA, golsB: pendentes[id].golsB, pontos:null };
-      delete pendentes[id];
-    });
-    pendentes = {};
-    toast('✓ ' + ids.length + ' palpite(s) salvos!');
-    renderJogos();
-  }).catch(function(e){
-    var m = (e && e.code === 'permission-denied') ? 'Palpite recusado: o jogo já fechou.' : 'Erro ao salvar: ' + (e && e.message ? e.message : e);
-    toast(m);
-    carregarTudo();
-  }).then(function(){ btn.disabled = false; });
-});
-
-/* ---------------- ranking ---------------- */
-function renderRanking(){
-  $('listaRanking').innerHTML = '<div class="vazio">Carregando…</div>';
-  db.collection('usuarios').get().then(function(snap){
-    var rows = [];
-    snap.forEach(function(doc){
-      var d = doc.data();
-      rows.push({ uid:doc.id, nome:d.nome||'?', foto:d.foto||'', pontos:d.pontos||0, exatos:d.exatos||0, resultados:d.resultados||0 });
-    });
-    rows.sort(function(a,b){ return (b.pontos-a.pontos) || (b.exatos-a.exatos) || a.nome.localeCompare(b.nome); });
-    if (!rows.length){ $('listaRanking').innerHTML = '<div class="vazio">Ninguém pontuou ainda. O ranking aparece quando o primeiro resultado for lançado.</div>'; return; }
-    var html = '';
-    rows.forEach(function(r, idx){
-      var pos = idx+1;
-      var cls = pos===1?'p1':pos===2?'p2':pos===3?'p3':'';
-      var eu = usuario && r.uid===usuario.uid ? ' eu' : '';
-      html += '<div class="rankRow '+cls+eu+'">' +
-        '<span class="rankPos">'+pos+'º</span>' +
-        '<span class="rankNome">'+(r.foto?'<img src="'+esc(r.foto)+'" alt="">':'')+'<span class="n">'+esc(r.nome)+'</span></span>' +
-        '<span class="rankPts">'+r.pontos+'</span>' +
-        '<span class="rankMini">'+r.exatos+'</span>' +
-        '<span class="rankMini">'+r.resultados+'</span></div>';
-    });
-    $('listaRanking').innerHTML = html;
-  }).catch(function(e){ $('listaRanking').innerHTML = '<div class="vazio">Erro ao carregar ranking.</div>'; });
+function htmlMissoes(c){
+  const ms = missoesDeHoje(c.id);
+  if(!ms.length) return '<div class="vazio">Nenhuma missão por aqui hoje! 🎈</div>';
+  return ms.map(m=>{
+    const con = conclusaoHoje(m.id, c.id);
+    const estado = con ? con.status : 'disponivel';
+    let chip = '';
+    if(m.tipo==='semanal') chip = '<div class="missao-chip">'+contagemSemana(m.id,c.id)+' de '+m.frequenciaSemanal+' nesta semana</div>';
+    let direita = '<div class="missao-valor">'+m.valor+' ⭐</div>', classe='';
+    if(estado==='pendente'){ classe=' pendente'; direita='<div class="missao-valor"><span class="ampulheta-gira">⏳</span></div>'; }
+    if(estado==='aprovada'){ classe=' aprovada'; direita='<div class="missao-valor">✅ +'+m.valor+'</div>'; }
+    return '<button class="missao'+classe+'" onclick="tocarMissao(\''+m.id+'\')">' +
+      '<div class="missao-selo" style="background:'+c.corClara+'">'+m.emoji+'</div>' +
+      '<div><div class="missao-titulo">'+esc(m.titulo)+'</div>'+chip+'</div>' + direita + '</button>';
+  }).join('');
 }
 
-/* ---------------- resenha ---------------- */
-var RESENHA_PASSO = 25;
-var resenhaMostradas = RESENHA_PASSO;
-var resenhaCacheJogos = [];
-
-/* monta o histórico: jogos já fechados (lock passou), mais recentes primeiro.
-   Para cada jogo, busca todos os palpites e mostra agrupado. */
-function renderResenhaSel(){
-  resenhaMostradas = RESENHA_PASSO;
-  var fechados = jogos.filter(function(j){ return Date.now() >= j.lock.getTime() && j.definido; })
-                      .sort(function(a,b){ return b.inicio - a.inicio; });
-  resenhaCacheJogos = fechados;
-  if (!fechados.length){
-    $('listaResenha').innerHTML = '<div class="vazio">A resenha aparece aqui assim que o primeiro jogo fechar (5 min antes da bola rolar).<br>Os palpites de todos ficam visíveis então — até lá, cada um só vê o próprio. 🤫</div>';
-    $('btnVerMais').classList.add('hide');
+function tocarMissao(missaoId){
+  const m = db.missoes[missaoId], c = cfgCrianca(criancaAtual);
+  const con = conclusaoHoje(missaoId, criancaAtual);
+  if(con && con.status==='aprovada'){
+    if(!c.leitor) falar('Você já fez essa missão hoje. Muito bem!');
     return;
   }
-  renderResenhaLista();
-}
-
-function renderResenhaLista(){
-  var fechados = resenhaCacheJogos.slice(0, resenhaMostradas);
-  $('listaResenha').innerHTML = '<div class="vazio">Carregando…</div>';
-  // busca palpites de todos os jogos exibidos em paralelo
-  var buscas = fechados.map(function(j){
-    return db.collection('palpites').where('jogoId','==',j.id).get().then(function(snap){
-      var rows = []; snap.forEach(function(d){ rows.push(d.data()); });
-      return { jogo:j, palpites:rows };
-    });
-  });
-  Promise.all(buscas).then(function(blocos){
-    var html = '';
-    blocos.forEach(function(b){
-      var j = b.jogo, rows = b.palpites;
-      var placarTxt = j.encerrado ? (j.golsA + ' × ' + j.golsB) : 'aguardando placar';
-      var placarCor = j.encerrado ? 'var(--gold)' : 'var(--mut)';
-      html += '<div style="margin:18px 2px 8px;display:flex;align-items:center;gap:8px">' +
-        '<span style="font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--mut);font-weight:700">'+fmtDia(j.inicio)+'</span>' +
-        '<span style="flex:1;height:1px;background:var(--line2)"></span></div>';
-      html += '<div class="card" style="margin-bottom:8px;padding:12px 14px">' +
-        '<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:'+(rows.length?'10px':'0')+'">' +
-          '<span style="font-weight:700;font-size:13.5px">'+esc(j.flagA)+' '+esc(j.timeA)+' × '+esc(j.timeB)+' '+esc(j.flagB)+'</span>' +
-          '<span style="font-family:\'Anton\',sans-serif;font-size:17px;color:'+placarCor+';white-space:nowrap">'+placarTxt+'</span>' +
-        '</div>';
-      if (!rows.length){
-        html += '<div style="font-size:12.5px;color:var(--mut)">Ninguém palpitou. 🦗</div>';
-      } else {
-        rows.sort(function(a,b){
-          var pa = typeof a.pontos==='number'?a.pontos:-1, pb = typeof b.pontos==='number'?b.pontos:-1;
-          return (pb-pa) || String(a.nome||'').localeCompare(String(b.nome||''));
-        });
-        rows.forEach(function(r){
-          var tag = '';
-          if (j.encerrado){
-            var pts = typeof r.pontos==='number' ? r.pontos : calcPontos(r.golsA,r.golsB,j.golsA,j.golsB);
-            var cls = pts>=PONTO_EXATO?'pts10':(pts>0?'pts5':'pts0');
-            tag = '<span class="ptsTag '+cls+'">+'+pts+'</span>';
-          }
-          html += '<div class="resLinha" style="margin-bottom:6px"><span class="resQuem">'+(r.foto?'<img src="'+esc(r.foto)+'" alt="">':'')+'<span class="nn" style="font-size:13px;font-weight:600">'+esc(r.nome||'?')+'</span></span>' +
-                  '<span class="resDireita"><span class="resPalp">'+r.golsA+'×'+r.golsB+'</span>'+tag+'</span></div>';
-        });
-      }
-      html += '</div>';
-    });
-    $('listaResenha').innerHTML = html;
-    $('btnVerMais').classList.toggle('hide', resenhaMostradas >= resenhaCacheJogos.length);
-  }).catch(function(){ $('listaResenha').innerHTML = '<div class="vazio">Erro ao carregar a resenha.</div>'; });
-}
-
-/* ================================================================
-   ADMIN
-================================================================ */
-function renderAdmin(){
-  if (!ehAdmin) return;
-  $('admStatus').textContent = 'Logado como ' + (usuario.email||'');
-  renderAdmResultados();
-  renderAdmMata();
-  renderAdmUsuarios();
-  renderAdmClassificados();
-}
-
-function renderAdmUsuarios(){
-  db.collection('usuarios').get().then(function(snap){
-    var rows = [];
-    snap.forEach(function(doc){ var d = doc.data(); d.uid = doc.id; rows.push(d); });
-    rows.sort(function(a,b){ return (b.pontos||0)-(a.pontos||0) || String(a.nome||'').localeCompare(String(b.nome||'')); });
-    var html = '';
-    rows.forEach(function(r){
-      var ehMaster = (r.email||'').toLowerCase() === MASTER;
-      var ehAdm = ehMaster || r.admin === true;
-      var acao = ehMaster
-        ? '<span style="font-size:11.5px;color:var(--gold);font-weight:800">👑 DONO</span>'
-        : '<button class="btn mini'+(ehAdm?' sec':'')+'" onclick="mudarAdmin(\''+r.uid+'\','+(ehAdm?'false':'true')+')">'+(ehAdm?'Remover admin':'Tornar admin')+'</button>';
-      html += '<div class="admJogo"><div class="admLinha" style="justify-content:space-between;flex-wrap:nowrap">' +
-        '<span style="display:flex;align-items:center;gap:9px;min-width:0">' +
-          (r.foto?'<img src="'+esc(r.foto)+'" alt="" style="width:30px;height:30px;border-radius:50%;border:1px solid var(--line2);flex:0 0 auto">':'') +
-          '<span style="min-width:0">' +
-            '<div style="font-weight:700;font-size:13.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+esc(r.nome||'?')+(ehAdm?' <span style="color:var(--gold)">★</span>':'')+'</div>' +
-            '<div style="font-size:11px;color:var(--mut);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+esc(r.email||'')+' · '+(r.pontos||0)+' pts</div>' +
-          '</span></span>' + acao + '</div></div>';
-    });
-    $('admListaUsuarios').innerHTML = html || '<p style="font-size:13px;color:var(--mut)">Ninguém entrou ainda.</p>';
-  }).catch(function(e){ $('admListaUsuarios').innerHTML = '<p style="font-size:13px;color:var(--mut)">Erro ao listar participantes.</p>'; });
-}
-
-window.mudarAdmin = function(uid, promover){
-  db.collection('usuarios').doc(uid).set({ admin: promover }, {merge:true}).then(function(){
-    toast(promover ? '✓ Agora é admin!' : '✓ Admin removido.');
-    renderAdmUsuarios();
-  }).catch(function(e){ toast('Erro: '+(e&&e.message?e.message:e)); });
-};
-
-function publicarTabela(silencioso){
-  return db.collection('jogos').get().then(function(snap){
-    var existentes = {};
-    snap.forEach(function(doc){ existentes[doc.id] = doc.data(); });
-    var batch = db.batch();
-    JOGOS_BASE.forEach(function(b){
-      var id = 'j'+b.i;
-      var ex = existentes[id];
-      if (ex && ex.editado) return; // não sobrescreve jogos ajustados manualmente
-      var ini = inicioBase(b);
-      batch.set(db.collection('jogos').doc(id), {
-        ordem:b.i, fase:b.fs, grupo:b.g||'', cidade:b.c,
-        timeA:b.a||'A definir', flagA:b.fa||'⚪', timeB:b.b||'A definir', flagB:b.fb||'⚪',
-        inicio: firebase.firestore.Timestamp.fromDate(ini),
-        lock: firebase.firestore.Timestamp.fromDate(lockDe(ini))
-      }, {merge:true});
-    });
-    return batch.commit();
-  }).then(function(){
-    tabelaPublicada = true;
-    if (!silencioso) toast('✓ Tabela atualizada!');
-  });
-}
-
-function renderAdmResultados(){
-  var pendL = jogos.filter(function(j){ return j.definido && !j.encerrado && Date.now() >= j.inicio.getTime(); })
-                   .sort(function(a,b){ return a.inicio - b.inicio; });
-  var feitos = jogos.filter(function(j){ return j.encerrado; })
-                    .sort(function(a,b){ return b.inicio - a.inicio; }).slice(0,10);
-  var html = '';
-  if (!pendL.length) html += '<p style="color:var(--green);font-size:13px">Nenhum resultado pendente. ✓</p>';
-  pendL.concat(feitos).forEach(function(j){
-    html += '<div class="admJogo">' +
-      '<div class="t">'+j.flagA+' '+esc(j.timeA)+' × '+esc(j.timeB)+' '+j.flagB+(j.encerrado?' <span style="color:var(--green)">· '+j.golsA+'×'+j.golsB+' lançado</span>':'')+'</div>' +
-      '<div class="sub">'+fmtDia(j.inicio)+' '+fmtHora(j.inicio)+' · '+esc(j.cidade)+'</div>' +
-      '<div class="admLinha">' +
-        '<input class="admIn gol" inputmode="numeric" id="ra_'+j.id+'" value="'+(j.golsA!=null?j.golsA:'')+'" placeholder="–">' +
-        '<span class="vs">×</span>' +
-        '<input class="admIn gol" inputmode="numeric" id="rb_'+j.id+'" value="'+(j.golsB!=null?j.golsB:'')+'" placeholder="–">' +
-        '<button class="btn mini" onclick="apurar(\''+j.id+'\')">'+(j.encerrado?'Corrigir':'Apurar')+'</button>' +
-      '</div></div>';
-  });
-  $('admListaResultados').innerHTML = html;
-}
-
-function renderAdmMata(){
-  var mata = jogos.filter(function(j){ return j.fase !== 'Grupos'; });
-  var html = '';
-  mata.forEach(function(j){
-    var dtLocal = j.inicio.getFullYear()+'-'+('0'+(j.inicio.getMonth()+1)).slice(-2)+'-'+('0'+j.inicio.getDate()).slice(-2)+'T'+('0'+j.inicio.getHours()).slice(-2)+':'+('0'+j.inicio.getMinutes()).slice(-2);
-    html += '<div class="admJogo">' +
-      '<div class="t">'+esc(j.fase)+' · jogo '+j.ordem+' · '+esc(j.cidade)+(j.definido?' <span style="color:var(--green)">✓</span>':'')+'</div>' +
-      '<div class="admLinha" style="margin-bottom:8px">' +
-        '<input class="admIn txt" id="ka_'+j.id+'" placeholder="Time A" value="'+(j.definido?esc(j.timeA):'')+'">' +
-        '<input class="admIn txt" id="kb_'+j.id+'" placeholder="Time B" value="'+(j.definido?esc(j.timeB):'')+'">' +
-      '</div>' +
-      '<div class="admLinha">' +
-        '<input class="admIn data" type="datetime-local" id="kd_'+j.id+'" value="'+dtLocal+'">' +
-        '<button class="btn mini sec" onclick="salvarMata(\''+j.id+'\')">Salvar</button>' +
-      '</div></div>';
-  });
-  $('admListaMata').innerHTML = html;
-}
-
-window.salvarMata = function(id){
-  var a = $('ka_'+id).value.trim(), b = $('kb_'+id).value.trim(), dv = $('kd_'+id).value;
-  var dados = { editado:true };
-  if (a){ dados.timeA = a; dados.flagA = flagDoTime(a); }
-  if (b){ dados.timeB = b; dados.flagB = flagDoTime(b); }
-  if (dv){
-    var ini = new Date(dv);
-    dados.inicio = firebase.firestore.Timestamp.fromDate(ini);
-    dados.lock = firebase.firestore.Timestamp.fromDate(lockDe(ini));
+  if(con && con.status==='pendente'){
+    if(!c.leitor) falar('Essa missão está esperando o papai ou a mamãe ver.');
+    abrirSheet('<div class="sheet-emoji"><span class="ampulheta-gira" style="display:inline-block">⏳</span></div>' +
+      '<div class="sheet-titulo">'+esc(m.titulo)+'</div>' +
+      '<div class="sheet-sub">Esperando o papai ou a mamãe ver 👀</div>' +
+      '<button class="btn btn-grande" onclick="fecharSheet()">Tá bom!</button>');
+    return;
   }
-  db.collection('jogos').doc(id).set(dados, {merge:true}).then(function(){
-    toast('✓ Jogo atualizado');
-    carregarTudo();
-  }).catch(function(e){ toast('Erro: '+(e&&e.message?e.message:e)); });
-};
+  if(!c.leitor) falar(m.titulo + '. Vale ' + m.valor + (m.valor===1?' estrela':' estrelas') + '.');
+  let chip = m.tipo==='semanal' ? '<div class="sheet-sub">'+contagemSemana(missaoId,criancaAtual)+' de '+m.frequenciaSemanal+' nesta semana</div>' : '';
+  abrirSheet(
+    '<div class="sheet-emoji">'+m.emoji+'</div>' +
+    '<div class="sheet-titulo">'+esc(m.titulo)+'</div>' +
+    '<div class="sheet-sub">Vale '+m.valor+' ⭐</div>' + chip +
+    '<button class="btn btn-grande btn-verde" onclick="marcarFeita(\''+missaoId+'\')">Feito! ✅</button>' +
+    '<div style="display:flex;gap:10px;margin-top:12px">' +
+      '<button class="btn btn-fantasma" style="flex:1" onclick="falarMissao(\''+missaoId+'\')">🔊 Ouvir</button>' +
+      '<button class="btn btn-fantasma" style="flex:1" onclick="fecharSheet()">Agora não</button>' +
+    '</div>');
+}
 
-/* reaproveita bandeiras dos times da fase de grupos */
-function flagDoTime(nome){
-  var n = nome.toLowerCase();
-  for (var k = 0; k < JOGOS_BASE.length; k++){
-    var b = JOGOS_BASE[k];
-    if (b.a && b.a.toLowerCase() === n) return b.fa;
-    if (b.b && b.b.toLowerCase() === n) return b.fb;
+function falarMissao(missaoId){
+  const m = db.missoes[missaoId];
+  if(m) falar(m.titulo + '. Vale ' + m.valor + (m.valor===1?' estrela':' estrelas') + '.');
+}
+function marcarFeita(missaoId){
+  gravar('conclusoes', uid(), { missaoId:missaoId, criancaId:criancaAtual, dataKey:chaveDia(), ts:Date.now(), status:'pendente', formaConclusao:null });
+  const c = cfgCrianca(criancaAtual);
+  sfxFeito(); confete();
+  if(!c.leitor) falar('Missão feita! Agora é só esperar o papai ou a mamãe aprovar.');
+  fecharSheet(); renderCrianca();
+}
+
+/* ---------- lojinha ---------- */
+function htmlLoja(c){
+  const d = crianca(c.id);
+  const ativos = listar('premios').filter(p=>p.ativo);
+  if(!ativos.length) return '<div class="vazio">A lojinha está sendo arrumada! 🧹</div>';
+  return '<div class="loja-grade">' + ativos.map(p=>{
+    const pendente = listar('resgates').some(r=>r.premioId===p.id && r.criancaId===c.id && r.status==='pendente');
+    let botao;
+    if(pendente) botao = '<button class="btn btn-falta" disabled><span class="ampulheta-gira">⏳</span> Pedido!</button>';
+    else if(d.saldo>=p.preco) botao = '<button class="btn btn-sol" onclick="tocarPremio(\''+p.id+'\')">Pedir 🎁</button>';
+    else botao = '<button class="btn btn-falta" onclick="tocarPremioFalta(\''+p.id+'\')">Faltam '+(p.preco-d.saldo)+' ⭐</button>';
+    return '<div class="premio"><div class="premio-emoji">'+p.emoji+'</div>' +
+      '<div class="premio-nome">'+esc(p.nome)+'</div>' +
+      '<div class="missao-valor" style="margin:0">'+p.preco+' ⭐</div>' + botao + '</div>';
+  }).join('') + '</div>';
+}
+function tocarPremioFalta(premioId){
+  const p = db.premios[premioId], c = cfgCrianca(criancaAtual), d = crianca(criancaAtual);
+  if(!c.leitor) falar(p.nome + '. Faltam ' + (p.preco-d.saldo) + ' estrelas. Continue fazendo missões!');
+}
+function tocarPremio(premioId){
+  const p = db.premios[premioId], c = cfgCrianca(criancaAtual);
+  if(!c.leitor) falar('Você quer trocar '+p.preco+' estrelas por '+p.nome+'?');
+  abrirSheet(
+    '<div class="sheet-emoji">'+p.emoji+'</div>' +
+    '<div class="sheet-titulo">'+esc(p.nome)+'</div>' +
+    '<div class="sheet-sub">Trocar '+p.preco+' ⭐ por esse prêmio?</div>' +
+    '<button class="btn btn-grande btn-sol" onclick="pedirPremio(\''+premioId+'\')">Quero! 🙌</button>' +
+    '<button class="btn btn-grande btn-fantasma" style="margin-top:10px" onclick="fecharSheet()">Deixa pra depois</button>');
+}
+function pedirPremio(premioId){
+  gravar('resgates', uid(), { premioId:premioId, criancaId:criancaAtual, ts:Date.now(), status:'pendente' });
+  const c = cfgCrianca(criancaAtual);
+  sfxMoeda();
+  if(!c.leitor) falar('Pedido feito! O papai ou a mamãe vai ver.');
+  fecharSheet(); renderCrianca();
+}
+
+/* ============================================================
+   PAINEL DOS PAIS
+   ============================================================ */
+function renderPais(){
+  telaAtual = 'pais';
+  fecharSheet();
+  const n = pendentesTotal();
+  let html = '<div class="tela">' +
+    '<div class="barra-topo"><button class="btn btn-fantasma" onclick="renderHome()">← Sair</button>' +
+    '<span class="pill-demo">'+(MODO_FB?'☁️ em tempo real':'💾 salvo neste aparelho')+'</span></div>' +
+    '<h2 class="f" style="font-size:26px;font-weight:700;margin-bottom:14px">Painel dos pais</h2>' +
+    '<div class="abas" style="flex-wrap:wrap">' +
+      '<button class="aba'+(abaPais==='fila'?' ativa':'')+'" onclick="abaPais=\'fila\';renderPais()">Aprovar'+(n?'<span class="badge">'+n+'</span>':'')+'</button>' +
+      '<button class="aba'+(abaPais==='missoes'?' ativa':'')+'" onclick="abaPais=\'missoes\';renderPais()">Missões</button>' +
+      '<button class="aba'+(abaPais==='loja'?' ativa':'')+'" onclick="abaPais=\'loja\';renderPais()">Lojinha</button>' +
+      '<button class="aba'+(abaPais==='cartinhas'?' ativa':'')+'" onclick="abaPais=\'cartinhas\';renderPais()">💌</button>' +
+      '<button class="aba'+(abaPais==='relatorio'?' ativa':'')+'" onclick="abaPais=\'relatorio\';renderPais()">📊</button>' +
+      '<button class="aba'+(abaPais==='extras'?' ativa':'')+'" onclick="abaPais=\'extras\';renderPais()">Extras</button>' +
+    '</div>';
+  if(abaPais==='fila') html += htmlFila();
+  if(abaPais==='missoes') html += htmlPaisMissoes();
+  if(abaPais==='loja') html += htmlPaisLoja();
+  if(abaPais==='cartinhas') html += htmlPaisCartinhas();
+  if(abaPais==='relatorio') html += htmlRelatorio();
+  if(abaPais==='extras') html += htmlExtras();
+  html += '</div>';
+  app.innerHTML = html;
+}
+
+function seloDe(criancaId){
+  const c = cfgCrianca(criancaId);
+  return '<div class="selo-crianca" style="background:'+c.corClara+'">'+c.avatar+'</div>';
+}
+function horaDe(ts){
+  const d = new Date(ts), p = n=>String(n).padStart(2,'0');
+  const hoje = chaveDia(), dia = chaveDia(d);
+  return (dia===hoje ? 'hoje' : p(d.getDate())+'/'+p(d.getMonth()+1)) + ' às ' + p(d.getHours())+':'+p(d.getMinutes());
+}
+
+/* ---------- fila de aprovação ---------- */
+function htmlFila(){
+  const itens = [];
+  listar('conclusoes').filter(c=>c.status==='pendente').forEach(c=>{
+    const m = db.missoes[c.missaoId]; if(!m) return;
+    itens.push({ ts:c.ts, html:
+      '<div class="pais-item">'+seloDe(c.criancaId)+
+      '<div class="info"><div class="titulo">'+m.emoji+' '+esc(m.titulo)+'</div>'+
+      '<div class="sub">'+esc(cfgCrianca(c.criancaId).nome)+' · '+m.valor+' ⭐ · '+horaDe(c.ts)+'</div></div>'+
+      '<button class="mini-btn nao" onclick="recusarConclusao(\''+c.id+'\')">✕</button>'+
+      '<button class="mini-btn ok" onclick="clicarAprovar(\''+c.id+'\')">✓</button></div>' });
+  });
+  listar('resgates').filter(r=>r.status==='pendente').forEach(r=>{
+    const p = db.premios[r.premioId]; if(!p) return;
+    const saldo = crianca(r.criancaId).saldo;
+    itens.push({ ts:r.ts, html:
+      '<div class="pais-item" style="background:#FFF9E8">'+seloDe(r.criancaId)+
+      '<div class="info"><div class="titulo">🎁 '+p.emoji+' '+esc(p.nome)+'</div>'+
+      '<div class="sub">Resgate de '+esc(cfgCrianca(r.criancaId).nome)+' · custa '+p.preco+' ⭐ (saldo: '+saldo+') · '+horaDe(r.ts)+'</div></div>'+
+      '<button class="mini-btn nao" onclick="recusarResgate(\''+r.id+'\')">✕</button>'+
+      '<button class="mini-btn ok" onclick="aprovarResgate(\''+r.id+'\')">✓</button></div>' });
+  });
+  if(!itens.length) return '<div class="vazio">Tudo aprovado por aqui! 🎉</div>';
+  itens.sort((a,b)=>a.ts-b.ts);
+  return itens.map(i=>i.html).join('');
+}
+
+function clicarAprovar(conclusaoId){
+  const c = db.conclusoes[conclusaoId]; if(!c || c.status!=='pendente') return;
+  const m = db.missoes[c.missaoId];
+  if(m && m.pedeForma){
+    let botoes = Object.keys(FORMAS).map(k=>
+      '<button class="btn btn-grande" style="margin-bottom:10px;justify-content:space-between" onclick="aprovarConclusao(\''+conclusaoId+'\',\''+k+'\')">' +
+      '<span>'+FORMAS[k].rotulo+'</span><span style="font-size:13px;color:var(--tinta-suave)">'+FORMAS[k].trabalha+'</span></button>').join('');
+    abrirSheet('<div class="sheet-emoji">'+m.emoji+'</div>' +
+      '<div class="sheet-titulo">Como ela concluiu?</div>' +
+      '<div class="sheet-sub">Fica registrado no histórico para acompanhar a evolução</div>' +
+      botoes + '<button class="btn btn-grande btn-fantasma" onclick="fecharSheet()">Cancelar</button>');
+  } else {
+    aprovarConclusao(conclusaoId, null);
   }
-  return '⚽';
+}
+function aprovarConclusao(conclusaoId, forma){
+  const c = db.conclusoes[conclusaoId]; if(!c || c.status!=='pendente') return;
+  const m = db.missoes[c.missaoId];
+  gravar('conclusoes', conclusaoId, { status:'aprovada', formaConclusao: forma||null });
+  mover(c.criancaId, m.valor, 'Missão: '+m.titulo + (forma ? ' — '+FORMAS[forma].rotulo : ''), conclusaoId);
+  registrarStreak(c.criancaId, c.dataKey);
+  sfxMoeda(); fecharSheet(); renderPais();
+}
+function recusarConclusao(conclusaoId){
+  const c = db.conclusoes[conclusaoId]; if(!c) return;
+  gravar('conclusoes', conclusaoId, { status:'recusada' }); renderPais();
+}
+function aprovarResgate(resgateId){
+  const r = db.resgates[resgateId]; if(!r || r.status!=='pendente') return;
+  const p = db.premios[r.premioId], c = crianca(r.criancaId);
+  if(c.saldo < p.preco){
+    alert('Saldo insuficiente: '+cfgCrianca(r.criancaId).nome+' tem '+c.saldo+' ⭐ e o prêmio custa '+p.preco+' ⭐. O pedido continua pendente.');
+    return;
+  }
+  gravar('resgates', resgateId, { status:'aprovado' });
+  mover(r.criancaId, -p.preco, 'Prêmio: '+p.nome, resgateId);
+  sfxMoeda(); renderPais();
+}
+function recusarResgate(resgateId){
+  const r = db.resgates[resgateId]; if(!r) return;
+  gravar('resgates', resgateId, { status:'recusado' }); renderPais();
 }
 
-/* apuração: grava placar + reprocessa palpites do jogo + ajusta agregados */
-window.apurar = function(id){
-  var va = $('ra_'+id).value, vb = $('rb_'+id).value;
-  if (va === '' || vb === ''){ toast('Preencha os dois placares.'); return; }
-  var rA = +va, rB = +vb;
-  if (isNaN(rA) || isNaN(rB)){ toast('Placar inválido.'); return; }
+/* ---------- CRUD de missões ---------- */
+function htmlPaisMissoes(){
+  let html = '<div class="secao-titulo">Todas as missões <button class="btn btn-verde" style="padding:10px 16px;font-size:15px" onclick="formMissao(null)">+ Nova</button></div>';
+  const ms = listar('missoes');
+  if(!ms.length) return html + '<div class="vazio">Nenhuma missão. Crie a primeira!</div>';
+  ms.sort((a,b)=>a.titulo.localeCompare(b.titulo));
+  html += ms.map(m=>{
+    const quem = m.criancaIds.map(id=>cfgCrianca(id)?cfgCrianca(id).avatar:'').join(' ');
+    let freq = TIPOS[m.tipo]||m.tipo;
+    if(m.tipo==='semanal') freq = m.frequenciaSemanal+'x por semana';
+    if(m.tipo==='dias') freq = (m.diasSemana||[]).map(d=>DIAS[d]).join(', ');
+    return '<div class="pais-item"'+(m.ativa?'':' style="opacity:.5"')+'>' +
+      '<div class="selo-crianca" style="background:#F4EDDE">'+m.emoji+'</div>' +
+      '<div class="info"><div class="titulo">'+esc(m.titulo)+(m.pedeForma?' 📖':'')+'</div>' +
+      '<div class="sub">'+quem+' · '+m.valor+' ⭐ · '+esc(freq)+' · '+(CATEGORIAS[m.categoria]||'')+'</div></div>' +
+      '<button class="mini-btn" onclick="formMissao(\''+m.id+'\')">✏️</button>' +
+      '<button class="mini-btn" onclick="alternarMissao(\''+m.id+'\')">'+(m.ativa?'📦':'♻️')+'</button></div>';
+  }).join('');
+  return html + '<p style="font-size:13px;color:var(--tinta-suave);font-weight:700;margin-top:8px">📦 arquiva (some para as crianças) · ♻️ reativa · 📖 pede a forma de conclusão ao aprovar</p>';
+}
+function alternarMissao(id){ gravar('missoes', id, { ativa: !db.missoes[id].ativa }); renderPais(); }
 
-  db.collection('jogos').doc(id).set({ golsA:rA, golsB:rB, encerrado:true }, {merge:true})
-  .then(function(){ return db.collection('palpites').where('jogoId','==',id).get(); })
-  .then(function(snap){
-    var batch = db.batch();
-    var deltas = {}; // uid -> {pts, ex, res}
-    snap.forEach(function(doc){
-      var p = doc.data();
-      var antigo = typeof p.pontos === 'number' ? p.pontos : 0;
-      var novo = calcPontos(p.golsA, p.golsB, rA, rB);
-      batch.set(doc.ref, { pontos: novo }, {merge:true});
-      if (!deltas[p.uid]) deltas[p.uid] = { pts:0, ex:0, res:0, nome:p.nome||'', foto:p.foto||'' };
-      deltas[p.uid].pts += novo - antigo;
-      deltas[p.uid].ex  += (novo===PONTO_EXATO?1:0) - (antigo===PONTO_EXATO?1:0);
-      deltas[p.uid].res += (novo===PONTO_RESULTADO?1:0) - (antigo===PONTO_RESULTADO?1:0);
-    });
-    for (var uid in deltas){
-      var d = deltas[uid];
-      batch.set(db.collection('usuarios').doc(uid), {
-        pontos: firebase.firestore.FieldValue.increment(d.pts),
-        exatos: firebase.firestore.FieldValue.increment(d.ex),
-        resultados: firebase.firestore.FieldValue.increment(d.res)
-      }, {merge:true});
+function formMissao(id){
+  const m = id ? db.missoes[id] : { titulo:'', emoji:'⭐', valor:1, criancaIds:[], tipo:'diaria', frequenciaSemanal:3, diasSemana:[], categoria:'rotina', pedeForma:false, ativa:true };
+  const checks = CONFIG.CRIANCAS.map(c=>
+    '<label class="check-linha" style="margin:0 0 8px"><input type="checkbox" class="fm-crianca" value="'+c.id+'"'+(m.criancaIds.includes(c.id)?' checked':'')+'> '+c.avatar+' '+esc(c.nome)+'</label>').join('');
+  const dias = DIAS.map((d,i)=>'<button type="button" class="chip-dia'+((m.diasSemana||[]).includes(i)?' on':'')+'" data-dia="'+i+'" onclick="this.classList.toggle(\'on\')">'+d+'</button>').join('');
+  abrirSheet(
+    '<div class="sheet-titulo">'+(id?'Editar missão':'Nova missão')+'</div>' +
+    '<label>Título</label><input id="fm-titulo" value="'+esc(m.titulo)+'" placeholder="Ex.: Arrumar a cama">' +
+    '<div class="linha-2"><div><label>Emoji</label><input id="fm-emoji" value="'+esc(m.emoji)+'" maxlength="8" style="text-align:center;font-size:26px"></div>' +
+    '<div><label>Estrelas</label><input id="fm-valor" type="number" min="1" max="20" value="'+m.valor+'"></div></div>' +
+    '<label>Para quem</label>'+checks+
+    '<label>Frequência</label><select id="fm-tipo" onchange="mudarTipoForm()">' +
+      Object.keys(TIPOS).map(t=>'<option value="'+t+'"'+(m.tipo===t?' selected':'')+'>'+TIPOS[t]+'</option>').join('') + '</select>' +
+    '<div id="fm-freq-box" style="display:'+(m.tipo==='semanal'?'block':'none')+'"><label>Quantas vezes por semana</label>' +
+      '<input id="fm-freq" type="number" min="1" max="7" value="'+(m.frequenciaSemanal||3)+'"></div>' +
+    '<div id="fm-dias-box" style="display:'+(m.tipo==='dias'?'block':'none')+'"><label>Em quais dias</label><div class="chips-dias" id="fm-dias">'+dias+'</div></div>' +
+    '<label>Categoria</label><select id="fm-cat">' +
+      Object.keys(CATEGORIAS).map(k=>'<option value="'+k+'"'+(m.categoria===k?' selected':'')+'>'+CATEGORIAS[k]+'</option>').join('') + '</select>' +
+    '<label class="check-linha" style="margin-top:14px"><input type="checkbox" id="fm-forma"'+(m.pedeForma?' checked':'')+'> Pedir forma de conclusão ao aprovar (leitura)</label>' +
+    '<button class="btn btn-grande btn-verde" style="margin-top:16px" onclick="salvarMissao('+(id?'\''+id+'\'':'null')+')">Salvar missão</button>' +
+    (id ? '<button class="btn btn-grande btn-vermelho" style="margin-top:8px" onclick="excluirMissao(\''+id+'\')">🗑️ Excluir missão</button>' : '') +
+    '<button class="btn btn-grande btn-fantasma" style="margin-top:8px" onclick="fecharSheet()">Cancelar</button>');
+}
+function mudarTipoForm(){
+  const t = document.getElementById('fm-tipo').value;
+  document.getElementById('fm-freq-box').style.display = t==='semanal' ? 'block' : 'none';
+  document.getElementById('fm-dias-box').style.display = t==='dias' ? 'block' : 'none';
+}
+function salvarMissao(id){
+  const titulo = document.getElementById('fm-titulo').value.trim();
+  const emoji = document.getElementById('fm-emoji').value.trim() || '⭐';
+  let valor = parseInt(document.getElementById('fm-valor').value,10) || 1;
+  const criancaIds = Array.from(document.querySelectorAll('.fm-crianca:checked')).map(x=>x.value);
+  const tipo = document.getElementById('fm-tipo').value;
+  const categoria = document.getElementById('fm-cat').value;
+  const pedeForma = document.getElementById('fm-forma').checked;
+  if(!titulo){ alert('Dê um título para a missão.'); return; }
+  if(!criancaIds.length){ alert('Escolha pelo menos uma criança.'); return; }
+  if(categoria==='leitura' && valor>TETO_LEITURA){
+    valor = TETO_LEITURA;
+    alert('Teto de leitura: missões de leitura valem no máximo '+TETO_LEITURA+' ⭐ (o reforço principal vem do reconhecimento, não do prêmio). Valor ajustado.');
+  }
+  const dados = { titulo, emoji, valor, criancaIds, tipo, categoria, pedeForma,
+    frequenciaSemanal: tipo==='semanal' ? (parseInt(document.getElementById('fm-freq').value,10)||3) : null,
+    diasSemana: tipo==='dias' ? Array.from(document.querySelectorAll('#fm-dias .chip-dia.on')).map(x=>parseInt(x.dataset.dia,10)) : [],
+    ativa: id ? db.missoes[id].ativa : true };
+  gravar('missoes', id || uid(), dados);
+  fecharSheet(); renderPais();
+}
+
+function excluirMissao(id){
+  const m = db.missoes[id]; if(!m) return;
+  if(!confirm('Excluir "'+m.titulo+'" para sempre?\n\nDica: se a ideia é só pausar, use Arquivar (📦) — o histórico e as estrelas já ganhas são preservados de qualquer forma.')) return;
+  // remove conclusões pendentes dessa missão (aprovadas ficam no histórico/ledger)
+  Object.keys(db.conclusoes).forEach(cid=>{
+    if(db.conclusoes[cid].missaoId===id && db.conclusoes[cid].status==='pendente') remover('conclusoes', cid);
+  });
+  remover('missoes', id);
+  fecharSheet(); renderPais();
+}
+
+/* ---------- CRUD da lojinha ---------- */
+function htmlPaisLoja(){
+  let html = '<div class="secao-titulo">Prêmios <button class="btn btn-verde" style="padding:10px 16px;font-size:15px" onclick="formPremio(null)">+ Novo</button></div>';
+  const ps = listar('premios');
+  if(!ps.length) return html + '<div class="vazio">Nenhum prêmio ainda.</div>';
+  ps.sort((a,b)=>a.preco-b.preco);
+  html += ps.map(p=>'<div class="pais-item"'+(p.ativo?'':' style="opacity:.5"')+'>' +
+    '<div class="selo-crianca" style="background:#FFF3D6">'+p.emoji+'</div>' +
+    '<div class="info"><div class="titulo">'+esc(p.nome)+'</div><div class="sub">'+p.preco+' ⭐'+(p.ativo?'':' · arquivado')+'</div></div>' +
+    '<button class="mini-btn" onclick="formPremio(\''+p.id+'\')">✏️</button>' +
+    '<button class="mini-btn" onclick="alternarPremio(\''+p.id+'\')">'+(p.ativo?'📦':'♻️')+'</button></div>').join('');
+  return html;
+}
+function alternarPremio(id){ gravar('premios', id, { ativo: !db.premios[id].ativo }); renderPais(); }
+function formPremio(id){
+  const p = id ? db.premios[id] : { nome:'', emoji:'🎁', preco:10, ativo:true };
+  abrirSheet('<div class="sheet-titulo">'+(id?'Editar prêmio':'Novo prêmio')+'</div>' +
+    '<label>Nome</label><input id="fp-nome" value="'+esc(p.nome)+'" placeholder="Ex.: Ir ao parquinho">' +
+    '<div class="linha-2"><div><label>Emoji</label><input id="fp-emoji" value="'+esc(p.emoji)+'" maxlength="8" style="text-align:center;font-size:26px"></div>' +
+    '<div><label>Preço (⭐)</label><input id="fp-preco" type="number" min="1" value="'+p.preco+'"></div></div>' +
+    '<button class="btn btn-grande btn-verde" style="margin-top:16px" onclick="salvarPremio('+(id?'\''+id+'\'':'null')+')">Salvar prêmio</button>' +
+    (id ? '<button class="btn btn-grande btn-vermelho" style="margin-top:8px" onclick="excluirPremio(\''+id+'\')">🗑️ Excluir prêmio</button>' : '') +
+    '<button class="btn btn-grande btn-fantasma" style="margin-top:8px" onclick="fecharSheet()">Cancelar</button>');
+}
+function salvarPremio(id){
+  const nome = document.getElementById('fp-nome').value.trim();
+  const emoji = document.getElementById('fp-emoji').value.trim() || '🎁';
+  const preco = parseInt(document.getElementById('fp-preco').value,10) || 1;
+  if(!nome){ alert('Dê um nome ao prêmio.'); return; }
+  if(id) gravar('premios', id, { nome:nome, emoji:emoji, preco:preco });
+  else gravar('premios', uid(), { nome:nome, emoji:emoji, preco:preco, ativo:true });
+  fecharSheet(); renderPais();
+}
+
+function excluirPremio(id){
+  const p = db.premios[id]; if(!p) return;
+  if(!confirm('Excluir "'+p.nome+'" para sempre?')) return;
+  Object.keys(db.resgates).forEach(rid=>{
+    if(db.resgates[rid].premioId===id && db.resgates[rid].status==='pendente') remover('resgates', rid);
+  });
+  remover('premios', id);
+  fecharSheet(); renderPais();
+}
+
+/* ---------- extras: ajustes manuais + últimos movimentos ---------- */
+function htmlExtras(){
+  const sel = CONFIG.CRIANCAS.map(c=>'<option value="'+c.id+'">'+c.avatar+' '+esc(c.nome)+' (saldo '+crianca(c.id).saldo+' ⭐)</option>').join('');
+  let html = '<div class="secao-titulo">Ajuste manual de estrelas</div>' +
+    '<label>Criança</label><select id="aj-crianca">'+sel+'</select>' +
+    '<div class="linha-2"><div><label>Quantidade</label><input id="aj-valor" type="number" min="1" value="2"></div>' +
+    '<div><label>Motivo</label><input id="aj-motivo" placeholder="Ex.: ajudou o irmão"></div></div>' +
+    '<div class="linha-2" style="margin-top:14px">' +
+      '<button class="btn btn-verde" onclick="ajustar(1)">＋ Dar estrelas</button>' +
+      '<button class="btn btn-vermelho" onclick="ajustar(-1)">－ Remover</button></div>';
+  const movs = listar('movimentos').sort((a,b)=>b.ts-a.ts).slice(0,12);
+  html += '<div class="secao-titulo" style="margin-top:28px">Últimos movimentos</div>';
+  if(!movs.length) html += '<div class="vazio">Nenhum movimento ainda.</div>';
+  else html += movs.map(mv=>'<div class="pais-item">'+seloDe(mv.criancaId)+
+    '<div class="info"><div class="titulo">'+(mv.valor>0?'+':'')+mv.valor+' ⭐</div>' +
+    '<div class="sub">'+esc(mv.motivo)+' · '+horaDe(mv.ts)+'</div></div></div>').join('');
+  html += '<p style="font-size:13px;color:var(--tinta-suave);font-weight:700;margin-top:12px">Fase 3: mini-jogos de leitura da Carolina e jogos do Arthur.</p>';
+  return html;
+}
+function ajustar(sinal){
+  const criancaId = document.getElementById('aj-crianca').value;
+  const valor = (parseInt(document.getElementById('aj-valor').value,10)||0) * sinal;
+  const motivo = document.getElementById('aj-motivo').value.trim();
+  if(!valor){ alert('Informe a quantidade.'); return; }
+  if(!motivo){ alert('Registre o motivo (fica no histórico).'); return; }
+  mover(criancaId, valor, 'Ajuste: '+motivo, null);
+  renderPais();
+}
+
+/* ============================================================
+   CARTINHAS 💌
+   ============================================================ */
+function htmlCartinhas(c){
+  const cs = listar('cartinhas').filter(k=>k.criancaId===c.id)
+    .sort((a,b)=>((a.lida?1:0)-(b.lida?1:0)) || (b.ts-a.ts));
+  if(!cs.length) return '<div class="vazio">Nenhuma cartinha ainda 💌<br>Quando o papai ou a mamãe mandar uma, ela aparece aqui!</div>';
+  return cs.map(k=>{
+    if(!k.lida) return '<button class="missao" style="background:#FFF0F5" onclick="abrirCartinha(\''+k.id+'\')">' +
+      '<div class="missao-selo" style="background:#FFDCE9;animation:pop 1.4s ease infinite">💌</div>' +
+      '<div><div class="missao-titulo">Chegou cartinha!</div><div class="missao-chip">Toque para abrir</div></div>' +
+      '<div class="missao-valor">✨</div></button>';
+    return '<button class="missao" onclick="abrirCartinha(\''+k.id+'\')">' +
+      '<div class="missao-selo" style="background:#F4EDDE">📬</div>' +
+      '<div><div class="missao-titulo" style="font-family:Nunito;font-weight:700;font-size:15px">'+esc(k.texto.slice(0,70))+(k.texto.length>70?'…':'')+'</div>' +
+      '<div class="missao-chip">'+(k.estrelasBonus?'+'+k.estrelasBonus+' ⭐ · ':'')+horaDe(k.ts)+'</div></div></button>';
+  }).join('');
+}
+function abrirCartinha(id){
+  const k = db.cartinhas[id]; if(!k) return;
+  if(!k.lida){ gravar('cartinhas', id, { lida:true }); sfxFeito(); confete(); }
+  falar(k.texto);
+  abrirSheet('<div class="sheet-emoji">💌</div>' +
+    '<div class="sheet-titulo">Para você!</div>' +
+    '<p style="font-size:19px;line-height:1.5;text-align:center;font-weight:700;margin:6px 4px 14px">'+esc(k.texto)+'</p>' +
+    (k.estrelasBonus?'<div class="sheet-sub">veio com +'+k.estrelasBonus+' ⭐ de presente!</div>':'') +
+    '<button class="btn btn-grande btn-sol" onclick="fecharSheet();renderCrianca()">💗</button>');
+}
+function htmlPaisCartinhas(){
+  const sel = CONFIG.CRIANCAS.map(c=>'<option value="'+c.id+'">'+c.avatar+' '+esc(c.nome)+'</option>').join('');
+  let html = '<div class="secao-titulo">Enviar cartinha 💌</div>' +
+    '<label>Para</label><select id="ct-crianca">'+sel+'</select>' +
+    '<label>Mensagem</label><textarea id="ct-texto" rows="4" placeholder="Ex.: Ficamos muito orgulhosos de você hoje!"></textarea>' +
+    '<label>Estrelas bônus (opcional)</label><input id="ct-bonus" type="number" min="0" value="0">' +
+    '<button class="btn btn-grande btn-verde" style="margin-top:14px" onclick="enviarCartinha()">Enviar 💌</button>';
+  const cs = listar('cartinhas').sort((a,b)=>b.ts-a.ts).slice(0,10);
+  html += '<div class="secao-titulo" style="margin-top:26px">Últimas enviadas</div>';
+  if(!cs.length) html += '<div class="vazio">Nenhuma cartinha enviada ainda.</div>';
+  else html += cs.map(k=>'<div class="pais-item">'+seloDe(k.criancaId)+
+    '<div class="info"><div class="titulo">'+esc(k.texto.slice(0,60))+(k.texto.length>60?'…':'')+'</div>' +
+    '<div class="sub">'+(k.estrelasBonus?'+'+k.estrelasBonus+' ⭐ · ':'')+(k.lida?'aberta 💗':'ainda fechada 💌')+' · '+horaDe(k.ts)+'</div></div></div>').join('');
+  return html;
+}
+function enviarCartinha(){
+  const criancaId = document.getElementById('ct-crianca').value;
+  const texto = document.getElementById('ct-texto').value.trim();
+  const bonus = parseInt(document.getElementById('ct-bonus').value,10)||0;
+  if(!texto){ alert('Escreva a mensagem da cartinha.'); return; }
+  gravar('cartinhas', uid(), { criancaId:criancaId, texto:texto, estrelasBonus:bonus, lida:false, ts:Date.now() });
+  if(bonus>0) mover(criancaId, bonus, 'Cartinha com bônus 💌', null);
+  renderPais();
+}
+
+/* ============================================================
+   RELATÓRIO 📊
+   ============================================================ */
+function inicioSemanaData(n){
+  const d = new Date(); d.setHours(0,0,0,0);
+  d.setDate(d.getDate() - ((d.getDay()+6)%7) - 7*n);
+  return d;
+}
+function htmlRelatorio(){
+  let html = '';
+  CONFIG.CRIANCAS.forEach(c=>{
+    const d = crianca(c.id);
+    const semanas = []; let max = 1;
+    for(let n=3; n>=0; n--){
+      const ini = inicioSemanaData(n), fim = inicioSemanaData(n-1);
+      const soma = listar('movimentos')
+        .filter(mv=>mv.criancaId===c.id && mv.valor>0 && mv.ts>=ini.getTime() && mv.ts<fim.getTime())
+        .reduce((s,mv)=>s+mv.valor, 0);
+      semanas.push({ rotulo:('0'+ini.getDate()).slice(-2)+'/'+('0'+(ini.getMonth()+1)).slice(-2), soma:soma });
+      if(soma>max) max = soma;
     }
-    return batch.commit();
-  })
-  .then(function(){ toast('✓ Resultado lançado e pontos apurados!'); carregarTudo(); })
-  .catch(function(e){ toast('Erro na apuração: '+(e&&e.message?e.message:e)); });
-};
-
-/* recalcular tudo do zero */
-$('btnRecalcular').addEventListener('click', function(){
-  if (!confirm('Recalcular todos os pontos do zero?')) return;
-  var btn = this; btn.disabled = true;
-  var resultados = {};
-  jogos.forEach(function(j){ if (j.encerrado) resultados[j.id] = j; });
-  db.collection('palpites').get().then(function(snap){
-    var totais = {}; // uid -> agregados
-    var batch = db.batch();
-    var nBatch = 0;
-    snap.forEach(function(doc){
-      var p = doc.data();
-      var r = resultados[p.jogoId];
-      var pts = r ? calcPontos(p.golsA, p.golsB, r.golsA, r.golsB) : null;
-      if (r){
-        batch.set(doc.ref, { pontos: pts }, {merge:true}); nBatch++;
-        if (!totais[p.uid]) totais[p.uid] = { pts:0, ex:0, res:0 };
-        totais[p.uid].pts += pts;
-        if (pts === PONTO_EXATO) totais[p.uid].ex++;
-        if (pts === PONTO_RESULTADO) totais[p.uid].res++;
-      }
-      if (!totais[p.uid]) totais[p.uid] = { pts:0, ex:0, res:0 };
-    });
-    for (var uid in totais){
-      batch.set(db.collection('usuarios').doc(uid), {
-        pontos: totais[uid].pts, exatos: totais[uid].ex, resultados: totais[uid].res
-      }, {merge:true}); nBatch++;
+    const iniSem = chaveInicioSemana();
+    const cs = listar('conclusoes').filter(x=>x.criancaId===c.id && x.dataKey>=iniSem);
+    const apr = cs.filter(x=>x.status==='aprovada').length;
+    const pend = cs.filter(x=>x.status==='pendente').length;
+    const formas = listar('conclusoes').filter(x=>x.criancaId===c.id && x.formaConclusao);
+    let formasHtml = '';
+    if(formas.length){
+      const cont = {};
+      formas.forEach(x=>{ cont[x.formaConclusao] = (cont[x.formaConclusao]||0)+1; });
+      formasHtml = '<div style="font-size:13px;font-weight:800;color:var(--tinta-suave);margin-top:8px">Leitura: ' +
+        Object.keys(cont).map(k=>FORMAS[k].rotulo+' ×'+cont[k]).join(' · ') + '</div>';
     }
-    if (nBatch > 450) toast('Atenção: muitos registros, rode de novo se der erro.');
-    return batch.commit();
-  }).then(function(){
-    toast('✓ Ranking recalculado!');
-    btn.disabled = false;
-  }).catch(function(e){ toast('Erro: '+(e&&e.message?e.message:e)); btn.disabled = false; });
-});
-
-
-/* ---------------- classificação por grupos ---------------- */
-function calcularClassificacao(){
-  var grupos = {};
-  JOGOS_BASE.forEach(function(b){
-    if (b.fs !== 'Grupos' || !b.g) return;
-    if (!grupos[b.g]) grupos[b.g] = {};
-    if (b.a && !grupos[b.g][b.a]) grupos[b.g][b.a] = {nome:b.a,flag:b.fa||'⚽',j:0,v:0,e:0,d:0,gp:0,gc:0,pts:0};
-    if (b.b && !grupos[b.g][b.b]) grupos[b.g][b.b] = {nome:b.b,flag:b.fb||'⚽',j:0,v:0,e:0,d:0,gp:0,gc:0,pts:0};
-  });
-  jogos.forEach(function(j){
-    if (j.fase !== 'Grupos' || !j.encerrado || j.golsA === null || j.golsB === null || !j.grupo) return;
-    var g = grupos[j.grupo];
-    if (!g) return;
-    var tA = g[j.timeA], tB = g[j.timeB];
-    if (!tA || !tB) return;
-    tA.j++; tB.j++;
-    tA.gp += j.golsA; tA.gc += j.golsB;
-    tB.gp += j.golsB; tB.gc += j.golsA;
-    if (j.golsA > j.golsB){ tA.v++; tA.pts += 3; tB.d++; }
-    else if (j.golsA < j.golsB){ tB.v++; tB.pts += 3; tA.d++; }
-    else { tA.e++; tA.pts++; tB.e++; tB.pts++; }
-  });
-  return grupos;
-}
-
-function objVals(obj){ return Object.keys(obj).map(function(k){ return obj[k]; }); }
-
-function sortGrupo(times){
-  return times.slice().sort(function(a,b){
-    return (b.pts-a.pts)||(b.v-a.v)||((b.gp-b.gc)-(a.gp-a.gc))||(b.gp-a.gp)||a.nome.localeCompare(b.nome);
-  });
-}
-
-function renderClassificacao(){
-  var grupos = calcularClassificacao();
-  var letras = ['A','B','C','D','E','F','G','H','I','J','K','L'];
-  var html = '';
-  letras.forEach(function(g){
-    var times = sortGrupo(objVals(grupos[g] || {}));
-    html += '<div class="grupoCard"><div class="grupoTitulo">Grupo ' + g + '</div>';
-    html += '<table class="grupoTbl"><thead><tr>';
-    html += '<th class="tn">Sele\u00e7\u00e3o</th><th>Pts</th><th>J</th><th>V</th><th>E</th><th>D</th><th>GP</th><th>GC</th><th>SG</th>';
-    html += '</tr></thead><tbody>';
-    times.forEach(function(t, idx){
-      var sg = t.gp - t.gc;
-      var cls = idx === 0 ? 'av1' : idx === 1 ? 'av2' : '';
-      html += '<tr class="' + cls + '">';
-      html += '<td class="tn">' + esc(t.flag) + ' ' + esc(t.nome) + (idx < 2 && t.j > 0 ? ' <span style="color:var(--green);font-size:10px">\u2713</span>' : '') + '</td>';
-      html += '<td class="pts">' + t.pts + '</td>';
-      html += '<td>' + t.j + '</td><td>' + t.v + '</td><td>' + t.e + '</td><td>' + t.d + '</td>';
-      html += '<td>' + t.gp + '</td><td>' + t.gc + '</td>';
-      html += '<td class="sg">' + (sg > 0 ? '+' : '') + sg + '</td>';
-      html += '</tr>';
+    html += '<div style="background:#fff;border-radius:20px;padding:16px;margin-bottom:14px;box-shadow:0 4px 0 rgba(59,46,74,.08)">' +
+      '<div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">'+seloDe(c.id)+
+      '<div><div style="font-family:Fredoka;font-weight:600;font-size:18px">'+esc(c.nome)+'</div>' +
+      '<div style="font-size:13px;font-weight:800;color:var(--tinta-suave)">Nível '+nivel(c.id)+' · 🔥 '+streakDe(c.id)+' dia(s) · saldo '+d.saldo+' ⭐ · total '+d.totais+' ⭐</div></div></div>';
+    semanas.forEach(s=>{
+      html += '<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">' +
+        '<span style="font-size:12px;font-weight:800;color:var(--tinta-suave);width:42px">'+s.rotulo+'</span>' +
+        '<div style="flex:1;background:#F2ECE0;border-radius:8px;height:22px;overflow:hidden"><div style="height:100%;width:'+Math.round(s.soma/max*100)+'%;background:'+c.cor+';border-radius:8px"></div></div>' +
+        '<span style="font-size:13px;font-weight:800;width:46px;text-align:right">'+s.soma+' ⭐</span></div>';
     });
-    html += '</tbody></table></div>';
-  });
-  $('listaClassificacao').innerHTML = html || '<div class="vazio">Nenhum resultado lan\u00e7ado ainda.</div>';
-}
-
-function renderAdmClassificados(){
-  var grupos = calcularClassificacao();
-  var letras = ['A','B','C','D','E','F','G','H','I','J','K','L'];
-  var terceiros = [];
-  var temResultado = false;
-  var html = '<div style="margin-bottom:8px">';
-  letras.forEach(function(g){
-    var times = sortGrupo(objVals(grupos[g] || {}));
-    var t1 = times[0], t2 = times[1], t3 = times[2];
-    if (t1 && t1.j > 0) temResultado = true;
-    if (t3 && t3.j > 0) terceiros.push(Object.assign({grupo:g}, t3));
-    html += '<div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--line2);font-size:12.5px">';
-    html += '<span style="color:var(--gold);font-weight:800;width:18px">' + g + '</span>';
-    html += '<span style="flex:1;color:var(--green);min-width:0">' + (t1 ? t1.flag + ' <b>' + t1.nome + '</b> <span style="font-size:11px;color:var(--mut)">(' + t1.pts + 'pts)</span>' : '?') + '</span>';
-    html += '<span style="flex:1;min-width:0">' + (t2 ? t2.flag + ' ' + t2.nome + ' <span style="font-size:11px;color:var(--mut)">(' + t2.pts + 'pts)</span>' : '?') + '</span>';
+    html += '<div style="font-size:13px;font-weight:800;color:var(--tinta-suave);margin-top:8px">Esta semana: '+apr+' missão(ões) aprovada(s)'+(pend?' · '+pend+' aguardando':'')+'</div>' + formasHtml;
+    const hist = listar('conclusoes').filter(x=>x.criancaId===c.id).sort((a,b)=>b.ts-a.ts).slice(0,8);
+    if(hist.length){
+      html += '<div style="margin-top:12px;border-top:2px dashed #EFE7D6;padding-top:10px">' + hist.map(x=>{
+        const m = db.missoes[x.missaoId];
+        const st = x.status==='aprovada' ? '✅' : (x.status==='pendente' ? '⏳' : '✖️');
+        return '<div style="font-size:13px;font-weight:700;color:var(--tinta-suave);padding:3px 0">'+st+' '+
+          (m ? m.emoji+' '+esc(m.titulo) : '(missão excluída)') +
+          (x.formaConclusao ? ' — '+FORMAS[x.formaConclusao].rotulo : '') +
+          ' · '+x.dataKey.slice(8,10)+'/'+x.dataKey.slice(5,7)+'</div>';
+      }).join('') + '</div>';
+    }
     html += '</div>';
   });
-  html += '</div>';
-  if (!temResultado){
-    $('admClassificados').innerHTML = '<p style="font-size:13px;color:var(--mut)">Lance os primeiros resultados para ver a classifica\u00e7\u00e3o aqui.</p>';
-    return;
-  }
-  terceiros.sort(function(a,b){ return (b.pts-a.pts)||(b.v-a.v)||((b.gp-b.gc)-(a.gp-a.gc))||(b.gp-a.gp)||a.nome.localeCompare(b.nome); });
-  if (terceiros.length > 0){
-    html += '<div style="font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:800;margin:10px 0 6px">Melhores 3\u00bas (top 8 avan\u00e7am)</div>';
-    terceiros.forEach(function(t, i){
-      var sg = t.gp - t.gc;
-      var ok = i < 8;
-      html += '<div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--line2);font-size:12.5px">';
-      html += '<span style="color:'+(ok?'var(--green)':'var(--mut)')+';font-weight:800;width:20px">'+(i+1)+'\u00ba</span>';
-      html += '<span>' + t.flag + ' <b>' + t.nome + '</b> <span style="font-size:11px;color:var(--mut)">Gr.' + t.grupo + ' · ' + t.pts + 'pts · SG ' + (sg>0?'+':'') + sg + '</span></span>';
-      if (ok) html += '<span style="color:var(--green);margin-left:auto;font-size:11px;font-weight:700">AVAN\u00c7A</span>';
-      html += '</div>';
-    });
-  }
-  $('admClassificados').innerHTML = html;
+  return html;
 }
 
-
-/* ---------------- geração automática do mata-mata ---------------- */
-/* Chaveamento oficial da Copa 2026 (32-avos / Round of 32).
-   Cada confronto: vencedores/2ºs de grupos + melhores 3ºs.
-   jogo (ordem) -> {a:'1A'|'2B'|'3X', b:...}  onde 3X = um dos melhores 3ºs */
-var CHAVE_32 = {
-  73:{a:'1A',b:'3CEFHI'}, 74:{a:'1C',b:'3DEFGH'}, 75:{a:'1E',b:'3ABDFG'},
-  76:{a:'1F',b:'2B'},     77:{a:'1I',b:'3CDEHL'}, 78:{a:'1B',b:'3EFGIJ'},
-  79:{a:'1G',b:'2A'},     80:{a:'1H',b:'3BEFIK'}, 81:{a:'1D',b:'3BEHIK'},
-  82:{a:'1L',b:'2J'},     83:{a:'1J',b:'2H'},     84:{a:'1K',b:'3DEIJL'},
-  85:{a:'2C',b:'2F'},     86:{a:'2D',b:'2G'},     87:{a:'2I',b:'2L'}, 88:{a:'2E',b:'2K'}
-};
-
-function gruposCompletos(){
-  var grp = jogos.filter(function(j){ return j.fase === 'Grupos'; });
-  if (!grp.length) return false;
-  for (var k=0;k<grp.length;k++){ if (!grp[k].encerrado) return false; }
-  return true;
+/* ============================================================
+   LOGIN / FIRESTORE EM TEMPO REAL
+   ============================================================ */
+function renderCarregando(){
+  telaAtual = 'login';
+  app.innerHTML = '<div class="tela" style="text-align:center;padding-top:120px"><div style="font-size:54px"><span class="ampulheta-gira" style="display:inline-block">⏳</span></div>' +
+    '<p style="color:var(--tinta-suave);font-weight:800;margin-top:12px">Conectando…</p></div>';
 }
-
-function gerarMataMataSeFechou(){
-  // só admin grava; e só se todos os 72 jogos de grupo terminaram
-  if (!ehAdmin || !tabelaPublicada) return;
-  if (!gruposCompletos()) return;
-
-  var grupos = calcularClassificacao();
-  var letras = ['A','B','C','D','E','F','G','H','I','J','K','L'];
-  var pos = {}; // '1A' -> {nome,flag}
-  var terceiros = [];
-  letras.forEach(function(g){
-    var t = sortGrupo(objVals(grupos[g]||{}));
-    if (t[0]) pos['1'+g] = t[0];
-    if (t[1]) pos['2'+g] = t[1];
-    if (t[2]) terceiros.push(Object.assign({grupo:g}, t[2]));
+function bancoVazio(){
+  const b = { criancas:{}, missoes:{}, premios:{}, conclusoes:{}, resgates:{}, movimentos:{}, cartinhas:{} };
+  CONFIG.CRIANCAS.forEach(c=>{ b.criancas[c.id] = { saldo:0, totais:0, streak:0, ultimoDiaAtivo:null }; });
+  return b;
+}
+function seedSeVazio(){
+  return fdb.collection('missoes').limit(1).get().then(snap=>{
+    if(!snap.empty) return;
+    const base = seedDB();
+    const batch = fdb.batch();
+    Object.keys(base.missoes).forEach(id=>batch.set(fdb.collection('missoes').doc(id), base.missoes[id]));
+    Object.keys(base.premios).forEach(id=>batch.set(fdb.collection('premios').doc(id), base.premios[id]));
+    CONFIG.CRIANCAS.forEach(c=>batch.set(fdb.collection('criancas').doc(c.id), { saldo:0, totais:0, streak:0, ultimoDiaAtivo:null }, {merge:true}));
+    return batch.commit();
   });
-  terceiros.sort(function(a,b){ return (b.pts-a.pts)||(b.v-a.v)||((b.gp-b.gc)-(a.gp-a.gc))||(b.gp-a.gp); });
-  var melhores3 = terceiros.slice(0,8); // 8 melhores avançam
-
-  // resolve um slot '3CEFHI' pegando o melhor 3º cujo grupo esteja na string
-  function pega3(slot){
-    var letrasSlot = slot.slice(1);
-    for (var k=0;k<melhores3.length;k++){
-      if (melhores3[k] && letrasSlot.indexOf(melhores3[k].grupo) !== -1){
-        return melhores3.splice(k,1)[0];
-      }
-    }
-    return melhores3.shift() || null; // fallback: qualquer um restante
-  }
-
-  var batch = db.batch();
-  var n = 0;
-  for (var ordem in CHAVE_32){
-    var def = CHAVE_32[ordem];
-    var id = 'j'+ordem;
-    // já editado manualmente pelo admin? respeita
-    var jx = null;
-    for (var k=0;k<jogos.length;k++){ if (jogos[k].ordem == ordem){ jx = jogos[k]; break; } }
-    if (jx && jx.definido) continue;
-
-    var tA = def.a.charAt(0)==='3' ? pega3(def.a) : pos[def.a];
-    var tB = def.b.charAt(0)==='3' ? pega3(def.b) : pos[def.b];
-    if (!tA || !tB) continue;
-
-    batch.set(db.collection('jogos').doc(id), {
-      timeA: tA.nome, flagA: tA.flag, timeB: tB.nome, flagB: tB.flag, autoGerado: true
-    }, {merge:true});
-    n++;
-  }
-  if (n > 0){
-    batch.commit().then(function(){
-      toast('✓ 16-avos gerados automaticamente!');
-      carregarJogos().then(renderJogos);
-    }).catch(function(){});
-  }
+}
+let fbLigado = false;
+function ligarFirestore(){
+  if(fbLigado){ renderHome(); return; }
+  fbLigado = true;
+  ['criancas','missoes','premios','conclusoes','resgates','movimentos','cartinhas'].forEach(col=>{
+    fdb.collection(col).onSnapshot(snap=>{
+      const mapa = {};
+      snap.forEach(doc=>{ mapa[doc.id] = doc.data(); });
+      if(col==='criancas') CONFIG.CRIANCAS.forEach(c=>{ if(!mapa[c.id]) mapa[c.id]={saldo:0,totais:0,streak:0,ultimoDiaAtivo:null}; });
+      db[col] = mapa;
+      rerenderAtual();
+    }, err=>{ console.error('snapshot '+col, err); });
+  });
+  renderHome();
+}
+function rerenderAtual(){
+  if(document.querySelector('.sheet-fundo')) return; // não interrompe um formulário aberto
+  if(telaAtual==='crianca' && criancaAtual) renderCrianca();
+  else if(telaAtual==='pais') renderPais();
+  else if(telaAtual==='home') renderHome();
 }
 
-/* relógio: re-renderiza a cada minuto para travar jogos na hora certa */
-setInterval(function(){
-  if (usuario && viewAtual === 'jogos') renderJogos();
-}, 60000);
+/* ============================================================
+   INÍCIO
+   ============================================================ */
+function boot(){
+  if(!MODO_FB){ load(); renderHome(); return; }
+  firebase.initializeApp(firebaseConfig);
+  auth = firebase.auth();
+  fdb = firebase.firestore();
+  db = bancoVazio();
+  renderCarregando();
+  /* login anônimo invisível: ninguém digita nada, o Firebase só precisa
+     do provedor "Anônimo" ativado no console (Authentication > Sign-in method) */
+  auth.onAuthStateChanged(u=>{
+    usuarioAtual = u;
+    if(!u){
+      auth.signInAnonymously().catch(e=>{
+        alert('Erro ao conectar (ative o login Anônimo no console do Firebase): '+(e && e.message ? e.message : e));
+      });
+      return;
+    }
+    seedSeVazio().then(ligarFirestore).catch(e=>{
+      alert('Erro ao conectar no Firebase: '+(e && e.message ? e.message : e));
+    });
+  });
+}
+boot();
 </script>
 </body>
 </html>
