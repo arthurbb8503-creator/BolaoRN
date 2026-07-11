@@ -209,6 +209,36 @@ label{font-weight:800;font-size:14px;color:var(--tinta-suave);display:block;marg
 .ampulheta-gira{display:inline-block;animation:girar 2.4s ease-in-out infinite}
 @keyframes girar{0%,70%{transform:rotate(0)}85%,100%{transform:rotate(180deg)}}
 
+/* ---------- mini-jogos ---------- */
+.jogoTela{position:fixed;inset:0;z-index:80;background:var(--fundo);display:flex;flex-direction:column;padding:14px;overflow-y:auto}
+.jogoMiolo{max-width:540px;width:100%;margin:0 auto;display:flex;flex-direction:column;flex:1;min-height:0}
+.jogoTopo{display:flex;align-items:center;gap:10px}
+.jogoProg{flex:1;display:flex;gap:6px}
+.jogoProg .p{flex:1;height:12px;border-radius:99px;background:#EFE7D6}
+.jogoProg .p.ok{background:var(--verde)}
+.jogoPergunta{font-family:'Fredoka';font-size:24px;font-weight:600;text-align:center;margin:14px 0 4px}
+.objGrade{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;align-content:center;flex:1;padding:12px 0}
+.obj{width:68px;height:68px;font-size:42px;display:flex;align-items:center;justify-content:center;border-radius:20px;background:#fff;box-shadow:0 5px 0 rgba(59,46,74,.12);transition:transform .1s}
+.obj:active{transform:scale(.9)}
+.obj.contado{background:var(--verde);box-shadow:0 5px 0 var(--verde-escuro)}
+.obj.mini{width:50px;height:50px;font-size:28px}
+.numCard{min-width:88px;height:100px;border-radius:22px;background:#fff;box-shadow:0 6px 0 rgba(59,46,74,.12);display:flex;align-items:center;justify-content:center;font-family:'Fredoka';font-size:48px;font-weight:700;padding:0 12px}
+.numCard.oco{background:#FFF3D6;color:#B78600;border:3px dashed var(--sol)}
+.chipNum{min-width:54px;height:54px;border-radius:14px;background:#fff;box-shadow:0 4px 0 rgba(59,46,74,.10);display:flex;align-items:center;justify-content:center;font-family:'Fredoka';font-size:22px;font-weight:600;padding:0 6px}
+.chipNum.oco{background:#FFF3D6;color:#B78600;border:3px dashed var(--sol)}
+.opcoes{display:flex;gap:14px;justify-content:center;padding:14px 0 24px;min-height:112px}
+.opcao{width:88px;height:88px;border-radius:26px;background:#fff;font-family:'Fredoka';font-size:40px;font-weight:700;box-shadow:0 6px 0 rgba(59,46,74,.14);transition:transform .08s}
+.opcao:active{transform:translateY(4px)}
+.opcao.certa{background:var(--verde);color:#fff;box-shadow:0 6px 0 var(--verde-escuro)}
+.opcao.errada{background:#FFE7E7;animation:tremer .35s;opacity:.55}
+.faseRow{display:flex;align-items:center;gap:12px;background:#fff;border-radius:16px;padding:12px 14px;margin-bottom:8px;box-shadow:0 4px 0 rgba(59,46,74,.08)}
+.faseRow.travada{opacity:.45}
+.faseRow .fnum{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Fredoka';font-weight:700;background:#F4EDDE;flex-shrink:0}
+.faseRow.atualF .fnum{background:var(--sol)}
+.pontinhos{display:flex;gap:5px}
+.pontinhos span{width:12px;height:12px;border-radius:50%;background:#EFE7D6}
+.pontinhos span.on{background:var(--verde)}
+
 @media (prefers-reduced-motion:reduce){
   *{animation:none!important;transition:none!important}
 }
@@ -217,6 +247,7 @@ label{font-weight:800;font-size:14px;color:var(--tinta-suave);display:block;marg
 <body>
 <div id="app"></div>
 <div id="sheetContainer"></div>
+<div id="jogoContainer"></div>
 <canvas id="confeteCanvas"></canvas>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
@@ -292,7 +323,7 @@ function seedDB(){
   };
   const C = {};
   CONFIG.CRIANCAS.forEach(c=>{ C[c.id] = { saldo:0, totais:0, streak:0, ultimoDiaAtivo:null }; });
-  return { criancas:C, missoes:M, premios:P, conclusoes:{}, resgates:{}, movimentos:{}, cartinhas:{} };
+  return { criancas:C, missoes:M, premios:P, conclusoes:{}, resgates:{}, movimentos:{}, cartinhas:{}, trilhas:{} };
 }
 
 function load(){
@@ -302,6 +333,7 @@ function load(){
   }catch(e){ db = seedDB(); }
   // garante que crianças novas do CONFIG existam no banco
   if(!db.cartinhas) db.cartinhas = {};
+  if(!db.trilhas) db.trilhas = {};
   CONFIG.CRIANCAS.forEach(c=>{ if(!db.criancas[c.id]) db.criancas[c.id]={saldo:0,totais:0,streak:0,ultimoDiaAtivo:null}; });
   save();
 }
@@ -578,8 +610,12 @@ function renderCrianca(){
       '<button class="aba'+(abaCrianca==='missoes'?' ativa':'')+'" onclick="abaCrianca=\'missoes\';renderCrianca()">Missões 🚀</button>' +
       '<button class="aba'+(abaCrianca==='loja'?' ativa':'')+'" onclick="abaCrianca=\'loja\';renderCrianca()">Lojinha 🎁</button>' +
       '<button class="aba'+(abaCrianca==='cartinhas'?' ativa':'')+'" onclick="abaCrianca=\'cartinhas\';renderCrianca()">💌'+(naoLidas?'<span class="badge">'+naoLidas+'</span>':'')+'</button>' +
+      (trilhasDe(c.id).length ? '<button class="aba'+(abaCrianca==='jogos'?' ativa':'')+'" onclick="abaCrianca=\'jogos\';renderCrianca()">🎮</button>' : '') +
     '</div>';
-  html += abaCrianca==='missoes' ? htmlMissoes(c) : (abaCrianca==='loja' ? htmlLoja(c) : htmlCartinhas(c));
+  if(abaCrianca==='missoes') html += htmlMissoes(c);
+  else if(abaCrianca==='loja') html += htmlLoja(c);
+  else if(abaCrianca==='cartinhas') html += htmlCartinhas(c);
+  else html += htmlTrilhas(c);
   html += '</div>';
   app.innerHTML = html;
 }
@@ -1040,7 +1076,14 @@ function htmlRelatorio(){
         '<div style="flex:1;background:#F2ECE0;border-radius:8px;height:22px;overflow:hidden"><div style="height:100%;width:'+Math.round(s.soma/max*100)+'%;background:'+c.cor+';border-radius:8px"></div></div>' +
         '<span style="font-size:13px;font-weight:800;width:46px;text-align:right">'+s.soma+' ⭐</span></div>';
     });
-    html += '<div style="font-size:13px;font-weight:800;color:var(--tinta-suave);margin-top:8px">Esta semana: '+apr+' missão(ões) aprovada(s)'+(pend?' · '+pend+' aguardando':'')+'</div>' + formasHtml;
+    let trilhasHtml = '';
+    trilhasDe(c.id).forEach(t=>{
+      const pt = progTrilha(c.id, t.id);
+      const completa = pt.fase >= t.fases.length;
+      trilhasHtml += '<div style="font-size:13px;font-weight:800;color:var(--tinta-suave);margin-top:4px">'+t.emoji+' '+t.nome+': '+
+        (completa ? 'completa 🏆' : 'fase '+(pt.fase+1)+' de '+t.fases.length+' · '+(pt.sessoes||0)+'/3 sessões')+'</div>';
+    });
+    html += '<div style="font-size:13px;font-weight:800;color:var(--tinta-suave);margin-top:8px">Esta semana: '+apr+' missão(ões) aprovada(s)'+(pend?' · '+pend+' aguardando':'')+'</div>' + formasHtml + trilhasHtml;
     const hist = listar('conclusoes').filter(x=>x.criancaId===c.id).sort((a,b)=>b.ts-a.ts).slice(0,8);
     if(hist.length){
       html += '<div style="margin-top:12px;border-top:2px dashed #EFE7D6;padding-top:10px">' + hist.map(x=>{
@@ -1066,7 +1109,7 @@ function renderCarregando(){
     '<p style="color:var(--tinta-suave);font-weight:800;margin-top:12px">Conectando…</p></div>';
 }
 function bancoVazio(){
-  const b = { criancas:{}, missoes:{}, premios:{}, conclusoes:{}, resgates:{}, movimentos:{}, cartinhas:{} };
+  const b = { criancas:{}, missoes:{}, premios:{}, conclusoes:{}, resgates:{}, movimentos:{}, cartinhas:{}, trilhas:{} };
   CONFIG.CRIANCAS.forEach(c=>{ b.criancas[c.id] = { saldo:0, totais:0, streak:0, ultimoDiaAtivo:null }; });
   return b;
 }
@@ -1085,7 +1128,7 @@ let fbLigado = false;
 function ligarFirestore(){
   if(fbLigado){ renderHome(); return; }
   fbLigado = true;
-  ['criancas','missoes','premios','conclusoes','resgates','movimentos','cartinhas'].forEach(col=>{
+  ['criancas','missoes','premios','conclusoes','resgates','movimentos','cartinhas','trilhas'].forEach(col=>{
     fdb.collection(col).onSnapshot(snap=>{
       const mapa = {};
       snap.forEach(doc=>{ mapa[doc.id] = doc.data(); });
@@ -1101,6 +1144,288 @@ function rerenderAtual(){
   if(telaAtual==='crianca' && criancaAtual) renderCrianca();
   else if(telaAtual==='pais') renderPais();
   else if(telaAtual==='home') renderHome();
+}
+
+/* ============================================================
+   TRILHAS EDUCATIVAS 🎮
+   Referências: BNCC EI03ET07 (números/quantidades/sequência),
+   Gelman & Gallistel 1978 (correspondência 1-a-1 e cardinalidade),
+   Clements & Sarama (trajetórias de aprendizagem, subitização).
+   Regras: sessão = 5 exercícios · 3 sessões dominam a fase ·
+   fase dominada = +2 ⭐ (esforço, não acerto) · erro sem punição.
+   ============================================================ */
+const EMOJIS_JOGO = ['🍎','⭐','🐟','🎈','🐞','🌸','⚽','🦆','🍓','🐤'];
+
+function irand(n){ return Math.floor(Math.random()*n); }
+function embaralhar(a){
+  for(let i=a.length-1;i>0;i--){ const j=irand(i+1); const t=a[i]; a[i]=a[j]; a[j]=t; }
+  return a;
+}
+function opcoesNum(certa, min, max){
+  const set = [certa];
+  let guard = 0;
+  const deltas = [1,-1,2,-2,3,-3];
+  while(set.length<3 && guard++<60){
+    const v = certa + deltas[irand(deltas.length)];
+    if(v>=min && v<=max && set.indexOf(v)===-1) set.push(v);
+  }
+  let k = Math.max(min,0);
+  while(set.length<3){ if(set.indexOf(k)===-1) set.push(k); k++; }
+  return embaralhar(set);
+}
+function exContar(min, max){
+  const qtd = min + irand(max-min+1);
+  return { tipo:'contar', qtd:qtd, certa:qtd, emoji:EMOJIS_JOGO[irand(EMOJIS_JOGO.length)], opcoes:opcoesNum(qtd, 1, max+2) };
+}
+function exQuantos(min, max){
+  const qtd = min + irand(max-min+1);
+  return { tipo:'quantos', qtd:qtd, certa:qtd, emoji:EMOJIS_JOGO[irand(EMOJIS_JOGO.length)], opcoes:opcoesNum(qtd, 1, max+2) };
+}
+function exSeq(max){
+  const t = ['depois','antes','entre'][irand(3)];
+  if(t==='depois'){ const n = 1+irand(max-1); return { tipo:'depois', n:n, certa:n+1, opcoes:opcoesNum(n+1, 0, max+1) }; }
+  if(t==='antes'){ const n = 2+irand(max-1); return { tipo:'antes', n:n, certa:n-1, opcoes:opcoesNum(n-1, 0, max+1) }; }
+  const n = 1+irand(max-2);
+  return { tipo:'entre', a:n, b:n+2, certa:n+1, opcoes:opcoesNum(n+1, 0, max+1) };
+}
+function exDezena(){
+  const falta = 10*(1+irand(10));
+  const cand = embaralhar([falta-10, falta+10, falta-20, falta+20].filter(v=>v>=10 && v<=100 && v!==falta));
+  return { tipo:'dezena', certa:falta, opcoes:embaralhar([falta].concat(cand.slice(0,2))) };
+}
+function exCem(){
+  const ini = 10*(1+irand(9))+1; // janelas 11–20 … 91–100
+  const falta = ini + irand(10);
+  const cand = embaralhar([falta-1, falta+1, falta-10, falta+10].filter(v=>v>=1 && v<=100 && v!==falta));
+  return { tipo:'cem', ini:ini, certa:falta, opcoes:embaralhar([falta].concat(cand.slice(0,2))) };
+}
+
+const TRILHAS = {
+  numeros: {
+    id:'numeros', nome:'Trilha dos Números', emoji:'🔢', criancaIds:['arthur'],
+    fases:[
+      { nome:'Contar até 5',   comp:'correspondência um a um',  gera:()=>exContar(2,5) },
+      { nome:'Contar até 10',  comp:'cardinalidade',            gera:()=>exContar(6,10) },
+      { nome:'Olho de águia',  comp:'subitização (ver sem contar)', gera:()=>exQuantos(2,6) },
+      { nome:'Contar até 20',  comp:'contagem estendida',       gera:()=>exContar(11,20) },
+      { nome:'Antes e depois', comp:'sequência numérica',       gera:()=>exSeq(20) },
+      { nome:'De 10 em 10',    comp:'contagem por saltos',      gera:()=>exDezena() },
+      { nome:'Rumo ao 100',    comp:'estrutura decimal',        gera:()=>exCem() }
+    ]
+  }
+};
+function trilhasDe(criancaId){
+  return Object.keys(TRILHAS).map(k=>TRILHAS[k]).filter(t=>t.criancaIds.indexOf(criancaId)!==-1);
+}
+function progTrilha(criancaId, trilhaId){
+  return db.trilhas[criancaId+'_'+trilhaId] || { fase:0, sessoes:0 };
+}
+
+/* ---------- tela da trilha (dentro do mundo da criança) ---------- */
+function htmlTrilhas(c){
+  const ts = trilhasDe(c.id);
+  if(!ts.length) return '<div class="vazio">Os joguinhos chegam em breve! 🎈</div>';
+  return ts.map(t=>{
+    const pr = progTrilha(c.id, t.id);
+    const completa = pr.fase >= t.fases.length;
+    const atualIdx = Math.min(pr.fase, t.fases.length-1);
+    const f = t.fases[atualIdx];
+    let html = '<div style="background:#fff;border-radius:22px;padding:16px;margin-bottom:14px;box-shadow:0 5px 0 rgba(59,46,74,.10)">' +
+      '<div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">' +
+      '<div class="missao-selo" style="background:'+cfgCrianca(c.id).corClara+'">'+t.emoji+'</div>' +
+      '<div style="flex:1;min-width:0"><div class="missao-titulo">'+t.nome+'</div>' +
+      '<div class="missao-chip">'+(completa?'Trilha completa! 🏆':'Fase '+(atualIdx+1)+' de '+t.fases.length+' · '+f.nome)+'</div></div></div>' +
+      '<button class="btn btn-grande btn-verde" onclick="iniciarSessao(\''+t.id+'\')">Jogar ▶</button>' +
+      '<div style="margin-top:14px">';
+    t.fases.forEach((fs,i)=>{
+      let cls = '', ic = '🔒';
+      if(i < pr.fase){ ic = '⭐'; }
+      else if(i === pr.fase && !completa){ ic = ''+(i+1); cls = ' atualF'; }
+      else { cls = ' travada'; }
+      html += '<div class="faseRow'+cls+'"><div class="fnum">'+ic+'</div>' +
+        '<div style="flex:1;min-width:0"><div style="font-weight:800;font-size:15px">'+fs.nome+'</div>' +
+        '<div style="font-size:12px;color:var(--tinta-suave);font-weight:700">'+fs.comp+'</div></div>';
+      if(i === pr.fase && !completa){
+        html += '<div class="pontinhos">';
+        for(let k=0;k<3;k++) html += '<span class="'+(k<(pr.sessoes||0)?'on':'')+'"></span>';
+        html += '</div>';
+      }
+      html += '</div>';
+    });
+    return html + '</div></div>';
+  }).join('');
+}
+
+/* ---------- motor do jogo ---------- */
+let jogo = null;
+function exAtual(){ return jogo.exs[jogo.atual]; }
+
+function iniciarSessao(trilhaId){
+  const t = TRILHAS[trilhaId];
+  const pr = progTrilha(criancaAtual, trilhaId);
+  const faseIdx = Math.min(pr.fase, t.fases.length-1);
+  jogo = { trilhaId:trilhaId, faseIdx:faseIdx, exs:[], atual:0, acertosPrimeira:0, tentativa:0, contados:0, certa:null, fala:'' };
+  for(let i=0;i<5;i++) jogo.exs.push(t.fases[faseIdx].gera());
+  renderJogoEx();
+}
+
+function shellJogo(pergunta, inner){
+  let prog = '';
+  jogo.exs.forEach((e,i)=>{ prog += '<div class="p'+(i<jogo.atual?' ok':'')+'"></div>'; });
+  document.getElementById('jogoContainer').innerHTML =
+    '<div class="jogoTela"><div class="jogoMiolo">' +
+      '<div class="jogoTopo"><button class="mini-btn" onclick="fecharJogo()">✕</button>' +
+      '<div class="jogoProg">'+prog+'</div>' +
+      '<button class="mini-btn" onclick="falar(jogo.fala)">🔊</button></div>' +
+      '<div class="jogoPergunta">'+pergunta+'</div>' + inner +
+    '</div></div>';
+}
+function opcoesHtml(lista){
+  return '<div class="opcoes" id="areaOpcoes">' +
+    lista.map(v=>'<button class="opcao" data-v="'+v+'" onclick="responder(this)">'+v+'</button>').join('') + '</div>';
+}
+
+function renderJogoEx(){
+  const ex = exAtual();
+  jogo.tentativa = 0; jogo.contados = 0; jogo.certa = ex.certa;
+  let pergunta = '', inner = '';
+  if(ex.tipo==='contar'){
+    pergunta = 'Toque e conte! '+ex.emoji;
+    jogo.fala = 'Toque em cada um e conte comigo!';
+    let objs = '';
+    for(let i=0;i<ex.qtd;i++) objs += '<button class="obj'+(ex.qtd>10?' mini':'')+'" onclick="contarObj(this)">'+ex.emoji+'</button>';
+    inner = '<div class="objGrade">'+objs+'</div><div class="opcoes" id="areaOpcoes"></div>';
+  }
+  else if(ex.tipo==='quantos'){
+    pergunta = 'Quantos você vê?';
+    jogo.fala = 'Olhe bem, sem contar no dedo... quantos são?';
+    let objs = '';
+    for(let i=0;i<ex.qtd;i++) objs += '<span class="obj">'+ex.emoji+'</span>';
+    inner = '<div class="objGrade">'+objs+'</div>' + opcoesHtml(ex.opcoes);
+  }
+  else if(ex.tipo==='depois'){
+    pergunta = 'Qual vem depois?';
+    jogo.fala = 'Qual número vem depois do '+ex.n+'?';
+    inner = '<div style="display:flex;gap:14px;justify-content:center;align-items:center;flex:1">' +
+      '<div class="numCard">'+ex.n+'</div><div class="numCard oco">?</div></div>' + opcoesHtml(ex.opcoes);
+  }
+  else if(ex.tipo==='antes'){
+    pergunta = 'Qual vem antes?';
+    jogo.fala = 'Qual número vem antes do '+ex.n+'?';
+    inner = '<div style="display:flex;gap:14px;justify-content:center;align-items:center;flex:1">' +
+      '<div class="numCard oco">?</div><div class="numCard">'+ex.n+'</div></div>' + opcoesHtml(ex.opcoes);
+  }
+  else if(ex.tipo==='entre'){
+    pergunta = 'Qual fica no meio?';
+    jogo.fala = 'Qual número fica entre o '+ex.a+' e o '+ex.b+'?';
+    inner = '<div style="display:flex;gap:12px;justify-content:center;align-items:center;flex:1">' +
+      '<div class="numCard">'+ex.a+'</div><div class="numCard oco">?</div><div class="numCard">'+ex.b+'</div></div>' + opcoesHtml(ex.opcoes);
+  }
+  else if(ex.tipo==='dezena'){
+    pergunta = 'De 10 em 10… qual falta?';
+    jogo.fala = 'Estamos contando de dez em dez. Qual número está faltando?';
+    let chips = '';
+    for(let i=1;i<=10;i++){
+      const v = i*10;
+      chips += '<div class="chipNum'+(v===ex.certa?' oco':'')+'">'+(v===ex.certa?'?':v)+'</div>';
+    }
+    inner = '<div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-content:center;flex:1;padding:10px 0">'+chips+'</div>' + opcoesHtml(ex.opcoes);
+  }
+  else if(ex.tipo==='cem'){
+    pergunta = 'Qual número falta?';
+    jogo.fala = 'Olhe esse pedacinho da trilha do cem. Qual número está faltando?';
+    let chips = '';
+    for(let i=0;i<10;i++){
+      const v = ex.ini+i;
+      chips += '<div class="chipNum'+(v===ex.certa?' oco':'')+'">'+(v===ex.certa?'?':v)+'</div>';
+    }
+    inner = '<div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-content:center;flex:1;padding:10px 0">'+chips+'</div>' + opcoesHtml(ex.opcoes);
+  }
+  shellJogo(pergunta, inner);
+  setTimeout(()=>falar(jogo.fala), 350);
+}
+
+function contarObj(el){
+  const ex = exAtual();
+  if(el.classList.contains('contado')) return;
+  el.classList.add('contado');
+  jogo.contados++;
+  nota(392 + jogo.contados*28, 0, .12, 'sine', .14);
+  falar(''+jogo.contados);
+  if(jogo.contados >= ex.qtd) setTimeout(mostrarQuantos, 750);
+}
+function mostrarQuantos(){
+  const ex = exAtual();
+  jogo.fala = 'E no total, quantos são?';
+  falar(jogo.fala);
+  const area = document.getElementById('areaOpcoes');
+  if(area) area.outerHTML = opcoesHtml(ex.opcoes);
+}
+
+function responder(el){
+  if(!jogo) return;
+  const v = parseInt(el.dataset.v, 10);
+  const botoes = document.querySelectorAll('.opcao');
+  if(v === jogo.certa){
+    el.classList.add('certa');
+    if(jogo.tentativa===0) jogo.acertosPrimeira++;
+    botoes.forEach(b=>{ b.disabled = true; });
+    sfxFeito();
+    falar(['Isso!','Muito bem!','Acertou!','Boa!'][irand(4)]);
+    setTimeout(proximoEx, 1000);
+  } else {
+    jogo.tentativa++;
+    el.classList.add('errada'); el.disabled = true;
+    sfxOps();
+    if(jogo.tentativa >= 2){
+      falar('Esse é difícil! É o '+jogo.certa+'. Vamos para o próximo!');
+      botoes.forEach(b=>{
+        if(parseInt(b.dataset.v,10)===jogo.certa) b.classList.add('certa');
+        b.disabled = true;
+      });
+      setTimeout(proximoEx, 1700);
+    } else {
+      falar('Quase! Tenta de novo.');
+    }
+  }
+}
+function proximoEx(){
+  if(!jogo) return;
+  jogo.atual++;
+  if(jogo.atual >= jogo.exs.length){ fimSessao(); return; }
+  renderJogoEx();
+}
+
+function fimSessao(){
+  const t = TRILHAS[jogo.trilhaId];
+  const chave = criancaAtual+'_'+jogo.trilhaId;
+  const pr = progTrilha(criancaAtual, jogo.trilhaId);
+  let fase = pr.fase||0, sess = (pr.sessoes||0)+1, dominou = false;
+  const nomeFase = t.fases[Math.min(fase, t.fases.length-1)].nome;
+  if(fase >= t.fases.length){ sess = 0; }
+  else if(sess >= 3){ dominou = true; fase++; sess = 0; }
+  gravar('trilhas', chave, { fase:fase, sessoes:sess });
+  const completou = fase >= t.fases.length;
+  if(dominou) mover(criancaAtual, 2, 'Dominou a fase "'+nomeFase+'" — '+t.nome+' 🎯', null);
+  confete(); sfxFeito();
+  let tit, fala;
+  if(dominou && completou){ tit = 'Trilha completa! 🏆'; fala = 'Uau! Você completou a trilha inteira dos números, até o cem! Parabéns!'; }
+  else if(dominou){ tit = 'Fase dominada! 🎖️'; fala = 'Você dominou a fase '+nomeFase+' e ganhou duas estrelas! Uma fase nova abriu para você.'; }
+  else { tit = 'Mandou bem! 🎉'; fala = 'Sessão completa! Faltam '+(3-sess)+' para dominar essa fase.'; }
+  falar(fala);
+  document.getElementById('jogoContainer').innerHTML =
+    '<div class="jogoTela"><div class="jogoMiolo" style="justify-content:center;text-align:center">' +
+      '<div class="sheet-emoji">'+(dominou?(completou?'🏆':'🎖️'):'🎉')+'</div>' +
+      '<div class="sheet-titulo">'+tit+'</div>' +
+      '<div class="sheet-sub">'+jogo.acertosPrimeira+' de '+jogo.exs.length+' de primeira'+(dominou?' · +2 ⭐':'')+'</div>' +
+      '<button class="btn btn-grande btn-verde" onclick="iniciarSessao(\''+jogo.trilhaId+'\')">Jogar de novo ▶</button>' +
+      '<button class="btn btn-grande btn-fantasma" style="margin-top:10px" onclick="fecharJogo()">Voltar</button>' +
+    '</div></div>';
+}
+function fecharJogo(){
+  document.getElementById('jogoContainer').innerHTML = '';
+  jogo = null;
+  if(criancaAtual) renderCrianca();
 }
 
 /* ============================================================
