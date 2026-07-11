@@ -238,6 +238,11 @@ label{font-weight:800;font-size:14px;color:var(--tinta-suave);display:block;marg
 .pontinhos{display:flex;gap:5px}
 .pontinhos span{width:12px;height:12px;border-radius:50%;background:#EFE7D6}
 .pontinhos span.on{background:var(--verde)}
+.cartaoHistoria{background:#fff;border-radius:20px;padding:18px;font-size:19px;line-height:1.65;font-weight:600;box-shadow:0 4px 0 rgba(59,46,74,.08)}
+.perguntaTexto{font-family:'Fredoka';font-size:19px;font-weight:600;margin:16px 4px 12px}
+.opcaoTexto{display:block;width:100%;height:auto;min-height:56px;text-align:left;font-family:'Nunito';font-weight:800;font-size:16px;padding:14px 16px;border-radius:16px;margin-bottom:10px}
+.estrelaNota{font-size:40px;opacity:.28;transition:opacity .1s, transform .1s}
+.estrelaNota.on{opacity:1;transform:scale(1.1)}
 
 @media (prefers-reduced-motion:reduce){
   *{animation:none!important;transition:none!important}
@@ -323,7 +328,7 @@ function seedDB(){
   };
   const C = {};
   CONFIG.CRIANCAS.forEach(c=>{ C[c.id] = { saldo:0, totais:0, streak:0, ultimoDiaAtivo:null }; });
-  return { criancas:C, missoes:M, premios:P, conclusoes:{}, resgates:{}, movimentos:{}, cartinhas:{}, trilhas:{} };
+  return { criancas:C, missoes:M, premios:P, conclusoes:{}, resgates:{}, movimentos:{}, cartinhas:{}, trilhas:{}, livros:{} };
 }
 
 function load(){
@@ -334,6 +339,7 @@ function load(){
   // garante que crianças novas do CONFIG existam no banco
   if(!db.cartinhas) db.cartinhas = {};
   if(!db.trilhas) db.trilhas = {};
+  if(!db.livros) db.livros = {};
   CONFIG.CRIANCAS.forEach(c=>{ if(!db.criancas[c.id]) db.criancas[c.id]={saldo:0,totais:0,streak:0,ultimoDiaAtivo:null}; });
   save();
 }
@@ -615,7 +621,7 @@ function renderCrianca(){
   if(abaCrianca==='missoes') html += htmlMissoes(c);
   else if(abaCrianca==='loja') html += htmlLoja(c);
   else if(abaCrianca==='cartinhas') html += htmlCartinhas(c);
-  else html += htmlTrilhas(c);
+  else html += htmlAtividades(c);
   html += '</div>';
   app.innerHTML = html;
 }
@@ -1083,6 +1089,10 @@ function htmlRelatorio(){
       trilhasHtml += '<div style="font-size:13px;font-weight:800;color:var(--tinta-suave);margin-top:4px">'+t.emoji+' '+t.nome+': '+
         (completa ? 'completa 🏆' : 'fase '+(pt.fase+1)+' de '+t.fases.length+' · '+(pt.sessoes||0)+'/3 sessões')+'</div>';
     });
+    if(c.leitor){
+      const nl = listar('livros').filter(l=>l.criancaId===c.id).length;
+      trilhasHtml += '<div style="font-size:13px;font-weight:800;color:var(--tinta-suave);margin-top:4px">📚 Diário de leitura: '+nl+' livro(s) registrado(s)</div>';
+    }
     html += '<div style="font-size:13px;font-weight:800;color:var(--tinta-suave);margin-top:8px">Esta semana: '+apr+' missão(ões) aprovada(s)'+(pend?' · '+pend+' aguardando':'')+'</div>' + formasHtml + trilhasHtml;
     const hist = listar('conclusoes').filter(x=>x.criancaId===c.id).sort((a,b)=>b.ts-a.ts).slice(0,8);
     if(hist.length){
@@ -1109,7 +1119,7 @@ function renderCarregando(){
     '<p style="color:var(--tinta-suave);font-weight:800;margin-top:12px">Conectando…</p></div>';
 }
 function bancoVazio(){
-  const b = { criancas:{}, missoes:{}, premios:{}, conclusoes:{}, resgates:{}, movimentos:{}, cartinhas:{}, trilhas:{} };
+  const b = { criancas:{}, missoes:{}, premios:{}, conclusoes:{}, resgates:{}, movimentos:{}, cartinhas:{}, trilhas:{}, livros:{} };
   CONFIG.CRIANCAS.forEach(c=>{ b.criancas[c.id] = { saldo:0, totais:0, streak:0, ultimoDiaAtivo:null }; });
   return b;
 }
@@ -1128,7 +1138,7 @@ let fbLigado = false;
 function ligarFirestore(){
   if(fbLigado){ renderHome(); return; }
   fbLigado = true;
-  ['criancas','missoes','premios','conclusoes','resgates','movimentos','cartinhas','trilhas'].forEach(col=>{
+  ['criancas','missoes','premios','conclusoes','resgates','movimentos','cartinhas','trilhas','livros'].forEach(col=>{
     fdb.collection(col).onSnapshot(snap=>{
       const mapa = {};
       snap.forEach(doc=>{ mapa[doc.id] = doc.data(); });
@@ -1155,6 +1165,14 @@ function rerenderAtual(){
    fase dominada = +2 ⭐ (esforço, não acerto) · erro sem punição.
    ============================================================ */
 const EMOJIS_JOGO = ['🍎','⭐','🐟','🎈','🐞','🌸','⚽','🦆','🍓','🐤'];
+const LIMITE_TRILHA_DIA = 5; // teto de estrelas por dia vindas dos jogos (marcadas com 🎯)
+
+function estrelasTrilhaHoje(criancaId){
+  const ini = new Date(); ini.setHours(0,0,0,0);
+  return listar('movimentos')
+    .filter(mv=>mv.criancaId===criancaId && mv.valor>0 && mv.ts>=ini.getTime() && String(mv.motivo).indexOf('🎯')!==-1)
+    .reduce((s,mv)=>s+mv.valor, 0);
+}
 
 function irand(n){ return Math.floor(Math.random()*n); }
 function embaralhar(a){
@@ -1200,6 +1218,60 @@ function exCem(){
   return { tipo:'cem', ini:ini, certa:falta, opcoes:embaralhar([falta].concat(cand.slice(0,2))) };
 }
 
+/* Micro-histórias autorais para a Trilha das Histórias (Carolina).
+   Formato: t = texto, p = pergunta, o = opções (a PRIMEIRA é a correta;
+   o app embaralha na hora). Progressão literal -> inferencial. */
+const HISTORIAS = {
+ f1:[
+  {t:'Léo foi à praia com o avô. Ele fez um castelo de areia enorme. Uma onda veio e levou um pedaço do castelo.', p:'O que a onda fez?', o:['Levou um pedaço do castelo','Molhou o avô de Léo','Trouxe uma concha bonita']},
+  {t:'Bia ganhou uma bicicleta nova. Ela andou a tarde toda na pracinha. No fim, guardou a bicicleta na garagem.', p:'O que Bia ganhou?', o:['Uma bicicleta nova','Um patinete novo','Uma boneca nova']},
+  {t:'O gato Pingo subiu no telhado atrás de um passarinho. O passarinho voou para longe. Pingo desceu devagarinho, com fome.', p:'O que o passarinho fez?', o:['Voou para longe','Bicou o gato Pingo','Dormiu no telhado']},
+  {t:'Na escola, a turma plantou feijões no algodão. Todo dia as crianças molhavam um pouquinho. Depois de uma semana, os feijões brotaram.', p:'O que a turma plantou?', o:['Feijões','Flores','Milho']},
+  {t:'Davi perdeu o dente da frente na hora do lanche. Ele guardou o dente no bolso. Em casa, colocou debaixo do travesseiro.', p:'O que Davi perdeu?', o:['O dente da frente','O lanche da escola','O travesseiro']},
+  {t:'A chuva caiu forte durante a noite. De manhã, o quintal estava cheio de poças. Duda calçou as botas e pulou em todas.', p:'O que Duda fez nas poças?', o:['Pulou em todas','Passou por cima','Tomou banho de mangueira']}
+ ],
+ f2:[
+  {t:'No sábado de manhã, Rafa e o pai foram à feira. Compraram manga, banana e queijo. A mãe ficou em casa fazendo tapioca.', p:'Quem ficou em casa?', o:['A mãe','O pai','Rafa']},
+  {t:'A festa de aniversário de Lia foi no quintal da avó. Tinha bolo de chocolate e brigadeiro. Os primos brincaram até de noite.', p:'Onde foi a festa?', o:['No quintal da avó','Na casa de Lia','Na escola dos primos']},
+  {t:'Todo domingo, Tomás joga futebol na quadra perto de casa. Ele é o goleiro do time. Ontem ele defendeu três bolas difíceis.', p:'Quando Tomás joga futebol?', o:['Todo domingo','Todo sábado','Toda sexta']},
+  {t:'Dona Rosa é a moça da cantina. Na hora do recreio, ela vende suco de acerola geladinho. As crianças fazem fila para comprar.', p:'Quem é dona Rosa?', o:['A moça da cantina','A professora da turma','A diretora da escola']},
+  {t:'O circo chegou na cidade na quinta-feira. Armou a lona colorida no campo perto do mercado. O primeiro show foi na sexta à noite.', p:'Onde o circo armou a lona?', o:['No campo perto do mercado','Na praça da igreja','No estacionamento da escola']},
+  {t:'De tardinha, vovô senta na varanda com o rádio ligado. Ele escuta o jogo e toma café. Quando o time faz gol, ele grita bem alto.', p:'Quando o vovô senta na varanda?', o:['De tardinha','De manhã cedo','Na hora do almoço']}
+ ],
+ f3:[
+  {t:'Primeiro, Nina separou os ingredientes. Depois misturou tudo numa tigela. Por último, levou o bolo ao forno.', p:'O que Nina fez primeiro?', o:['Separou os ingredientes','Levou o bolo ao forno','Misturou tudo na tigela']},
+  {t:'Caio acordou e escovou os dentes. Em seguida tomou café com pão. Só depois colocou o uniforme da escola.', p:'O que Caio fez depois do café?', o:['Colocou o uniforme','Escovou os dentes','Voltou a dormir']},
+  {t:'A lagarta comeu muitas folhas. Depois fez um casulo no galho. Semanas depois, saiu de lá uma borboleta.', p:'O que aconteceu por último?', o:['Saiu uma borboleta','A lagarta comeu folhas','A lagarta fez um casulo']},
+  {t:'Antes do passeio, Marina encheu a garrafa de água. No caminho, parou para ver os patos da lagoa. Chegou ao parque na hora do piquenique.', p:'O que Marina fez antes de sair?', o:['Encheu a garrafa de água','Viu os patos da lagoa','Comeu no piquenique']},
+  {t:'O papai lavou o carro no domingo. Primeiro jogou água, depois passou o sabão. No final, secou tudo com um pano macio.', p:'O que o papai fez no final?', o:['Secou o carro com um pano','Jogou água no carro','Passou sabão no carro']},
+  {t:'Sofia achou uma semente no quintal e plantou num vasinho. Regou todos os dias. Um mês depois, apareceu uma flor amarela.', p:'O que aconteceu um mês depois?', o:['Apareceu uma flor amarela','Sofia achou a semente','Sofia plantou no vasinho']}
+ ],
+ f4:[
+  {t:'Pedro esqueceu o guarda-chuva em casa. Quando saiu da escola, chegou em casa todo molhado.', p:'Por que Pedro chegou molhado?', o:['Porque choveu e ele estava sem guarda-chuva','Porque ele caiu na piscina','Porque ele tomou banho de mangueira']},
+  {t:'O cachorro Bolota ficou o dia inteiro olhando pela janela. Quando o menino chegou da escola, Bolota pulou de alegria sem parar de abanar o rabo.', p:'Por que Bolota ficou na janela o dia todo?', o:['Estava esperando o menino voltar','Queria fugir de casa','Estava com medo da chuva']},
+  {t:'Ana colocou o casaco, a touca e as luvas antes de sair. Lá fora, dava para ver a fumacinha saindo da boca das pessoas.', p:'Por que Ana se agasalhou tanto?', o:['Porque estava muito frio','Porque ia chover','Porque era festa à fantasia']},
+  {t:'O sorvete de Théo caiu na areia. Ele olhou para o chão por um tempão e depois pediu outro para a mãe.', p:'Por que Théo pediu outro sorvete?', o:['Porque o dele caiu na areia','Porque ele estava com sede','Porque o sorvete derreteu no sol']},
+  {t:'A luz acabou de repente. A mamãe acendeu velas na sala e todo mundo jantou no clarinho delas.', p:'Por que a família jantou com velas?', o:['Porque a luz acabou','Porque era aniversário de alguém','Porque velas deixam a comida gostosa']},
+  {t:'Lucas guardou o dinheiro da mesada num cofrinho por meses. Ontem ele saiu da loja sorrindo com um carrinho de controle remoto.', p:'Por que Lucas guardou dinheiro por meses?', o:['Para comprar o carrinho que ele queria','Porque ele não gostava de gastar','Para dar de presente ao irmão']}
+ ],
+ f5:[
+  {t:'Era o primeiro dia de aula na escola nova. Na porta da sala, Alice apertou a mochila e respirou fundo antes de entrar.', p:'Como Alice estava se sentindo?', o:['Nervosa','Com sono','Brava']},
+  {t:'Quando viu a nota do desenho na parede da escola, Miguel abriu um sorriso enorme e correu para contar para a mãe.', p:'Como Miguel se sentiu?', o:['Orgulhoso e feliz','Envergonhado','Cansado']},
+  {t:'A melhor amiga de Laura se mudou para outra cidade. Laura ficou olhando as fotos das duas no celular da mãe, bem quietinha.', p:'Como Laura estava?', o:['Com saudade','Com raiva','Animada']},
+  {t:'No escuro do quarto, João ouviu um barulho estranho vindo do armário. Ele puxou a coberta até o nariz e chamou o pai baixinho.', p:'O que João estava sentindo?', o:['Medo','Fome','Alegria']},
+  {t:'Rita treinou a cambalhota a semana toda. Na apresentação, acertou tudo e a plateia bateu palmas. Ela fez uma reverência rindo à toa.', p:'Como Rita se sentiu no final?', o:['Muito feliz','Decepcionada','Assustada']},
+  {t:'O irmão pegou o brinquedo de Enzo sem pedir e ainda quebrou uma pecinha. Enzo cruzou os braços e fechou a cara.', p:'Como Enzo ficou?', o:['Bravo','Contente','Com sono']}
+ ],
+ f6:[
+  {t:'Tuca era uma tartaruga que sonhava em ser rápida. Treinou todos os dias na praia. No fim, ganhou a corrida das tartarugas da lagoa.', p:'Qual é o melhor título?', o:['A tartaruga que queria ser rápida','Um dia de chuva na lagoa','O passeio na floresta']},
+  {t:'Papai e Chico passaram o sábado montando uma pipa azul. No domingo, soltaram a pipa no campo, e ela subiu mais alto que todas.', p:'Qual é o melhor título?', o:['A pipa azul','O almoço de domingo','O campo de futebol']},
+  {t:'A formiguinha carregou folhas o verão inteiro. Quando a chuva chegou, o formigueiro estava cheio de comida, e ninguém passou fome.', p:'Qual é o melhor título?', o:['A formiga trabalhadora','A chuva de verão','A casa das abelhas']},
+  {t:'Malu achou um filhote de gato na calçada, magrinho e sujo. Deu banho, comida e um nome: Nuvem. Hoje Nuvem dorme na cama dela toda noite.', p:'Qual é o melhor título?', o:['Malu e o gatinho Nuvem','O dia de chuva','A cama nova de Malu']},
+  {t:'A turma juntou tampinhas por dois meses. Com o dinheiro da reciclagem, compraram livros novos para a biblioteca da escola.', p:'Qual é o melhor título?', o:['As tampinhas que viraram livros','O recreio mais longo','A prova de matemática']},
+  {t:'Vovó ensinou Helena a fazer bolo de cenoura. A cozinha ficou toda enfarinhada, mas o bolo saiu perfeito, com muita calda de chocolate.', p:'Qual é o melhor título?', o:['O bolo da vovó com Helena','A cozinha limpa','O suco de cenoura']}
+ ]
+};
+
 const TRILHAS = {
   numeros: {
     id:'numeros', nome:'Trilha dos Números', emoji:'🔢', criancaIds:['arthur'],
@@ -1211,6 +1283,17 @@ const TRILHAS = {
       { nome:'Antes e depois', comp:'sequência numérica',       gera:()=>exSeq(20) },
       { nome:'De 10 em 10',    comp:'contagem por saltos',      gera:()=>exDezena() },
       { nome:'Rumo ao 100',    comp:'estrutura decimal',        gera:()=>exCem() }
+    ]
+  },
+  historias: {
+    id:'historias', nome:'Trilha das Histórias', emoji:'📖', criancaIds:['carolina'],
+    fases:[
+      { nome:'O que aconteceu?',       comp:'informação explícita (BNCC EF15LP03)', pool:HISTORIAS.f1 },
+      { nome:'Quem, onde, quando',     comp:'localizar detalhes no texto',          pool:HISTORIAS.f2 },
+      { nome:'Ordem dos fatos',        comp:'sequência narrativa',                  pool:HISTORIAS.f3 },
+      { nome:'O porquê das coisas',    comp:'inferência de causa',                  pool:HISTORIAS.f4 },
+      { nome:'Coração do personagem',  comp:'inferir sentimentos',                  pool:HISTORIAS.f5 },
+      { nome:'O melhor título',        comp:'ideia principal',                      pool:HISTORIAS.f6 }
     ]
   }
 };
@@ -1256,6 +1339,58 @@ function htmlTrilhas(c){
   }).join('');
 }
 
+/* ---------- diário de leitura (leitores) ---------- */
+function htmlAtividades(c){
+  let html = htmlTrilhas(c);
+  if(cfgCrianca(c.id).leitor) html += htmlDiario(c);
+  return html;
+}
+function htmlDiario(c){
+  const livros = listar('livros').filter(l=>l.criancaId===c.id).sort((a,b)=>b.ts-a.ts);
+  let html = '<div style="background:#fff;border-radius:22px;padding:16px;margin-bottom:14px;box-shadow:0 5px 0 rgba(59,46,74,.10)">' +
+    '<div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">' +
+    '<div class="missao-selo" style="background:'+cfgCrianca(c.id).corClara+'">📚</div>' +
+    '<div style="flex:1;min-width:0"><div class="missao-titulo">Meu Diário de Leitura</div>' +
+    '<div class="missao-chip">'+livros.length+' livro(s) na estante</div></div></div>' +
+    '<button class="btn btn-grande btn-sol" onclick="formLivro()">Registrar livro 📖</button>';
+  if(livros.length){
+    html += '<div style="margin-top:14px">' + livros.slice(0,10).map(l=>
+      '<div style="border-top:2px dashed #EFE7D6;padding:10px 2px">' +
+      '<div style="font-weight:800;font-size:15px">'+esc(l.titulo)+' <span style="color:#E0A400">'+'⭐'.repeat(l.nota||0)+'</span></div>' +
+      (l.frase?'<div style="font-size:13.5px;color:var(--tinta-suave);font-weight:700;font-style:italic">“'+esc(l.frase)+'”</div>':'') +
+      '</div>').join('') + '</div>';
+  }
+  return html + '</div>';
+}
+let notaLivro = 0;
+function formLivro(){
+  notaLivro = 0;
+  abrirSheet('<div class="sheet-emoji">📖</div><div class="sheet-titulo">Qual livro você leu?</div>' +
+    '<label>Nome do livro</label><input id="lv-titulo" placeholder="Escreva aqui o nome">' +
+    '<label>Quantas estrelas ele merece?</label>' +
+    '<div style="display:flex;justify-content:center;gap:6px;margin:6px 0">' +
+      [1,2,3,4,5].map(n=>'<button class="estrelaNota" data-n="'+n+'" onclick="marcarNota('+n+')">⭐</button>').join('') + '</div>' +
+    '<label>Conte em uma frase o que aconteceu</label><textarea id="lv-frase" rows="3" placeholder="Era uma vez..."></textarea>' +
+    '<button class="btn btn-grande btn-verde" style="margin-top:14px" onclick="salvarLivro()">Guardar na estante ✨</button>');
+}
+function marcarNota(n){
+  notaLivro = n;
+  document.querySelectorAll('.estrelaNota').forEach(b=>{
+    b.classList.toggle('on', parseInt(b.dataset.n,10) <= n);
+  });
+  nota(500+n*80, 0, .1);
+}
+function salvarLivro(){
+  const titulo = document.getElementById('lv-titulo').value.trim();
+  const frase = document.getElementById('lv-frase').value.trim();
+  if(!titulo){ alert('Escreva o nome do livro.'); return; }
+  if(!notaLivro){ alert('Dê as estrelinhas para o livro!'); return; }
+  gravar('livros', uid(), { criancaId:criancaAtual, titulo:titulo, nota:notaLivro, frase:frase, ts:Date.now() });
+  sfxFeito(); confete();
+  falar('O livro '+titulo+' foi guardado na sua estante! Parabéns pela leitura!');
+  fecharSheet(); renderCrianca();
+}
+
 /* ---------- motor do jogo ---------- */
 let jogo = null;
 function exAtual(){ return jogo.exs[jogo.atual]; }
@@ -1264,8 +1399,17 @@ function iniciarSessao(trilhaId){
   const t = TRILHAS[trilhaId];
   const pr = progTrilha(criancaAtual, trilhaId);
   const faseIdx = Math.min(pr.fase, t.fases.length-1);
-  jogo = { trilhaId:trilhaId, faseIdx:faseIdx, exs:[], atual:0, acertosPrimeira:0, tentativa:0, contados:0, certa:null, fala:'' };
-  for(let i=0;i<5;i++) jogo.exs.push(t.fases[faseIdx].gera());
+  jogo = { trilhaId:trilhaId, faseIdx:faseIdx, exs:[], atual:0, acertosPrimeira:0, tentativa:0, contados:0, certa:null, opcoesAtual:[], fala:'' };
+  const fase = t.fases[faseIdx];
+  if(fase.pool){
+    let itens = embaralhar(fase.pool.slice());
+    while(itens.length < 5) itens = itens.concat(embaralhar(fase.pool.slice()));
+    itens.slice(0,5).forEach(item=>{
+      jogo.exs.push({ tipo:'texto', texto:item.t, pergunta:item.p, certa:item.o[0], opcoes:embaralhar(item.o.slice()) });
+    });
+  } else {
+    for(let i=0;i<5;i++) jogo.exs.push(fase.gera());
+  }
   renderJogoEx();
 }
 
@@ -1282,12 +1426,16 @@ function shellJogo(pergunta, inner){
 }
 function opcoesHtml(lista){
   return '<div class="opcoes" id="areaOpcoes">' +
-    lista.map(v=>'<button class="opcao" data-v="'+v+'" onclick="responder(this)">'+v+'</button>').join('') + '</div>';
+    lista.map((v,i)=>'<button class="opcao" data-i="'+i+'" onclick="responder(this)">'+v+'</button>').join('') + '</div>';
+}
+function opcoesTextoHtml(lista){
+  return '<div id="areaOpcoes" style="padding:6px 0 20px">' +
+    lista.map((v,i)=>'<button class="opcao opcaoTexto" data-i="'+i+'" onclick="responder(this)">'+esc(v)+'</button>').join('') + '</div>';
 }
 
 function renderJogoEx(){
   const ex = exAtual();
-  jogo.tentativa = 0; jogo.contados = 0; jogo.certa = ex.certa;
+  jogo.tentativa = 0; jogo.contados = 0; jogo.certa = ex.certa; jogo.opcoesAtual = ex.opcoes;
   let pergunta = '', inner = '';
   if(ex.tipo==='contar'){
     pergunta = 'Toque e conte! '+ex.emoji;
@@ -1341,8 +1489,14 @@ function renderJogoEx(){
     }
     inner = '<div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-content:center;flex:1;padding:10px 0">'+chips+'</div>' + opcoesHtml(ex.opcoes);
   }
+  else if(ex.tipo==='texto'){
+    pergunta = 'Leia e responda 📖';
+    jogo.fala = 'Leia a historinha com calma e escolha a melhor resposta. A leitura é toda sua!';
+    inner = '<div class="cartaoHistoria">'+esc(ex.texto)+'</div>' +
+      '<div class="perguntaTexto">'+esc(ex.pergunta)+'</div>' + opcoesTextoHtml(ex.opcoes);
+  }
   shellJogo(pergunta, inner);
-  setTimeout(()=>falar(jogo.fala), 350);
+  if(ex.tipo!=='texto') setTimeout(()=>falar(jogo.fala), 350);
 }
 
 function contarObj(el){
@@ -1364,7 +1518,7 @@ function mostrarQuantos(){
 
 function responder(el){
   if(!jogo) return;
-  const v = parseInt(el.dataset.v, 10);
+  const v = jogo.opcoesAtual[parseInt(el.dataset.i, 10)];
   const botoes = document.querySelectorAll('.opcao');
   if(v === jogo.certa){
     el.classList.add('certa');
@@ -1372,18 +1526,20 @@ function responder(el){
     botoes.forEach(b=>{ b.disabled = true; });
     sfxFeito();
     falar(['Isso!','Muito bem!','Acertou!','Boa!'][irand(4)]);
-    setTimeout(proximoEx, 1000);
+    setTimeout(proximoEx, typeof jogo.certa==='string' ? 1300 : 1000);
   } else {
     jogo.tentativa++;
     el.classList.add('errada'); el.disabled = true;
     sfxOps();
     if(jogo.tentativa >= 2){
-      falar('Esse é difícil! É o '+jogo.certa+'. Vamos para o próximo!');
+      falar(typeof jogo.certa==='number'
+        ? 'Esse é difícil! É o '+jogo.certa+'. Vamos para o próximo!'
+        : 'Essa era difícil! Olha a resposta certinha marcada em verde. Vamos para a próxima!');
       botoes.forEach(b=>{
-        if(parseInt(b.dataset.v,10)===jogo.certa) b.classList.add('certa');
+        if(jogo.opcoesAtual[parseInt(b.dataset.i,10)] === jogo.certa) b.classList.add('certa');
         b.disabled = true;
       });
-      setTimeout(proximoEx, 1700);
+      setTimeout(proximoEx, 1900);
     } else {
       falar('Quase! Tenta de novo.');
     }
@@ -1406,18 +1562,23 @@ function fimSessao(){
   else if(sess >= 3){ dominou = true; fase++; sess = 0; }
   gravar('trilhas', chave, { fase:fase, sessoes:sess });
   const completou = fase >= t.fases.length;
-  if(dominou) mover(criancaAtual, 2, 'Dominou a fase "'+nomeFase+'" — '+t.nome+' 🎯', null);
+  let bonus = 0;
+  if(dominou){
+    bonus = Math.min(2, Math.max(0, LIMITE_TRILHA_DIA - estrelasTrilhaHoje(criancaAtual)));
+    if(bonus>0) mover(criancaAtual, bonus, 'Dominou a fase "'+nomeFase+'" — '+t.nome+' 🎯', null);
+  }
   confete(); sfxFeito();
   let tit, fala;
-  if(dominou && completou){ tit = 'Trilha completa! 🏆'; fala = 'Uau! Você completou a trilha inteira dos números, até o cem! Parabéns!'; }
-  else if(dominou){ tit = 'Fase dominada! 🎖️'; fala = 'Você dominou a fase '+nomeFase+' e ganhou duas estrelas! Uma fase nova abriu para você.'; }
+  if(dominou && completou){ tit = 'Trilha completa! 🏆'; fala = 'Uau! Você completou a trilha inteira! Parabéns!'; }
+  else if(dominou && bonus>0){ tit = 'Fase dominada! 🎖️'; fala = 'Você dominou a fase '+nomeFase+' e ganhou '+(bonus===1?'uma estrela':'duas estrelas')+'! Uma fase nova abriu para você.'; }
+  else if(dominou){ tit = 'Fase dominada! 🎖️'; fala = 'Você dominou a fase '+nomeFase+'! Uma fase nova abriu para você. Amanhã os jogos dão estrelas de novo!'; }
   else { tit = 'Mandou bem! 🎉'; fala = 'Sessão completa! Faltam '+(3-sess)+' para dominar essa fase.'; }
   falar(fala);
   document.getElementById('jogoContainer').innerHTML =
     '<div class="jogoTela"><div class="jogoMiolo" style="justify-content:center;text-align:center">' +
       '<div class="sheet-emoji">'+(dominou?(completou?'🏆':'🎖️'):'🎉')+'</div>' +
       '<div class="sheet-titulo">'+tit+'</div>' +
-      '<div class="sheet-sub">'+jogo.acertosPrimeira+' de '+jogo.exs.length+' de primeira'+(dominou?' · +2 ⭐':'')+'</div>' +
+      '<div class="sheet-sub">'+jogo.acertosPrimeira+' de '+jogo.exs.length+' de primeira'+(bonus>0?' · +'+bonus+' ⭐':'')+'</div>' +
       '<button class="btn btn-grande btn-verde" onclick="iniciarSessao(\''+jogo.trilhaId+'\')">Jogar de novo ▶</button>' +
       '<button class="btn btn-grande btn-fantasma" style="margin-top:10px" onclick="fecharJogo()">Voltar</button>' +
     '</div></div>';
