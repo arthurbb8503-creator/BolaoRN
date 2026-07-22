@@ -303,21 +303,12 @@ function seedDB(){
     M[id] = Object.assign({titulo,emoji,valor,criancaIds,tipo,categoria,
       frequenciaSemanal:null,diasSemana:[],pedeForma:false,ativa:true},extra||{});
   };
-  // Rotina compartilhada
+  // Missões da casa — as duas crianças, 1 estrela cada
   add('m01','Escovar dentes','🪥',1,['arthur','carolina'],'diaria','rotina');
-  add('m02','Guardar brinquedos','🧸',2,['arthur','carolina'],'diaria','rotina');
-  add('m03','Roupa no cesto','🧺',1,['arthur','carolina'],'diaria','rotina');
-  add('m04','Escolher livro','📚',1,['arthur','carolina'],'diaria','leitura');
-  // Carolina — leitura
-  add('m05','Ler livrinho','📖',4,['carolina'],'semanal','leitura',{frequenciaSemanal:4,pedeForma:true});
-  add('m06','Contar a história','🗣️',2,['carolina'],'avulsa','leitura');
-  add('m07','Palavra nova','🔎',2,['carolina'],'avulsa','leitura');
-  add('m08','Ler para Arthur','👧👦',3,['carolina'],'avulsa','leitura');
-  // Arthur — mundo dos livros + educativas
-  add('m09','Ouvir história','🎧',2,['arthur'],'diaria','leitura');
-  add('m10','Contar cena','🖼️',2,['arthur'],'avulsa','leitura');
-  add('m11','Contar objetos','🔢',2,['arthur'],'avulsa','educativa');
-  add('m12','Achar cor','🎨',2,['arthur'],'avulsa','educativa');
+  add('m02','Guardar brinquedos','🧸',1,['arthur','carolina'],'diaria','rotina');
+  add('m03','Fazer lição de casa','✏️',1,['arthur','carolina'],'diaria','rotina');
+  add('m04','Tomar banho sem reclamar','🛁',1,['arthur','carolina'],'diaria','rotina');
+  add('m05','Roupa no cesto','🧺',1,['arthur','carolina'],'diaria','rotina');
 
   const P = {
     p01:{ nome:'Escolher o filme da noite', emoji:'🎬', preco:8,  ativo:true },
@@ -833,6 +824,10 @@ function recusarResgate(resgateId){
 /* ---------- CRUD de missões ---------- */
 function htmlPaisMissoes(){
   let html = '<div class="secao-titulo">Todas as missões <button class="btn btn-verde" style="padding:10px 16px;font-size:15px" onclick="formMissao(null)">+ Nova</button></div>';
+  html += '<div style="display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 14px">' +
+    '<button class="btn btn-fantasma" style="padding:8px 12px;font-size:13px" onclick="restaurarMissoes()">↻ Restaurar missões</button>' +
+    '<button class="btn btn-fantasma" style="padding:8px 12px;font-size:13px" onclick="recalcularSaldos()">🧮 Recalcular saldos</button>' +
+    '</div>';
   const ms = listar('missoes');
   if(!ms.length) return html + '<div class="vazio">Nenhuma missão. Crie a primeira!</div>';
   ms.sort((a,b)=>a.titulo.localeCompare(b.titulo));
@@ -1123,6 +1118,37 @@ function bancoVazio(){
   CONFIG.CRIANCAS.forEach(c=>{ b.criancas[c.id] = { saldo:0, totais:0, streak:0, ultimoDiaAtivo:null }; });
   return b;
 }
+function recalcularSaldos(){
+  if(!MODO_FB){ alert('Só funciona no modo nuvem.'); return; }
+  if(!confirm('Recalcular os saldos somando todo o histórico de movimentos?')) return;
+  fdb.collection('movimentos').get().then(snap=>{
+    const acc = {};
+    snap.forEach(doc=>{
+      const m = doc.data(), v = Number(m.valor)||0;
+      if(!acc[m.criancaId]) acc[m.criancaId] = { saldo:0, totais:0 };
+      acc[m.criancaId].saldo += v;
+      if(v>0) acc[m.criancaId].totais += v;
+    });
+    const batch = fdb.batch();
+    Object.keys(acc).forEach(id=>{
+      const saldo = acc[id].saldo < 0 ? 0 : acc[id].saldo;
+      batch.set(fdb.collection('criancas').doc(id), { saldo, totais:acc[id].totais }, {merge:true});
+    });
+    return batch.commit().then(()=>{ alert('Saldos recalculados pelo histórico ✅'); location.reload(); });
+  }).catch(e=>alert('Erro: '+(e.message||e)));
+}
+function restaurarMissoes(){
+  if(!MODO_FB){ alert('Só funciona no modo nuvem.'); return; }
+  if(!confirm('Restaurar as missões do app? Substitui a lista atual de missões. Saldos e histórico NÃO são afetados.')) return;
+  const novas = seedDB().missoes;
+  fdb.collection('missoes').get().then(snap=>{
+    const batch = fdb.batch();
+    snap.forEach(doc=>batch.delete(doc.ref));
+    Object.keys(novas).forEach(id=>batch.set(fdb.collection('missoes').doc(id), novas[id]));
+    return batch.commit();
+  }).then(()=>{ alert('Missões restauradas ✅'); location.reload(); })
+    .catch(e=>alert('Erro: '+(e.message||e)));
+}
 function seedSeVazio(){
   return fdb.collection('missoes').limit(1).get().then(snap=>{
     if(!snap.empty) return;
@@ -1130,8 +1156,14 @@ function seedSeVazio(){
     const batch = fdb.batch();
     Object.keys(base.missoes).forEach(id=>batch.set(fdb.collection('missoes').doc(id), base.missoes[id]));
     Object.keys(base.premios).forEach(id=>batch.set(fdb.collection('premios').doc(id), base.premios[id]));
-    CONFIG.CRIANCAS.forEach(c=>batch.set(fdb.collection('criancas').doc(c.id), { saldo:0, totais:0, streak:0, ultimoDiaAtivo:null }, {merge:true}));
-    return batch.commit();
+    // NUNCA zerar criança existente: só cria doc para quem ainda não existe
+    return fdb.collection('criancas').get().then(cs=>{
+      const existe = {}; cs.forEach(d=>existe[d.id]=true);
+      CONFIG.CRIANCAS.forEach(c=>{
+        if(!existe[c.id]) batch.set(fdb.collection('criancas').doc(c.id), { saldo:0, totais:0, streak:0, ultimoDiaAtivo:null });
+      });
+      return batch.commit();
+    });
   });
 }
 let fbLigado = false;
