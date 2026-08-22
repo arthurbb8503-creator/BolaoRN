@@ -266,6 +266,7 @@ const CONFIG = {
   CRIANCAS: [
     { id:'arthur',   nome:'Arthur',   avatar:'🦖', idade:5, cor:'#2F7DF6', corClara:'#E1EDFF', corSombra:'#1F5FC4', leitor:false },
     { id:'carolina', nome:'Carolina', avatar:'🦄', idade:7, cor:'#B44BE0', corClara:'#F6E9FF', corSombra:'#8E33B5', leitor:true  },
+    { id:'joaquim',  nome:'Joaquim',  avatar:'🏐', idade:4, cor:'#F97316', corClara:'#FFEAD5', corSombra:'#C2560A', leitor:false },
   ],
 };
 
@@ -304,11 +305,11 @@ function seedDB(){
       frequenciaSemanal:null,diasSemana:[],pedeForma:false,ativa:true},extra||{});
   };
   // Missões da casa — as duas crianças, 1 estrela cada
-  add('m01','Escovar dentes','🪥',1,['arthur','carolina'],'diaria','rotina');
-  add('m02','Guardar brinquedos','🧸',1,['arthur','carolina'],'diaria','rotina');
-  add('m03','Fazer lição de casa','✏️',1,['arthur','carolina'],'diaria','rotina');
-  add('m04','Tomar banho sem reclamar','🛁',1,['arthur','carolina'],'diaria','rotina');
-  add('m05','Roupa no cesto','🧺',1,['arthur','carolina'],'diaria','rotina');
+  add('m01','Escovar dentes','🪥',1,['arthur','carolina','joaquim'],'diaria','rotina');
+  add('m02','Guardar brinquedos','🧸',1,['arthur','carolina','joaquim'],'diaria','rotina');
+  add('m03','Fazer lição de casa','✏️',1,['arthur','carolina','joaquim'],'diaria','rotina');
+  add('m04','Tomar banho sem reclamar','🛁',1,['arthur','carolina','joaquim'],'diaria','rotina');
+  add('m05','Roupa no cesto','🧺',1,['arthur','carolina','joaquim'],'diaria','rotina');
 
   const P = {
     p01:{ nome:'Escolher o filme da noite', emoji:'🎬', preco:8,  ativo:true },
